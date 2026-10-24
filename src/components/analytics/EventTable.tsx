@@ -1,6 +1,6 @@
 "use client";
 import {useMemo,useState} from "react";
-import {ArrowRight,ChevronRight,Search,X} from "lucide-react";
+import {ChevronRight,Search,X} from "lucide-react";
 import type {WellTelemetryReport,DrillingEvent} from "@/types/telemetry";
 function fmt(min:number) {return `${String(Math.floor(min/60)).padStart(2,"0")}:${String(min%60).padStart(2,"0")}`;}
 const tags={PRODUCTIVE:"bg-[#EBF7F1] text-[#218565]",NPT:"bg-[#FFF0EE] text-[#C95852]",UNKNOWN:"bg-[#F4F5F7] text-[#6C7585]"};

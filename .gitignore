@@ -8,3 +8,7 @@ node_modules/
 coverage/
 *.tsbuildinfo
 /uploads/
+.codex-logs/
+test-results/
+playwright-report/
+*.local.json
