@@ -147,3 +147,13 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - PrintSummary now receives the selected analysis filename and includes identity/provenance, canonical metrics and time coverage, scenario assumptions/formulas, ranked exposure, every event, every exact source excerpt/interpretation and all warnings. Added paper pagination, repeated table headers, readable black-on-white text and complete wrapping.
 - Added 4 print regression tests for ancestor visibility, complete evidence/warnings, a different selected report/scenario and unknown values. All 87 tests pass. No browser print-dialog/PDF visual verification was performed; manual Print / Save as PDF review remains pending.
 - Final verification: npm.cmd run typecheck PASS; npm.cmd run lint PASS; npm.cmd test PASS (87 tests / 13 files); isolated production build PASS; git diff --check PASS. The initial typecheck raced generated build types; rerunning sequentially after the build passed.
+
+## Final hackathon validation — 24 October 2026
+
+- Actual public Utah FORGE Well 78B-32 operations page for 28 June 2021 was downloaded and extracted through the existing production HTTP/Gemini path. 17/17 intervals, durations, ending hole depths and excerpts matched the original operations table. 21,556 ms client elapsed, request 764fd946-5cfb-43c0-b633-6a5cf1bd723c. Report remains unverified; interpreted activity buckets are documented.
+- Documented original source discrepancy: header 293 ft / 4.0 h versus timed drilling 3.5 h (and BHA 3.5 h). No values were fabricated to reconcile it. Flat planned work correctly produced no NPT; trip ILT remains unknown.
+- Fixed late legacy-JSON cancellation and empty snapshot imports; regression tests preserve the previous selected report. Local checkpoint 9f0b3fe82fb1b695d925cd900f639e409adda34b.
+- Added four real-response replay regressions and an offline-by-default source verifier. Actual snapshot plus original one-page PDF and labeled synthetic fixtures support an API-independent demo.
+- 94 tests across 14 files pass. Typecheck/lint/isolated production build pass. Rebuilt-server smoke 8/8, canonical CSV/XLSX 2/2 and real-report analytics/error checks 4/4 pass. Detailed final command evidence is in docs/qa/automated-checks.json.
+- Desktop homepage/console inspected and navigation observed. Computer Use stopped with physical Escape; no further UI interaction attempted. Exactly 390 px, full keyboard/interaction, print-preview and live vision remain unverified.
+- DEMO-READY.md gives setup, exact three-minute sequence and fallbacks. FINAL-QA-REPORT.md records observed evidence, complete per-interval comparison and limits. No push, merge, deployment, credential/package/contract change, Photon or ElevenLabs work.

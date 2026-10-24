@@ -1,0 +1,26 @@
+> boresight-hackathon@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/dharm/Downloads/BoreSight-Starter-Kit
+
+ ✓ src/components/dashboard/upload-deadline.test.ts (4 tests) 15ms
+ ✓ tests/compute.test.ts (7 tests) 13ms
+ ✓ tests/analytics.test.ts (7 tests) 21ms
+ ✓ tests/reports.test.ts (4 tests) 29ms
+ ✓ tests/forge-validation.test.ts (4 tests) 23ms
+ ✓ tests/gemini-client.test.ts (8 tests) 34ms
+ ✓ src/components/dashboard/report-view.test.ts (15 tests) 101ms
+ ✓ tests/print-report.test.tsx (4 tests) 99ms
+ ✓ tests/vision.test.ts (4 tests) 57ms
+ ✓ tests/mantle-console.test.tsx (5 tests) 81ms
+ ✓ tests/dashboard-render.test.tsx (3 tests) 67ms
+ ✓ tests/mantle-home.test.tsx (6 tests) 98ms
+ ✓ tests/ingestion.test.ts (11 tests) 114ms
+ ✓ tests/ingestion-pipeline.test.ts (12 tests) 702ms
+   ✓ route deadline and provider failures > stops after bounded busy retries and emits no result envelope  504ms
+
+ Test Files  14 passed (14)
+      Tests  94 passed (94)
+   Start at  17:46:50
+   Duration  3.41s (transform 2.50s, setup 0ms, collect 9.16s, tests 1.45s, environment 4ms, prepare 4.58s)
