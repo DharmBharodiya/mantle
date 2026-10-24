@@ -1,22 +1,49 @@
-"use client";
-import type {WellTelemetryReport} from "@/types/telemetry";
-import {CartesianGrid,Line,LineChart,ReferenceArea,ResponsiveContainer,Tooltip,XAxis,YAxis} from "recharts";
-import {ArrowUpRight} from "lucide-react";
-export function DepthChart({report}:{report:WellTelemetryReport}) {
-  const data=report.depthCurve.map(p=>({...p,hour:Math.round(p.minute/60*100)/100}));
-  const min=data.length?Math.min(...data.map(p=>p.holeDepthFt)):0, max=data.length?Math.max(...data.map(p=>p.holeDepthFt)):1;
-  return <section className="card min-w-0 px-5 py-6 md:px-7">
-    <div className="mb-4 flex items-start justify-between gap-3"><div><div className="micro mb-2">Drilling performance</div><h2 className="text-[18px] font-semibold tracking-[-.045em]">Borehole depth over time</h2><p className="mt-1 text-xs text-[#8A93A1]">Measured hole depth (ft) · elapsed hours</p></div><span className="rounded-full border border-line p-2 text-[#717C8C]"><ArrowUpRight size={15}/></span></div>
-    <div className="h-[310px] w-full" aria-label="Interactive hole-depth-versus-time chart">
-      <ResponsiveContainer width="100%" height="100%"><LineChart data={data} margin={{top:12,right:20,left:2,bottom:12}}>
-        <CartesianGrid stroke="#F0F2F5" strokeDasharray="3 5" vertical={false}/>
-        <XAxis dataKey="hour" type="number" domain={[0,24]} allowDecimals={false} tickLine={false} axisLine={false} tick={{fontSize:11,fill:"#8993A3"}} tickFormatter={(v:number)=>`${v}h`} />
-        <YAxis type="number" domain={[Math.floor(min/100)*100,Math.ceil(max/100)*100]} reversed tickLine={false} axisLine={false} tick={{fontSize:11,fill:"#8993A3"}} width={58} tickFormatter={(v:number)=>v.toLocaleString("en-US")}/>
-        {report.events.filter(e=>e.classification==="NPT").map(e=><ReferenceArea key={e.id} x1={e.startMinute/60} x2={e.endMinute/60} fill="#FDEBE8" fillOpacity={0.45} strokeOpacity={0}/>) }
-        <Tooltip contentStyle={{border:"1px solid #E8EBEF",borderRadius:14,boxShadow:"0 12px 30px rgba(20,30,60,.08)",fontSize:12}} formatter={(n)=>[`${Number(n).toLocaleString()} ft`,"Hole depth"]} labelFormatter={(n)=>`Hour ${n}`} />
-        <Line dataKey="holeDepthFt" type="linear" stroke="#5559F7" strokeWidth={3} dot={false} activeDot={{r:5,stroke:"white",strokeWidth:2}} isAnimationActive={false}/>
+﻿"use client";
+import { useState } from "react";
+import type { WellTelemetryReport } from "@/types/telemetry";
+import { CartesianGrid, Line, LineChart, ReferenceArea, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { chartPoints, formatMinute } from "./report-view";
+
+export function DepthChart({ report }: { report: WellTelemetryReport }) {
+  const [selectedId, setSelectedId] = useState("");
+  const selected = report.events.find(event => event.id === selectedId);
+  const data = chartPoints(report);
+  const depths = data.flatMap(point => point.holeDepthFt === null ? [] : [point.holeDepthFt]);
+  const min = depths.length ? Math.floor(Math.min(...depths) / 100) * 100 : 0;
+  const max = depths.length ? Math.max(min + 100, Math.ceil(Math.max(...depths) / 100) * 100) : 100;
+  return <section className="card min-w-0 px-5 py-6 md:px-7" aria-labelledby="depth-title">
+    <div className="mb-5 flex flex-wrap items-start justify-between gap-3"><div><p className="micro mb-2">Drilling progress</p><h2 id="depth-title" className="text-[18px] font-semibold tracking-tight">Hole depth over time</h2><p className="mt-1 text-xs text-[#667286]">Hole measured depth (ft) · local report-day time</p></div><span className="rounded-full border border-line px-3 py-1 text-[10px] text-[#667286]">Linear observations</span></div>
+    {depths.length ? <div className="h-[280px] w-full sm:h-[310px]" role="img" aria-label="Hole depth chart. Depth increases downward. Select an event below to read its exact observations and source evidence.">
+      <ResponsiveContainer width="100%" height="100%"><LineChart data={data} margin={{ top: 12, right: 12, left: 0, bottom: 12 }} accessibilityLayer>
+        <CartesianGrid stroke="#EDF0F4" strokeDasharray="3 5" vertical={false} />
+        <XAxis dataKey="minute" type="number" domain={[0, 1440]} ticks={[0, 240, 480, 720, 960, 1200, 1440]} tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: "#667286" }} tickFormatter={n => `${n / 60}h`} />
+        <YAxis type="number" domain={[min, max]} reversed tickLine={false} axisLine={false} tick={{ fontSize: 10, fill: "#667286" }} width={52} tickFormatter={(n: number) => n.toLocaleString("en-US")} />
+        {report.events.filter(event => event.classification === "NPT").map(event => <ReferenceArea key={event.id} x1={event.startMinute} x2={event.endMinute} fill="#E9736B" fillOpacity={0.09} strokeOpacity={0} />)}
+        {selected && <ReferenceArea x1={selected.startMinute} x2={selected.endMinute} fill="#5559F7" fillOpacity={0.05} stroke="#5559F7" strokeOpacity={0.3} />}
+        <Tooltip content={({ active, payload }) => {
+          const point = payload?.[0]?.payload as (typeof data)[number] | undefined;
+          const event = report.events.find(item => item.id === point?.eventId);
+          if (!active || !point || !event) return null;
+          return <div className="chart-tooltip"><p className="font-semibold">{formatMinute(point.minute)} · {point.holeDepthFt?.toLocaleString("en-US")} ft</p><p>{event.id} · {event.classification}</p><p className="capitalize">{event.activity.replaceAll("_", " ").toLowerCase()}</p><p>Select event below to inspect source.</p></div>;
+        }} />
+        <Line dataKey="holeDepthFt" type="linear" stroke="#5559F7" strokeWidth={2.5} connectNulls={false} dot={false} activeDot={(props: unknown) => {
+          const { cx, cy, payload } = props as { cx: number; cy: number; payload: (typeof data)[number] };
+          return <circle cx={cx} cy={cy} r={6} fill="#5559F7" stroke="white" strokeWidth={2} className="cursor-pointer" onClick={() => setSelectedId(payload.eventId)} />;
+        }} isAnimationActive={false} />
       </LineChart></ResponsiveContainer>
-    </div>
-    <div className="mt-1 flex flex-wrap items-center gap-5 border-t border-line pt-4 text-[11px] text-[#7E8795]"><span><i className="mr-2 inline-block h-2 w-2 rounded-full bg-[#5559F7]"/>Observed depth</span><span><i className="mr-2 inline-block h-2 w-2 rounded-full bg-[#F3C2B8]"/>Confirmed NPT window</span><span className="ml-auto text-[10px]">Flat depth alone does not mean downtime</span></div>
+    </div> : <div className="flex min-h-[260px] items-center justify-center rounded-2xl bg-[#F6F7F9] p-6 text-center text-sm text-[#667286]">No reported hole depth observations. Source events remain available below.</div>}
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-4 text-[11px] text-[#667286]"><span><span className="mr-2 inline-block h-[2px] w-4 bg-[#5559F7] align-middle" />Hole depth</span><span><span className="mr-2 inline-block h-2 w-3 border border-[#E9736B] bg-[#FDEBE8]" />Confirmed NPT</span></div>
+    <p className="mt-3 text-[11px] leading-5 text-[#667286]">Flat hole depth can reflect tripping or other planned operations. Missing observations and gaps are not interpolated.</p>
+    <label className="mt-4 block text-xs font-medium" htmlFor="chart-event">Inspect chart event</label>
+    <select id="chart-event" className="mt-2 w-full rounded-xl border border-line bg-white p-3 text-xs" value={selected?.id ?? ""} onChange={event => setSelectedId(event.target.value)} disabled={!report.events.length}>
+      <option value="">{report.events.length ? "Select an event to view source evidence" : "No extracted events"}</option>
+      {report.events.map(event => <option key={event.id} value={event.id}>{formatMinute(event.startMinute)}–{formatMinute(event.endMinute)} · {event.id} · {event.classification} · {event.activity.replaceAll("_", " ")}</option>)}
+    </select>
+    {selected && <div className="mt-4 rounded-2xl border border-line bg-[#FAFBFD] p-4 text-xs leading-6 [overflow-wrap:anywhere]" aria-live="polite">
+      <div className="flex flex-wrap justify-between gap-2"><h3 className="font-semibold">{selected.id} · {selected.classification}</h3><span>Confidence: {selected.confidence}</span></div>
+      <p className="mt-2">{formatMinute(selected.startMinute)}–{formatMinute(selected.endMinute)} · {selected.startHoleDepthFt ?? "Unknown"} → {selected.endHoleDepthFt ?? "Unknown"} ft</p>
+      <blockquote className="my-3 border-l-2 border-[#5559F7] pl-3">{selected.evidence.snippet ? `“${selected.evidence.snippet}”` : "No source snippet available."}</blockquote>
+      <p className="font-medium">{selected.evidence.fileName} · {selected.evidence.page === null ? "Page unavailable" : `Page ${selected.evidence.page}`}</p><p className="mt-2 text-[#667286]">{selected.explanation || "No interpretation available."}</p><p className="mt-2 text-[#93601E]">Human review required. {report.sourceKind === "SYNTHETIC_DEMO" ? "This event is illustrative synthetic data." : "Verify the excerpt against the original document."}</p>
+    </div>}
   </section>;
 }
