@@ -68,3 +68,7 @@ No genuine drilling document was locally available in the fixture/public directo
 Full reports remain in memory and are lost on a full reload unless explicitly exported/imported. Only opt-in aggregate summaries use browser storage, as before.
 
 To review: start `npm run dev`, visit `/console`, upload `demo-fixtures/synthetic/SYNTHETIC_DEMO-single-day.csv`, inspect an event, change a scenario, create a scenario copy and compare, export CSV/JSON, and check print preview. Return home and reopen the console to check in-tab continuity. Repeat at 390 px and 1440 px, including keyboard navigation. Use a permitted genuine report separately for live extraction verification.
+
+## Print follow-up
+
+Fixed a homepage print-media rule that also hid the console ancestor and caused blank output. The detailed print report uses the current selected report and filename, including all events/evidence, scenario assumptions, coverage, ranked exposure and all warnings. Print chrome stays hidden; the report stays visible with paper pagination and repeating table headers. Four regression tests were added (87 total tests pass). Browser print-preview visual review remains pending.

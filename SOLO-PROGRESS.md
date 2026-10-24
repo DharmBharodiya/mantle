@@ -140,3 +140,10 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Added five canonical-data/evidence/chart regression tests; updated legacy brand assertions. 83 tests across 12 files pass. Typecheck, lint and isolated production build passed. Both routes and 6 other HTTP smoke scenarios pass; canonical CSV/XLSX production imports pass (3 events, 60 NPT minutes each).
 - Browser visual review blocked: Windows Computer Use stopped because it could not verify the browser URL for policy enforcement. No browser input continued; no screenshots or mobile/desktop interaction success claimed. No genuine local drilling report or new live Gemini extraction tested for this design migration.
 - Full implementation notes, file roles, compatibility decisions, validation and review steps: MANTLE-DESIGN-INTEGRATION.md.
+
+## Selected-report printing fix — 2026-10-24
+
+- Root cause: the homepage print rule hid every `.mantle-page`, including the console ancestor of the print-only report. Scoped the rule to `.mantle-page:not(.mantle-console)` and explicitly kept the console print container visible while hiding navigation/chrome.
+- PrintSummary now receives the selected analysis filename and includes identity/provenance, canonical metrics and time coverage, scenario assumptions/formulas, ranked exposure, every event, every exact source excerpt/interpretation and all warnings. Added paper pagination, repeated table headers, readable black-on-white text and complete wrapping.
+- Added 4 print regression tests for ancestor visibility, complete evidence/warnings, a different selected report/scenario and unknown values. All 87 tests pass. No browser print-dialog/PDF visual verification was performed; manual Print / Save as PDF review remains pending.
+- Final verification: npm.cmd run typecheck PASS; npm.cmd run lint PASS; npm.cmd test PASS (87 tests / 13 files); isolated production build PASS; git diff --check PASS. The initial typecheck raced generated build types; rerunning sequentially after the build passed.
