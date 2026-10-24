@@ -113,3 +113,22 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Browser inventory was checked again and returned no surfaces. No browser visual/progress observation or real geothermal file validation is claimed.
 - User must restart an existing dev server to load the updated model setting. API key unchanged; .env.local stays ignored.
 - INGESTION-FIX-REPORT.md is the authoritative follow-up report; prior overnight results are explicitly marked historical.
+
+## Mantle-style homepage slice
+- Read `mantle-kit/AGENTS.md`, CLAUDE.md, README, homepage/components/styles and metrics; kept the supplied reference tree untouched.
+- Ported homepage to `/`; moved the existing functioning dashboard to `/console` with a return link and in-memory report handoff/session. Uploads call the existing ingestion protocol and navigate only after a full validated report.
+- Retained Next 15/Tailwind 3 and canonical analytics. Namespaced/scoped Mantle tokens avoid changing the console; the kit computeDay adapter delegates all metrics to buildWellReport and refuses uploaded/unknown data.
+- Hosted Instrument Sans, Instrument Serif italic and JetBrains Mono locally with OFL licenses. Build has no font-network dependency. Next dev indicator disabled.
+- Removed fake sign-in/team/repo controls, invented visual bar proportions and hardcoded extraction metrics/source line/page numbers. Preview evidence and decoded values use the actual synthetic fixture.
+- Intermediate checks: typecheck PASS; lint PASS; all 77 then-existing tests PASS; isolated production build PASS with `/` 142 kB and `/console` 260 kB first-load JS. Additional console-session test and final styling cleanup verification pending.
+- Browser inventory: no available apps/browsers; no viewport screenshots or visual interaction success claimed.
+
+### Mantle homepage final validation
+- `npm.cmd run typecheck`: PASS; `npm.cmd run lint`: PASS; `npm.cmd test`: PASS, 78 tests in 11 files.
+- `$env:BORESIGHT_INGESTION_CHECK='1'; npm.cmd run build`: PASS on final source. Routes `/` and `/console` compiled; first-load JS approximately 142 kB / 260 kB respectively.
+- Production HTTP `node scripts/smoke.mjs`: PASS, 8 checks including both page routes/console link and existing analytics/error contracts.
+- Production HTTP `node scripts/verify-ingestion.mjs`: PASS, actual canonical CSV and XLSX imported as 3 events / 60 NPT minutes (~42 ms / ~36 ms) without Gemini.
+- HTTP validation of emitted stylesheet, valid marquee keyframes, responsive minmax grid and all three local WOFF2 fonts: PASS. This is asset verification, not a browser visual test.
+- Restored normal Next generated-type reference after isolated build; final normal typecheck/lint recheck follows.
+- No source API/analytics/type contract changes, no package upgrades, no new Gemini/provider calls, no credential edits. The user's mantle-kit reference directory remains untouched and untracked.
+- No screenshots or visually observed viewport behavior claimed. Manual review and demo steps are in docs/MANTLE-HOMEPAGE.md.

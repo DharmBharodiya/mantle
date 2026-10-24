@@ -14,7 +14,9 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-Open http://localhost:3000. Save the server-side key in `.env.local`:
+Open http://localhost:3000 for the Mantle-style BoreSight homepage. Select **Open console** for the existing analysis workspace at http://localhost:3000/console. The homepage upload sends a real report to the existing API and opens its completed analysis in the console. See [homepage integration notes](docs/MANTLE-HOMEPAGE.md).
+
+Save the server-side key in `.env.local`:
 
 ```dotenv
 GEMINI_API_KEY=your_key_here

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import Home from "@/app/page";
+import Home from "@/app/console/page";
 import { KpiStrip } from "@/components/dashboard/KpiStrip";
 import { DEMO_REPORT } from "@/data/demo-report";
 import { buildWellReport } from "@/lib/analytics/compute";

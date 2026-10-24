@@ -41,3 +41,7 @@ Finish all reasonable, locally achievable BoreSight product development other th
 4. Continue onto the NEXT milestone without asking to proceed. When a detail is not specified, pick a conservative reversible default and document it; when blocked by external access, mark blocked and work on the next independent task.
 5. Before finishing, run `npm run typecheck`, `npm test`, `npm run lint`, `npm run build`, inspect `git diff`, verify source-vs-demo UI state and create `OVERNIGHT-RESULTS.md` with completed/blocked/untested items.
 6. Stop only when the acceptance criteria are met or available environment/tool limits genuinely prevent more meaningful work. Never represent partial completion as full completion.
+
+## Homepage design update
+
+For the requested Mantle-style homepage integration, `docs/MANTLE-HOMEPAGE.md` records the current scoped design rules and compatibility decisions. The supplied `mantle-kit/AGENTS.md` is the visual reference. The new homepage at `/` may use that kit's near-black thermal palette, typography and restrained italic accent. The existing console at `/console` retains its working design until a separate visual migration. Canonical telemetry schemas, analytics, unknown/null handling and source integrity remain authoritative; never replace them with the kit's demo-only formulas.
