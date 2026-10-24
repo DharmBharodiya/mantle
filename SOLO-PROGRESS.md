@@ -1,4 +1,4 @@
-﻿# BoreSight solo progress
+# BoreSight solo progress
 
 Branch: `feat/solo-overnight`. Mission started 2026-10-24 (America/New_York).
 User's existing mission/rule files and all previous dashboard work are preserved.
@@ -82,3 +82,9 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - GDR submission 1330: HTTP 429; no real geothermal input downloaded or redistributed.
 - Browser surfaces: none available. Manual 390px/desktop visual, native focus/storage and print layout review remains required; runbook supplied.
 - Photon + ElevenLabs remain unimplemented/paused. No calls/tests of either provider were made.
+
+## Completed checkpoint
+- `4109188` — dark workspace, report history/comparison, scenario editing, CSV/JSON/print exports, equipment UI, remaining input safeguards and runbooks.
+- Final code validation: 48 tests PASS; typecheck PASS; lint PASS; build PASS; 7 offline HTTP checks PASS.
+- Staged diff whitespace check PASS. Staged key-pattern filename scan returned no matches; `.env.local` remains ignored.
+- Remaining work is external/manual verification only, detailed in OVERNIGHT-RESULTS.md. There is no claimed live real-report success or new screenshot evidence.
