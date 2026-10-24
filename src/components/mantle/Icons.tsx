@@ -33,3 +33,6 @@ export const IconChevronRight = (p: IconProps) => <Base {...p}><path d="M9 6l6 6
 export const IconSelector = (p: IconProps) => <Base {...p}><path d="M8 9l4-4 4 4M16 15l-4 4-4-4" /></Base>;
 export const IconInfo = (p: IconProps) => <Base {...p}><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></Base>;
 export const IconX = (p: IconProps) => <Base {...p}><path d="M6 6l12 12M18 6 6 18" /></Base>;
+export const IconCheck = (p: IconProps) => <Base {...p}><path d="m5 12 4 4L19 6" /></Base>;
+export const IconTrash = (p: IconProps) => <Base {...p}><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6" /></Base>;
+export const IconSave = (p: IconProps) => <Base {...p}><path d="M4 3h13l4 4v14H3V3h1M7 3v6h10V3M7 21v-7h10v7" /></Base>;

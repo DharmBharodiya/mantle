@@ -21,7 +21,7 @@ export function MantleLogo({ size = 26, className }: { size?: number; className?
     <span className={cn('inline-flex items-center gap-2.5 text-steam', className)}>
       <MantleMark size={size} />
       <span className="font-semibold tracking-[-0.03em]" style={{ fontSize: Math.round(size * 0.77) }}>
-        boresight
+        mantle
       </span>
     </span>
   );

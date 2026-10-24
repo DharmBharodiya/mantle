@@ -1,6 +1,6 @@
-/* Mantle homepage tokens and motion, adapted to Tailwind 3 and scoped to .mantle-page. */
+/* Shared Mantle design tokens and motion; compatible with Tailwind 3. */
 
-.mantle-page {
+:root, .mantle-page {
   /* ground — near-black, never pure #000 */
   --m-ink: #050506;
   --m-ink-1: #08080a;
@@ -252,6 +252,68 @@
 .mantle-page .m-hero-badge { background: rgb(8 8 10 / .7); }
 .mantle-page .m-annotation { background: rgb(8 8 10 / .8); }
 .mantle-page .m-annotation-value { color: var(--m-steam-4); }
+.mantle-page .m-panel { border: 1px solid var(--m-line); border-radius: 20px; padding: 22px; background: rgb(255 255 255 / .015); min-width: 0; }
+.mantle-console { --text: var(--m-steam); --muted: var(--m-steam-3); --subtle: var(--m-steam-4); --line: var(--m-line); --surface: var(--m-ink-1); --raised: var(--m-ink-2); --brand: var(--m-heat-6); --productive: var(--m-productive); --ilt: var(--m-ilt); --npt: var(--m-npt); --plan: var(--m-steam-2); overflow-wrap: anywhere; }
+.mantle-console .m-console-layout { display: flex; flex-wrap: wrap; max-width: 1920px; margin: 0 auto; }
+.mantle-console .m-console-sidebar { flex: 1 1 248px; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; border-right: 1px solid var(--m-line); background: var(--m-ink-1); min-width: 0; max-width: 100%; }
+.mantle-console .m-console-main { flex: 999 1 560px; min-width: 0; padding: 0 28px 36px; }
+.mantle-console .m-console-topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--m-line); }
+.mantle-console h1 { line-height: 1.05; letter-spacing: -.04em; }
+.mantle-console h2 { font-size: 18px; letter-spacing: -.015em; }
+.mantle-console .m-analysis-row { display: flex; flex-wrap: wrap; gap: 20px; align-items: start; }
+.mantle-console .m-report-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; border: 1px solid var(--m-line); padding: 18px 22px; border-radius: 20px; margin-bottom: 24px; }
+.mantle-console :where(select,input[type=number],input[type=search],input[type=text]) { min-height: 44px; background: var(--m-ink-2); border: 1px solid var(--m-line-strong); border-radius: 12px; padding: 10px 12px; color: var(--m-steam); font-size: 13px; max-width: 100%; }
+.mantle-console input::placeholder { color: var(--m-steam-4); }
+.mantle-console input[type=checkbox] { accent-color: var(--m-heat-6); width: 20px; height: 20px; }
+.mantle-console .m-kpi-strip { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,150px),1fr)); border: 1px solid var(--m-line); border-radius: 20px; background: rgb(255 255 255 / .015); }
+.mantle-console .m-kpi-strip article { min-width: 0; padding: 18px 20px; border-right: 1px solid var(--m-line); border-bottom: 1px solid var(--m-line); }
+.mantle-console .m-kpi-strip article:last-child { border-right: 0; }
+.mantle-console .m-formula { position: relative; flex-shrink: 0; }
+.mantle-console .m-formula summary { display: flex; min-width: 44px; min-height: 44px; justify-content: center; align-items: center; font-size: 17px; list-style: none; }
+.mantle-console .m-formula p { position: absolute; top: 100%; right: 0; z-index: 20; padding: 14px; width: min(260px,65vw); background: var(--m-ink-3); border: 1px solid var(--m-line-strong); border-radius: 12px; color: var(--m-steam-2); font-size: 13px; }
+.mantle-console .m-event-table { width: 100%; min-width: 820px; border-collapse: collapse; font-size: 13px; }
+.mantle-console .m-event-table th { font-weight: 400; color: var(--m-steam-4); text-align: left; }
+.mantle-console .m-event-table td, .mantle-console .m-event-table th { padding: 14px 12px; border-bottom: 1px solid var(--m-line); vertical-align: top; }
+.mantle-console .m-event-table td:nth-child(2) { min-width: 260px; max-width: 400px; }
+.mantle-console .m-ledger-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; min-height: 44px; width: 100%; text-align: left; font-size: 13px; }
+.mantle-console .m-assumptions { font-size: 13px; color: var(--m-steam-3); }
+.mantle-console .m-assumptions > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 8px 0; }
+.mantle-console .m-assumptions dd { font-family: var(--font-mantle-mono),monospace; }
+.mantle-console .m-trust-note { border-top: 1px solid var(--m-line); margin-top: 32px; padding-top: 22px; font-size: 12.5px; color: var(--m-steam-4); line-height: 1.7; }
+.mantle-console .m-trust-note summary { min-height: 44px; display: flex; align-items: center; }
+/* Remaining feature views reuse the same tokens and control treatments. */
+.mantle-console .card { background: rgb(255 255 255 / .015); border-color: var(--m-line); box-shadow: none; border-radius: 20px; }
+.mantle-console .caption, .mantle-console .field .caption, .mantle-console .stat-grid span { font-size: 12.5px; color: var(--m-steam-4); }
+.mantle-console .primary-button, .mantle-console .secondary-button, .mantle-console .ghost-button, .mantle-console .icon-button { min-height: 44px; border-radius: 999px; padding: 0 18px; font-size: 13px; font-weight: 500; box-shadow: none; border-color: var(--m-line-strong); background: transparent; color: var(--m-steam-2); }
+.mantle-console .icon-button { min-width: 44px; padding: 0; }
+.mantle-console .primary-button { background: var(--m-steam); color: var(--m-ink); }
+.mantle-console :where(.primary-button,.secondary-button,.ghost-button,.icon-button):hover:not(:disabled) { filter: none; border-color: var(--m-steam-4); }
+.mantle-console .badge { background: var(--m-ink-2); color: var(--m-steam-3); border-color: var(--m-line); font-size: 11px; letter-spacing: 0; font-weight: 400; border-radius: 12px; }
+.mantle-console .report-list { display: flex; flex-direction: column; gap: 0; }
+.mantle-console .report-card, .mantle-console .report-card.active { border: 0; border-bottom: 1px solid var(--m-line); border-radius: 0; background: transparent; padding: 24px 0; }
+.mantle-console .report-card.active { box-shadow: none; }
+.mantle-console .stat-grid b { font-weight: 500; }
+.mantle-console .compare-bar { background: var(--m-ink-3); }
+.mantle-console .compare-values, .mantle-console .field { font-size: 13px; }
+.mantle-console .compare-values .number { font-family: var(--font-mantle-mono),monospace; font-size: 13px; }
+.mantle-console .drop-area, .mantle-console .vision-preview, .mantle-console .vision-observation { background: var(--m-ink-2); border-color: var(--m-line-strong); border-radius: 12px; }
+.mantle-console .source-banner, .mantle-console .source-banner.upload, .mantle-console .notice { background: var(--m-ink-2); color: var(--m-steam-3); border: 1px solid var(--m-line); border-radius: 12px; font-size: 13px; }
+.mantle-console .quality-list li { border: 0; padding-left: 0; font-size: 13px; }
+.mantle-console .form-error { color: var(--m-npt-ink); }
+.mantle-console .upload-status, .mantle-console .upload-error { background: var(--m-ink-2); color: var(--m-steam-2); border-color: var(--m-line-strong); }
+.mantle-console .skeleton { background: var(--m-steam-4); animation: none; }
+@media(max-width:600px) {
+  .mantle-console .m-console-main { padding: 0 16px 28px; }
+  .mantle-console .m-console-sidebar { border-right: 0; border-bottom: 1px solid var(--m-line); }
+  .mantle-console .m-console-sidebar nav { flex-direction: row; flex-wrap: wrap; }
+  .mantle-console .m-panel { padding: 18px; }
+  .mantle-console .compare-grid, .mantle-console .form-grid { grid-template-columns: minmax(0,1fr); }
+}
+@media print {
+  .mantle-console .m-console-layout { display: none !important; }
+  .mantle-console .print-title { font-size: 24px; font-weight: 500; margin-bottom: 8px; }
+  .mantle-console { background: white; color: black; }
+}
 .mantle-page .m-status { border: 1px solid var(--m-line-strong); border-radius: 12px; padding: 12px 16px; font-size: 13px; color: var(--m-steam-2); background: var(--m-ink-2); }
 .mantle-page .m-preview-strip { display: flex; align-items: end; gap: 3px; }
 .mantle-page .m-preview-strip > span { min-width: 0; }

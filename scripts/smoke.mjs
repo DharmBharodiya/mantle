@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 const base = process.env.BORESIGHT_TEST_URL || "http://127.0.0.1:3100";
 const evidence = [];
 async function record(check, fn) { const start=Date.now(); try { const result=await fn(); evidence.push({check,status:"PASS",elapsedMs:Date.now()-start,...result}); } catch(error) { evidence.push({check,status:"FAIL",elapsedMs:Date.now()-start,error:error.message}); process.exitCode=1; } }
-await record("dashboard HTML and source labels",async()=>{const r=await fetch(base+"/console");assert.equal(r.status,200);const html=await r.text();assert(html.includes("SYNTHETIC_DEMO"));assert(html.includes("Clarity below the surface"));assert(!html.includes("Generate with ElevenLabs"));return {httpStatus:r.status};});
+await record("dashboard HTML and source labels",async()=>{const r=await fetch(base+"/console");assert.equal(r.status,200);const html=await r.text();assert(html.includes("SYNTHETIC DEMO"));assert(html.includes("Report day summary"));assert(!html.includes("Generate with ElevenLabs"));return {httpStatus:r.status};});
 await record("Mantle-style homepage and console link",async()=>{const r=await fetch(base);assert.equal(r.status,200);const html=await r.text();assert(html.includes("Steel goes down."));assert(html.includes('href="/console"'));assert(html.includes("SYNTHETIC DEMO"));return {httpStatus:r.status};});
 let seed;
 await record("synthetic report API",async()=>{const r=await fetch(base+"/api/analytics");seed=await r.json();assert.equal(r.status,200);assert.equal(seed.sourceKind,"SYNTHETIC_DEMO");assert.equal(seed.metrics.nptMinutes,300);return{events:seed.events.length};});

@@ -1,5 +1,7 @@
 # Mantle homepage integration
 
+> Historical homepage milestone. The full Mantle brand and console migration is documented in [MANTLE-DESIGN-INTEGRATION.md](../MANTLE-DESIGN-INTEGRATION.md); its current behavior supersedes the scope notes below.
+
 The supplied `mantle-kit/` directory is reference material, not a second application to compile. It was inspected in full for homepage/design integration. Its source files remain untouched.
 
 ## Implemented scope

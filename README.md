@@ -1,4 +1,4 @@
-# BoreSight — evidence-backed geothermal intelligence
+# Mantle — evidence-backed geothermal intelligence
 
 A dark, responsive local analytics workspace that converts daily drilling reports into source-linked events, drilling progress, confirmed NPT and benchmark-qualified ILT scenarios.
 
@@ -14,7 +14,7 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-Open http://localhost:3000 for the Mantle-style BoreSight homepage. Select **Open console** for the existing analysis workspace at http://localhost:3000/console. The homepage upload sends a real report to the existing API and opens its completed analysis in the console. See [homepage integration notes](docs/MANTLE-HOMEPAGE.md).
+Open http://localhost:3000 for the Mantle homepage. Select **Open console** for the Mantle analysis workspace at http://localhost:3000/console. The homepage upload sends a real report to the existing API and opens its completed analysis in the console. See [design integration notes](MANTLE-DESIGN-INTEGRATION.md).
 
 Save the server-side key in `.env.local`:
 
@@ -32,7 +32,7 @@ Restart the server after changing environment settings. Do not put a key in chat
 - One local report day, 00:00–24:00. Ambiguous cross-midnight and multi-day inputs must be split/clarified; timestamps are not guessed.
 - Evidence snippets and page/row/sheet references; text excerpts are checked against source content. PDF references remain AI-extracted/unverified.
 - Pure TypeScript NPT, supported drilling ILT, time coverage, unknown time and optional incremental fuel/CO₂ calculations.
-- Dark dashboard, inverted linear hole-depth chart, assumed benchmark illustration, 24-hour activity strip, source drawer and searchable/filterable event table.
+- Dark dashboard, inverted linear hole-depth chart, assumed benchmark illustration, 24-hour activity strip, inline evidence panel and searchable/filterable event table.
 - Editable rig rate, drilling benchmark, incremental fuel and emissions factor. Recalculation uses no Gemini call and preserves synthetic provenance.
 - Up to 20 in-tab full analyses (including the demo), scenario copies and report comparison. Up to 30 optional browser-local **aggregate summaries**, with deletion controls.
 - CSV event export (spreadsheet-formula protection), JSON analysis snapshot export/import (metrics recomputed), and a print stylesheet for a compact operational summary.

@@ -1,4 +1,4 @@
-﻿import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Landing } from "@/components/mantle/Landing";
 import Home from "@/app/page";
@@ -17,7 +17,7 @@ describe("Mantle-style homepage and retained console",()=>{
   });
   it("renders a real homepage with working console and section destinations",()=>{
     const html=renderToStaticMarkup(<Home/>);
-    expect(html).toContain("Steel goes down.");expect(html).toContain("Steam");expect(html).toContain("boresight");expect(html).toContain('href="/console"');
+    expect(html).toContain("Steel goes down.");expect(html).toContain("Steam");expect(html).toContain("mantle");expect(html).toContain('href="/console"');
     for(const id of ["top","report-intake","how","platform","impact","theme"])expect(html).toContain(`id="${id}"`);
     expect(html.match(/<h1[ >]/g)).toHaveLength(1);
     expect(html).not.toContain("Sign in");expect(html).not.toContain("[Team member names]");expect(html).not.toContain('href="#"');expect(html).not.toContain("Built in 36 hours");
@@ -26,7 +26,7 @@ describe("Mantle-style homepage and retained console",()=>{
   });
   it("retains the existing real report workflow on the console route",()=>{
     const html=renderToStaticMarkup(<Console/>);
-    expect(html).toContain("Upload report");expect(html).toContain("SYNTHETIC_DEMO");expect(html).toContain("Inspect event");expect(html).toContain('href="/"');
+    expect(html).toContain("Upload report");expect(html).toContain("SYNTHETIC DEMO");expect(html).toContain("Inspect event");expect(html).toContain('href="/"');
   });
   it("uses canonical analytics for every homepage KPI",()=>{
     const preview=computeDay(DEMO_EVENTS);const metrics=DEMO_REPORT.metrics;

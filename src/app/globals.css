@@ -3,18 +3,18 @@
 @tailwind utilities;
 :root {
   color-scheme: dark;
-  --canvas: #080C14;
-  --surface: #121B2A;
-  --raised: #172235;
-  --line: #263349;
-  --text: #EDF4FF;
-  --muted: #98A9C1;
-  --subtle: #8193AD;
-  --brand: #6487FF;
-  --productive: #2DD4BF;
-  --npt: #FB7185;
-  --ilt: #FBBF24;
-  --plan: #94A3FF;
+  --canvas: var(--m-ink);
+  --surface: var(--m-ink-1);
+  --raised: var(--m-ink-2);
+  --line: var(--m-line);
+  --text: var(--m-steam);
+  --muted: var(--m-steam-3);
+  --subtle: var(--m-steam-4);
+  --brand: var(--m-heat-6);
+  --productive: var(--m-productive);
+  --npt: var(--m-npt);
+  --ilt: var(--m-ilt);
+  --plan: var(--m-steam-2);
   --radius: 20px;
 }
 * {
@@ -25,9 +25,9 @@ html,body {
   margin: 0;
 }
 body {
-  background: radial-gradient(ellipse at 45% 0%,#17233e80,transparent 60%),var(--canvas);
+  background: var(--canvas);
   color: var(--text);
-  font-family: "Geist",Inter,"Segoe UI",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  font-family: var(--font-mantle-sans),ui-sans-serif,system-ui,sans-serif;
   font-size: 14px;
   line-height: 1.5;
 }

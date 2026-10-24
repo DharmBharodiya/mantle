@@ -1,24 +1,19 @@
-﻿"use client";
+"use client";
 import Link from "next/link";
+import { ConsoleSidebar } from "@/components/mantle/console/ConsoleSidebar";
+import { ConsoleOverview } from "@/components/mantle/console/ConsoleOverview";
+import { KpiStrip } from "@/components/mantle/console/KpiStrip";
+import { latestHoleDepth } from "@/components/dashboard/report-view";
 import { takeConsoleReport, readConsoleSession, saveConsoleSession } from "@/lib/mantle/console-handoff";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDownToLine, ArrowRight, ChevronRight, CloudUpload, Copy, FileJson, Layers3, LoaderCircle, Printer, RefreshCcw, ShieldCheck } from "lucide-react";
 import { INGESTION_STAGE_LABELS } from "@/types/ingestion";
 import type { Scenario } from "@/types/telemetry";
 import { DEMO_REPORT } from "@/data/demo-report";
-import { Sidebar } from "@/components/dashboard/Sidebar";
-import { KpiStrip, usd } from "@/components/dashboard/KpiStrip";
-import { DepthChart } from "@/components/dashboard/DepthChart";
-import { RigHealth } from "@/components/dashboard/RigHealth";
-import { ActivityTimeline } from "@/components/dashboard/ActivityTimeline";
 import { ScenarioPanel } from "@/components/dashboard/ScenarioPanel";
 import { ReportsPanel, type SavedReport } from "@/components/dashboard/ReportsPanel";
 import { ComparePanel } from "@/components/dashboard/ComparePanel";
 import { VisionPanel } from "@/components/dashboard/VisionPanel";
 import { PrintSummary } from "@/components/dashboard/PrintSummary";
-import { Bottlenecks } from "@/components/analytics/Bottlenecks";
-import { EventTable } from "@/components/analytics/EventTable";
-import { EventDrawer } from "@/components/analytics/EventDrawer";
 import { ingestReport, readReport, sourceLabels, validateUpload } from "@/components/dashboard/report-view";
 import { watchUpload } from "@/components/dashboard/upload-deadline";
 import { addSummary, exportEventsCsv, exportSnapshot, importSnapshot, readSummaries, STORAGE_KEY, summarizeReport, type ReportSummary } from "@/lib/reports/manage";
@@ -65,6 +60,14 @@ export default function Home() {
         }
         return () => { request.current?.abort(); saveConsoleSession(sessionRef.current); };
     }, []);
+    function inspectEvent(id: string) {
+        setEventId(id);
+        requestAnimationFrame(() => {
+            const evidence = document.getElementById("selected-evidence");
+            evidence?.scrollIntoView({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+            evidence?.focus({ preventScroll: true });
+        });
+    }
     function navigate(next: string) { setView(next); setEventId(""); requestAnimationFrame(() => { heading.current?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" }); heading.current?.focus({ preventScroll: true }); }); }
     function stopWaiting() { request.current?.abort(); request.current = null; setUploading(false); setScenarioBusy(false); setError(""); setStatus("Stopped waiting. Your report is unchanged. Gemini may still process an already accepted request."); if (fileInput.current)
         fileInput.current.value = ""; }
@@ -178,8 +181,8 @@ export default function Home() {
     } setStatus("Report removed from this tab. Saved aggregate summaries are managed separately."); }
     function copyScenario() { if (busy)
         return; const id = crypto.randomUUID(); setReports(previous => boundedReports(previous, { id, report: structuredClone(report), fileName: `Scenario copy · ${saved.fileName}` })); setReportId(id); setEventId(""); setView("Benchmarks"); setStatus("Scenario copy created from the same source. Apply different assumptions, then compare the two analyses."); }
-    function exportCsv() { saveDownload(exportEventsCsv(report), `boresight-${report.reportDate || "undated"}-events.csv`, "text/csv;charset=utf-8"); setStatus("Event CSV exported with provenance and scenario assumptions."); }
-    function exportJson() { saveDownload(exportSnapshot(report), `boresight-${report.reportDate || "undated"}-analysis.json`, "application/json"); setStatus("Analysis snapshot exported. It includes evidence excerpts; store it appropriately."); }
+    function exportCsv() { saveDownload(exportEventsCsv(report), `mantle-${report.reportDate || "undated"}-events.csv`, "text/csv;charset=utf-8"); setStatus("Event CSV exported with provenance and scenario assumptions."); }
+    function exportJson() { saveDownload(exportSnapshot(report), `mantle-${report.reportDate || "undated"}-analysis.json`, "application/json"); setStatus("Analysis snapshot exported. It includes evidence excerpts; store it appropriately."); }
     async function loadSnapshot(file: File) { if (busy)
         return; try {
         if (file.size > 2 * 1024 * 1024)
@@ -202,30 +205,19 @@ export default function Home() {
     } }
     const memorySummaries = reports.map(item => summarizeReport(item.report, item.id));
     const compareSummaries = [...memorySummaries, ...summaries.filter(summary => !reports.some(item => item.id === summary.id))];
-    const titles: Record<string, {
-        title: string;
-        description: string;
-    }> = { Overview: { title: "Clarity below the surface.", description: "From daily drilling reports to evidence-backed operational intelligence." }, Reports: { title: "Every report. One workspace.", description: "Switch analyses, preserve evidence, and keep a small browser-local summary history." }, Compare: { title: "Context makes the difference.", description: "Compare observed time, depth and assumptions without claiming equivalent geology." }, Benchmarks: { title: "Assumptions, in the open.", description: "Explore the economics of time with deterministic, reviewable scenario calculations." }, "Equipment vision": { title: "Observe. Verify. Understand.", description: "Cautious visual observations for qualified review — never an automatic diagnosis." } };
-    return <><div className="dashboard-shell"><a href="#workspace-title" className="skip-link">Skip to workspace</a><Sidebar active={view} onNavigate={navigate}/><main className="workspace stack"><div><div className="topbar"><div className="topbar-left"><Link href="/" style={{color:"inherit",padding:"8px 0"}}>BoreSight home</Link><Layers3 size={14}/><span>Operations workspace</span><ChevronRight size={12}/>{view}</div><span className="eyebrow">Local prototype · human review</span></div><header className="hero"><div><p className="eyebrow">BoreSight / {view}</p><h1 id="workspace-title" ref={heading} tabIndex={-1}>{titles[view].title}</h1><p className="description">{titles[view].description}</p></div><div className="hero-actions"><button className="secondary-button" onClick={resetDemo}><RefreshCcw size={14}/>Reset demo</button><button className="primary-button" disabled={busy} onClick={() => fileInput.current?.click()}>{uploading ? <LoaderCircle size={15} className="animate-spin"/> : <CloudUpload size={15}/>} {uploading ? "Analyzing…" : "Upload report"}</button></div></header></div>
-    <input ref={fileInput} type="file" accept=".pdf,.csv,.xlsx,.txt" className="hidden" aria-label="Choose drilling report" onChange={event => { const file = event.target.files?.[0]; if (file)
-        void upload(file); }}/><input ref={snapshotInput} type="file" accept=".json" className="hidden" aria-label="Import BoreSight analysis snapshot" onChange={event => { const file = event.target.files?.[0]; if (file)
-        void loadSnapshot(file); }}/>
-    {view !== "Equipment vision" && <><section className={`card context-bar upload-zone ${dragging ? "dragging" : ""}`} aria-label="Selected report and upload drop area" onDragOver={event => { event.preventDefault(); if (!busy)
-        setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={event => { event.preventDefault(); setDragging(false); if (busy)
-        return; if (event.dataTransfer.files.length !== 1) {
-        setError("Upload one drilling report at a time.");
-        return;
-    } const file = event.dataTransfer.files[0]; if (file)
-        void upload(file); }}><div className="context-main"><label htmlFor="active-report" className="eyebrow">Selected well / report</label><select id="active-report" disabled={busy} value={reportId} onChange={event => selectReport(event.target.value)}>{reports.map(item => <option key={item.id} value={item.id}>{item.report.wellName || "Unnamed well"} · {item.report.reportDate || "Date unknown"} · {item.fileName}</option>)}</select><div className="context-meta"><span>{report.reportDate || "Date unavailable"}</span><span>{report.events.length} source events</span><span className={`badge ${report.sourceKind === "SYNTHETIC_DEMO" ? "demo" : "upload"}`}>{sourceLabels[report.sourceKind]}</span></div></div><div><div className="row"><button className="secondary-button" onClick={exportCsv}><ArrowDownToLine size={14}/>CSV</button><button className="secondary-button" onClick={exportJson}><FileJson size={14}/>JSON</button><button className="icon-button" aria-label="Print operational summary" title="Print operational summary" onClick={() => window.print()}><Printer size={15}/></button></div><p className="drop-hint">Drop PDF, CSV, XLSX or TXT here · 8 MB max</p></div></section><section className={`source-banner ${report.sourceKind === "SYNTHETIC_DEMO" ? "" : "upload"}`} aria-label="Source provenance"><div className="row"><ShieldCheck size={14}/><strong>{report.sourceKind === "SYNTHETIC_DEMO" ? "SYNTHETIC_DEMO — Illustrative events; not actual Utah FORGE records." : "Uploaded source — UNVERIFIED until a human checks the original evidence."}</strong></div><p>Financial exposure and fuel/CO₂ are scenario models. They are not audited losses or measured emissions.</p><details><summary>Source warnings ({report.warnings.length})</summary><ul style={{ paddingLeft: 18, margin: "8px 0 0" }}>{report.warnings.map((warning, index) => <li key={index}>{warning}</li>)}</ul></details></section></>}
-    {status && <div className="upload-status"><p role="status">{status}</p>{busy && <><div className="skeleton"/><button className="ghost-button" style={{ marginTop: 10 }} onClick={stopWaiting}>Stop waiting</button></>}</div>}{error && <div role="alert" className="upload-error"><strong>Report could not be imported</strong><p>{error}</p><button className="ghost-button" disabled={busy} style={{ marginTop: 10 }} onClick={() => fileInput.current?.click()}>Choose a drilling report to retry</button></div>}{storageError && <div role="alert" className="notice"><p>{storageError}</p><button className="ghost-button" onClick={clearSummaries}>Clear browser summaries</button></div>}
-    {view === "Overview" && <><KpiStrip report={report}/><div className="dashboard-grid"><div className="dashboard-wide"><DepthChart key={reportId} report={report} selectedId={eventId} onSelect={setEventId}/></div><div className="dashboard-narrow"><RigHealth report={report}/></div></div><ActivityTimeline report={report} onSelect={setEventId}/><div className="dashboard-grid"><div className="dashboard-wide stack"><Bottlenecks report={report} onSelect={setEventId}/><EventTable key={reportId} report={report} onSelect={setEventId}/></div><div className="dashboard-narrow stack"><section className="card panel"><div className="panel-head"><div><p className="eyebrow">Model with explicit assumptions</p><h2>Economic scenario</h2></div></div><p className="kpi-value number">{usd(report.metrics.estimatedLossUsd)}</p><p className="caption" style={{ marginTop: 10 }}>Total estimated time exposure · NPT + supported drilling ILT</p><dl className="time-legend panel-divider"><div><dt>Rig day rate</dt><dd>{usd(report.scenario.rigDailyUsd)}</dd></div><div><dt>Drilling benchmark</dt><dd>{report.scenario.drillBenchmarkFtPerHour} ft/h</dd></div><div><dt>Incremental fuel</dt><dd>{report.scenario.excessFuelGallonsPerHour === null ? "Unknown" : `${report.scenario.excessFuelGallonsPerHour} gal/h`}</dd></div></dl><button className="secondary-button full-width" style={{ marginTop: 20 }} onClick={() => navigate("Benchmarks")}>Review assumptions <ArrowRight size={14}/></button></section><section className="card panel"><p className="eyebrow">Review before relying</p><h2 style={{ marginTop: 7 }}>Evidence & uncertainty</h2><ul className="quality-list"><li>{report.metrics.unknownMinutes} observed minutes have unknown classification.</li><li>{report.metrics.unobservedMinutes} minutes of the report day are unobserved.</li><li>{report.events.filter(event => event.confidence === "LOW").length} events have low extraction confidence.</li><li>{report.events.filter(event => !event.evidence.snippet).length} events have no verifiable excerpt.</li></ul><p className="caption panel-divider">Flat hole depth does not prove downtime. AI interpretations require source review.</p></section></div></div></>}
-    {view === "Reports" && <ReportsPanel reports={reports} selectedId={reportId} summaries={summaries} onSelect={selectReport} onRemove={removeReport} onSave={saveSummary} onDeleteSummary={id => store(summaries.filter(summary => summary.id !== id))} onClearSummaries={clearSummaries} onImport={() => snapshotInput.current?.click()} onExport={exportJson}/>}
-    {view === "Compare" && <ComparePanel summaries={compareSummaries}/>}
-    {view === "Benchmarks" && <><ScenarioPanel key={reportId} report={report} busy={busy} onApply={applyScenario}/><div className="card panel"><div className="row between"><div><h2>Compare assumptions on the same source</h2><p className="caption" style={{ marginTop: 8 }}>Create an in-memory copy, adjust its scenario, and compare both analyses.</p></div><button className="secondary-button" onClick={copyScenario} disabled={busy}><Copy size={14}/>Copy for scenario</button></div></div><KpiStrip report={report}/></>}
-    {view === "Equipment vision" && <VisionPanel />}
-    <footer className="footer">BoreSight · Evidence-backed geothermal intelligence · Photon + ElevenLabs paused · Human review required</footer>
-  </main></div>{eventId && <EventDrawer report={report} eventId={eventId} onClose={() => setEventId("")}/>}<PrintSummary report={report}/></>;
+    const titles: Record<string, string> = {Overview: report.wellName || "Report overview", Reports: "Reports", Compare: "Compare reports", Benchmarks: "Scenario assumptions", "Equipment vision": "Equipment vision"};
+    const selectedId = report.events.some(event => event.id === eventId) ? eventId : report.events.find(event => event.classification === "NPT")?.id ?? report.events[0]?.id;
+    return <div className="mantle-page mantle-console min-h-screen bg-m-ink font-sans text-steam antialiased"><a href="#workspace-title" className="m-skip">Skip to workspace</a><div className="m-console-layout"><ConsoleSidebar active={view} onNavigate={navigate} onUpload={() => fileInput.current?.click()} wellName={report.wellName} depthLabel={latestHoleDepth(report) === null ? "Not available" : `${latestHoleDepth(report)?.toLocaleString("en-US")} ft`} dateLabel={report.reportDate}/><main className="m-console-main">
+      <div className="m-console-topbar"><div className="flex flex-wrap items-center gap-2 text-sm text-steam-4"><Link href="/">Mantle home</Link><span aria-hidden="true">/</span><span>{view}</span></div><div className="flex flex-wrap gap-2"><button className="m-btn-ghost" onClick={resetDemo}>Reset demo</button><button className="m-btn-ghost" onClick={exportCsv}>Export CSV</button><button className="m-btn-ghost" onClick={exportJson}>Export JSON</button><button className="m-btn-ghost" onClick={() => window.print()}>Print</button><button className="m-btn-primary" disabled={busy} onClick={() => fileInput.current?.click()}>{uploading ? "Analyzing…" : "Upload report"}</button></div></div>
+      <header className="mb-7 mt-7"><h1 id="workspace-title" ref={heading} tabIndex={-1} className="text-4xl font-medium tracking-tight">{titles[view]}</h1><p className="mt-3 font-mono text-xs text-steam-4">{report.reportDate || "Date unavailable"} · {report.events.length} source events · {view === "Overview" ? "Report overview" : report.wellName || "Well name unavailable"}</p></header>
+      <input ref={fileInput} type="file" accept=".pdf,.csv,.xlsx,.txt" className="hidden" aria-label="Choose drilling report" onChange={event => { const file=event.target.files?.[0]; if(file) void upload(file); }}/><input ref={snapshotInput} type="file" accept=".json" className="hidden" aria-label="Import Mantle analysis snapshot" onChange={event => { const file=event.target.files?.[0]; if(file) void loadSnapshot(file); }}/>
+      {view !== "Equipment vision" && <section className={`m-report-bar ${dragging ? "m-prompt-drag" : ""}`} aria-label="Selected report and upload drop area" onDragOver={event => {event.preventDefault(); if(!busy) setDragging(true);}} onDragLeave={() => setDragging(false)} onDrop={event => {event.preventDefault();setDragging(false);if(busy)return;if(event.dataTransfer.files.length !== 1){setError("Upload one drilling report at a time.");return;}const file=event.dataTransfer.files[0];if(file)void upload(file);}}><div className="min-w-0 flex-1"><label htmlFor="active-report" className="mb-2 block text-sm text-steam-4">Selected report</label><select className="w-full" id="active-report" disabled={busy} value={reportId} onChange={event=>selectReport(event.target.value)}>{reports.map(item=><option key={item.id} value={item.id}>{item.report.wellName||"Unnamed well"} · {item.report.reportDate||"Date unknown"} · {item.fileName}</option>)}</select></div><p className="text-sm text-steam-4">Drop PDF, CSV, XLSX or TXT · 8 MB max</p></section>}
+      {status && <div className="m-status my-5"><p role="status">{status}</p>{busy && <button className="m-btn-ghost mt-3" onClick={stopWaiting}>Stop waiting</button>}</div>}{error && <div role="alert" className="m-status my-5"><strong>Report could not be imported</strong><p className="mt-2">{error}</p><button className="m-btn-ghost mt-3" disabled={busy} onClick={()=>fileInput.current?.click()}>Choose a drilling report to retry</button></div>}{storageError && <div role="alert" className="m-status my-5"><p>{storageError}</p><button className="m-btn-ghost mt-3" onClick={clearSummaries}>Clear browser summaries</button></div>}
+      {view === "Overview" && <ConsoleOverview key={reportId} report={report} selectedId={selectedId} onSelect={inspectEvent} onScenario={()=>navigate("Benchmarks")}/>}
+      {view === "Reports" && <ReportsPanel reports={reports} selectedId={reportId} summaries={summaries} onSelect={selectReport} onRemove={removeReport} onSave={saveSummary} onDeleteSummary={id=>store(summaries.filter(summary=>summary.id!==id))} onClearSummaries={clearSummaries} onImport={()=>snapshotInput.current?.click()} onExport={exportJson}/>}
+      {view === "Compare" && <ComparePanel summaries={compareSummaries}/>}
+      {view === "Benchmarks" && <div className="stack"><ScenarioPanel key={reportId} report={report} busy={busy} onApply={applyScenario}/><section className="m-panel"><h2>Compare assumptions on the same source</h2><p className="mt-3 text-sm text-steam-3">Create a copy, adjust its scenario, then compare the analyses.</p><button className="m-btn-ghost mt-4" onClick={copyScenario} disabled={busy}>Copy for scenario</button></section><KpiStrip report={report}/></div>}
+      {view === "Equipment vision" && <VisionPanel/>}
+      <footer className="m-trust-note"><p>Mantle · {report.sourceKind === "SYNTHETIC_DEMO" ? "SYNTHETIC DEMO — illustrative events, not actual field records." : report.sourceKind === "HUMAN_VERIFIED" ? "Human-reviewed source." : "Uploaded source · UNVERIFIED until checked against the original."} Classifications come from the report. Flat hole depth alone does not prove downtime. ILT, financial exposure and CO₂ are scenario estimates, not audited losses or measured emissions. Human review required.</p>{report.warnings.length>0&&<details className="mt-3"><summary>Source warnings ({report.warnings.length})</summary><ul className="mt-3 list-disc pl-5">{report.warnings.map((warning,index)=><li key={index}>{warning}</li>)}</ul></details>}</footer>
+    </main></div><PrintSummary report={report}/></div>;
 }
-
-
-

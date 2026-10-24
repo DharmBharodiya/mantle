@@ -72,7 +72,7 @@ export function Landing({ consoleHref = '/console', onAnalyze, teamNames, repoHr
     <div className="mantle-page min-h-screen overflow-x-clip bg-m-ink font-sans text-steam antialiased">
       <a href="#report-intake" className="m-skip">Skip to report upload</a>
       <header className="absolute inset-x-0 top-0 z-10 flex items-center justify-between gap-4 px-5 py-5 sm:px-8">
-        <Link href="#top" aria-label="BoreSight home" className="flex min-h-11 items-center"><MantleLogo /></Link>
+        <Link href="#top" aria-label="Mantle home" className="flex min-h-11 items-center"><MantleLogo /></Link>
         <nav aria-label="Primary" className="hidden gap-0.5 rounded-full border border-white/10 m-nav-glass p-1 backdrop-blur-md md:flex">
           {[['#how', 'How it works'], ['#platform', 'Platform'], ['#impact', 'Impact'], ['#theme', 'Steel & Steam']].map(([href, label]) => (
             <a key={href} href={href} className="inline-flex min-h-[44px] items-center rounded-full px-[15px] text-sm text-steam-2 transition-colors hover:bg-white/8 hover:text-steam">{label}</a>
@@ -112,7 +112,7 @@ export function Landing({ consoleHref = '/console', onAnalyze, teamNames, repoHr
             <span className="m-heat-text pr-[0.08em] font-serif text-[1.1em] font-normal tracking-[-0.025em] italic">Steam</span> comes up.
           </h1>
           <p className="max-w-[540px] text-[17px] leading-relaxed text-steam-3">
-            BoreSight reads daily geothermal drilling reports to map downtime, benchmarked slow footage and estimated time exposure back to the source.
+            Mantle reads daily geothermal drilling reports to map downtime, benchmarked slow footage and estimated time exposure back to the source.
           </p>
           <div id="report-intake" className="mt-2.5 w-full flex justify-center"><ReportPrompt demoHref={consoleHref} onSubmit={onAnalyze} status={uploadStatus} onCancel={onCancel} /></div>
           <p className="font-mono text-[11.5px] tracking-[0.02em] text-steam-4">PDF · CSV · XLSX · TXT · up to 8 MB · Gemini for documents, direct parsing for structured tables</p>
@@ -128,7 +128,7 @@ export function Landing({ consoleHref = '/console', onAnalyze, teamNames, repoHr
         <SectionRule index="01" label="How it works" />
         <div className="mb-11 flex flex-wrap items-end justify-between gap-8">
           <h2 className="max-w-[680px] text-[clamp(34px,4vw,52px)] leading-[1.04] font-medium tracking-[-0.035em]">From a daily report to a timeline you can check against the source.</h2>
-          <p className="max-w-[360px] text-base leading-relaxed text-steam-3">Field crews write what happened. BoreSight extracts observations, computes scenarios in TypeScript and keeps the original evidence available.</p>
+          <p className="max-w-[360px] text-base leading-relaxed text-steam-3">Field crews write what happened. Mantle extracts observations, computes scenarios in TypeScript and keeps the original evidence available.</p>
         </div>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
           <article className="m-lift flex flex-col gap-[18px] rounded-card border border-m-line bg-white/[0.022] p-3.5 hover:bg-white/[0.04]">
@@ -260,7 +260,7 @@ export function Landing({ consoleHref = '/console', onAnalyze, teamNames, repoHr
             <h2 className="text-[clamp(34px,4vw,52px)] leading-[1.04] font-medium tracking-[-0.035em]">
               The bit is steel. The prize is <span className="m-heat-text pr-[0.06em] font-serif text-[1.1em] font-normal italic">heat.</span>
             </h2>
-            <p className="text-[16.5px] leading-relaxed text-steam-3">Geothermal wells drive steel thousands of feet into hot rock to bring clean heat to the surface. Rig time has an economic cost, including legitimate planned flat-depth operations. BoreSight makes the recorded time visible for engineering review.</p>
+            <p className="text-[16.5px] leading-relaxed text-steam-3">Geothermal wells drive steel thousands of feet into hot rock to bring clean heat to the surface. Rig time has an economic cost, including legitimate planned flat-depth operations. Mantle makes the recorded time visible for engineering review.</p>
             <dl className="grid grid-cols-3 border-t border-m-line">
               {[[`${demo.footage}`, ' ft', 'drilled in the demo day'], [fmtNum(lostH), ' h', 'NPT + modeled ILT'], [`${demo.events.length}`, `/${demo.events.length}`, 'events with source excerpts']].map(([v, u, l]) => (
                 <div key={l} className="pt-[18px] pr-3">

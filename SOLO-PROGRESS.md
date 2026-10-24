@@ -132,3 +132,11 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Restored normal Next generated-type reference after isolated build; final normal typecheck/lint recheck follows.
 - No source API/analytics/type contract changes, no package upgrades, no new Gemini/provider calls, no credential edits. The user's mantle-kit reference directory remains untouched and untracked.
 - No screenshots or visually observed viewport behavior claimed. Manual review and demo steps are in docs/MANTLE-HOMEPAGE.md.
+
+## Mantle full brand and console integration — 2026-10-24
+
+- Replaced the active console presentation with adaptations of the supplied Mantle overview/sidebar/KPI/evidence/log/ledger and shared-axis depth timeline. Preserved the existing controller, ingestion, report/history, scenarios, comparison, exports and vision integrations.
+- Unified active console surfaces, fonts, controls and semantic colors with the homepage; migrated visible brand and download names to Mantle, retaining environment/storage/snapshot compatibility identifiers.
+- Added five canonical-data/evidence/chart regression tests; updated legacy brand assertions. 83 tests across 12 files pass. Typecheck, lint and isolated production build passed. Both routes and 6 other HTTP smoke scenarios pass; canonical CSV/XLSX production imports pass (3 events, 60 NPT minutes each).
+- Browser visual review blocked: Windows Computer Use stopped because it could not verify the browser URL for policy enforcement. No browser input continued; no screenshots or mobile/desktop interaction success claimed. No genuine local drilling report or new live Gemini extraction tested for this design migration.
+- Full implementation notes, file roles, compatibility decisions, validation and review steps: MANTLE-DESIGN-INTEGRATION.md.

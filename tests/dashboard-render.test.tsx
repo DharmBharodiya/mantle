@@ -8,10 +8,12 @@ import { EventDrawer } from "@/components/analytics/EventDrawer";
 describe("dashboard output and source truth", () => {
     it("renders an offline synthetic workspace without live P4 affordances", () => {
         const html = renderToStaticMarkup(<Home />);
-        expect(html).toContain("SYNTHETIC_DEMO");
-        expect(html).toContain("Clarity below the surface");
+        expect(html).toContain("SYNTHETIC DEMO");
+        expect(html).toContain("Report day summary");
         expect(html).toContain("Equipment vision");
         expect(html).toContain("Inspect event");
+        expect(html.match(/<h1[ >]/g)).toHaveLength(1);
+        expect(html).not.toMatch(/boresight/i);
         expect(html).not.toContain("Generate with ElevenLabs");
         expect(html).not.toContain("Connect Photon to dispatch");
     });
