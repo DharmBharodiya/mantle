@@ -71,6 +71,8 @@ export type IngestionProgress = Extract<IngestionMessage, {
     type: "stage";
 }>;
 export async function ingestReport(file: File, signal: AbortSignal, onStage?: (progress: IngestionProgress) => void): Promise<WellTelemetryReport> {
+    if (signal.aborted)
+        throw new Error("Upload cancelled. Current report preserved.");
     const error = validateUpload(file);
     if (error)
         throw new Error(error);
@@ -159,6 +161,9 @@ export async function ingestReport(file: File, signal: AbortSignal, onStage?: (p
             throw new Error(object(result) && typeof result.error === "string" ? ingestionErrorMessage(result.error) : `Report extraction failed (HTTP ${response.status}).`);
         report = readReport(result);
     }
+    // Legacy JSON responses need the same commit-time cancellation guard as streams.
+    if (signal.aborted)
+        throw new Error("Upload cancelled. Current report preserved.");
     if (report.sourceKind === "SYNTHETIC_DEMO" && !/^SYNTHETIC_DEMO/i.test(file.name))
         throw new Error("Upload returned demo data instead of an extracted report. Your previous report is unchanged.");
     return report;

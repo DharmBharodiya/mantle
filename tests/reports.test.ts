@@ -37,3 +37,12 @@ describe("report management and safe exports", () => {
         expect(() => readSummaries('[{"id":"bad"}]')).toThrow();
     });
 });
+
+
+it("rejects empty snapshots before replacing a valid selected report", () => {
+    const snapshot = JSON.parse(exportSnapshot(DEMO_REPORT));
+    snapshot.report.events = [];
+    let selected = DEMO_REPORT;
+    expect(() => { selected = importSnapshot(JSON.stringify(snapshot)); }).toThrow(/no drilling events/);
+    expect(selected).toBe(DEMO_REPORT);
+});

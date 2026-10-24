@@ -112,3 +112,26 @@ describe("streaming import transaction", () => {
         await expect(ingestReport(new File(["test"], "report.csv"), controller.signal)).rejects.toThrow(/cancelled/);
     });
 });
+
+
+describe("cancellation before committing a legacy JSON import", () => {
+    it("rejects a late JSON response after cancellation and preserves the selected report", async () => {
+        const controller = new AbortController();
+        const previous = report();
+        let selected = previous;
+        vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => {
+            controller.abort();
+            return Response.json(report());
+        }));
+        await expect(ingestReport(new File(["report"], "day.txt"), controller.signal).then(next => { selected = next; })).rejects.toThrow(/cancelled/);
+        expect(selected).toBe(previous);
+    });
+    it("does not start a request that was already cancelled", async () => {
+        const controller = new AbortController();
+        controller.abort();
+        const fetcher = vi.fn();
+        vi.stubGlobal("fetch", fetcher);
+        await expect(ingestReport(new File(["report"], "day.txt"), controller.signal)).rejects.toThrow(/cancelled/);
+        expect(fetcher).not.toHaveBeenCalled();
+    });
+});

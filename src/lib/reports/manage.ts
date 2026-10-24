@@ -41,6 +41,8 @@ export function importSnapshot(text: string): WellTelemetryReport {
     if (text.length > 2 * 1024 * 1024)
         throw new Error("Analysis snapshot must be under 2 MB.");
     const snapshot = z.object({ format: z.literal("boresight-report"), version: z.literal(1), report: WellTelemetryReportSchema }).parse(JSON.parse(text));
+    if (!snapshot.report.events.length)
+        throw new Error("Analysis snapshot contains no drilling events. Your current report is unchanged.");
     const sourceKind = snapshot.report.sourceKind === "SYNTHETIC_DEMO" ? "SYNTHETIC_DEMO" : "PUBLIC_SOURCE_UNREVIEWED";
     return buildWellReport({ ...snapshot.report, warnings: [...snapshot.report.warnings.slice(0, 99), "Imported analysis snapshot: metrics recalculated locally; provenance has not been independently verified."] }, { scenario: snapshot.report.scenario, sourceKind });
 }
