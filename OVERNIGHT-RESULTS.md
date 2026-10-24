@@ -1,5 +1,7 @@
 # BoreSight overnight results
 
+> Follow-up: the subsequent critical ingestion fix verified an actual synthetic one-page PDF extraction on `gemini-3.1-flash-lite`, plus deterministic CSV/XLSX imports. Read `INGESTION-FIX-REPORT.md` for current status. The results below remain the historical overnight-run record.
+
 Date: 2026-10-24 (America/New_York). Branch: `feat/solo-overnight`.
 
 ## Outcome

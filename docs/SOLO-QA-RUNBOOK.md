@@ -1,4 +1,4 @@
-﻿# Solo QA and 3-minute demo runbook
+# Solo QA and 3-minute demo runbook
 
 ## Start and automated checks
 
@@ -16,7 +16,7 @@ Do not run dev and production build simultaneously in the same checkout. Stop an
 - **0:50–1:20:** Open Benchmarks, select **Copy for scenario**, change rig day rate to 240000 and apply. NPT cost becomes $50,000 without another extraction. Change fuel differential to blank; carbon becomes unavailable.
 - **1:20–1:45:** Compare the original and copied analysis. Same time observations, different modeled cost. The difference is assumptions, not proven savings.
 - **1:45–2:15:** Reports → Save summary; explain browser-local aggregates. Export JSON and CSV; import the JSON and confirm metrics/provenance. Use Print to preview the compact summary. Remove the imported copy; optionally clear saved summaries.
-- **2:15–2:40:** Upload `demo-fixtures/synthetic/SYNTHETIC_DEMO-single-day.csv` if Gemini works. Otherwise show the useful provider error and unchanged current report. Never call the built-in demo an extraction success. A customer CSV should return an explicit no-drilling-events error.
+- **2:15–2:40:** Upload `demo-fixtures/synthetic/SYNTHETIC_DEMO-single-day.csv`. This explicit table now imports without Gemini. Use `node scripts/verify-ingestion.mjs --live` to test actual one-page PDF generation/extraction. Provider errors must preserve the previous report. Never call a fixture reset or deterministic CSV parsing a successful Gemini request.
 - **2:40–3:00:** Equipment Vision displays its limits before upload. A real selected image is sent only on explicit selection. Without live service, show the honest error state. Explain Photon and ElevenLabs are paused.
 
 ## Manual browser matrix — NOT yet observed in this run

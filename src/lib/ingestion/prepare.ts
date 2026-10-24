@@ -7,6 +7,7 @@ export type SourceRow = {
     row: number;
     sheet?: string;
     text: string;
+    cells?: string[];
 };
 export type PreparedUpload = {
     fileName: string;
@@ -14,6 +15,7 @@ export type PreparedUpload = {
     contents: string | Uint8Array;
     rows?: SourceRow[];
     synthetic: boolean;
+    format?: "pdf" | "csv" | "xlsx" | "txt";
 };
 const mimes: Record<string, string[]> = { pdf: ["application/pdf"], csv: ["text/csv", "application/csv", "application/vnd.ms-excel", "text/plain"], txt: ["text/plain"], xlsx: ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"] };
 export function validateFile(file: File) {
@@ -71,6 +73,30 @@ export function csvRecords(text: string): string[] {
         records.push(current.replace(/\r$/, ""));
     return records;
 }
+export function csvCells(record: string): string[] {
+    const cells: string[] = [];
+    let value = "";
+    let quoted = false;
+    for (let index = 0; index < record.length; index++) {
+        const char = record[index];
+        if (char === '"') {
+            if (quoted && record[index + 1] === '"') {
+                value += '"';
+                index++;
+            }
+            else
+                quoted = !quoted;
+        }
+        else if (char === "," && !quoted) {
+            cells.push(value);
+            value = "";
+        }
+        else
+            value += char;
+    }
+    cells.push(value);
+    return cells;
+}
 export async function prepareUpload(file: File): Promise<PreparedUpload> {
     const extension = validateFile(file);
     const bytes = new Uint8Array(await file.arrayBuffer());
@@ -78,7 +104,7 @@ export async function prepareUpload(file: File): Promise<PreparedUpload> {
     if (extension === "pdf") {
         if (new TextDecoder().decode(bytes.slice(0, 5)) !== "%PDF-")
             throw new ServiceError("File signature is not a valid PDF.", 422, "INVALID_PDF");
-        return { fileName, mimeType: "application/pdf", contents: bytes, synthetic: /^SYNTHETIC_DEMO/i.test(fileName) };
+        return { fileName, mimeType: "application/pdf", contents: bytes, synthetic: /^SYNTHETIC_DEMO/i.test(fileName), format: "pdf" };
     }
     let rows: SourceRow[];
     if (extension === "xlsx") {
@@ -106,19 +132,22 @@ export async function prepareUpload(file: File): Promise<PreparedUpload> {
         }
         rows = [];
         workbook.eachSheet(sheet => sheet.eachRow((row, number) => {
-            rows.push({ row: number, sheet: sheet.name, text: row.values ? JSON.stringify(row.values) : "" });
+            if (row.cellCount > 200)
+                throw new ServiceError("Workbook has more than 200 columns. Export a focused single-day report.", 413, "COLUMN_LIMIT");
+            const cells = Array.from({ length: row.cellCount }, (_, index) => row.getCell(index + 1).text);
+            rows.push({ row: number, sheet: sheet.name, text: JSON.stringify(cells), cells });
             if (rows.length > MAX_ROWS)
                 throw new ServiceError("Workbook exceeds 1,500 non-empty rows. Split it by report day; no rows were silently discarded.", 413, "ROW_LIMIT");
         }));
     }
     else {
         const text = decodeText(bytes);
-        rows = (extension === "csv" ? csvRecords(text) : text.split(/\r?\n/)).map((text, index) => ({ row: index + 1, text }));
+        rows = (extension === "csv" ? csvRecords(text) : text.split(/\r?\n/)).map((text, index) => ({ row: index + 1, text, ...(extension === "csv" ? { cells: csvCells(text) } : {}) }));
     }
     if (!rows.length || rows.length > MAX_ROWS)
         throw new ServiceError("Use a report with 1–1,500 rows. Split larger files by report day.", 413, "ROW_LIMIT");
     const contents = rows.map(row => `${row.sheet ? `Sheet ${JSON.stringify(row.sheet)} · ` : ""}Row ${row.row}: ${row.text}`).join("\n");
     if (contents.length > MAX_TEXT_CHARS)
         throw new ServiceError("Prepared content exceeds 120,000 characters. Split it by report day; nothing was truncated.", 413, "TEXT_LIMIT");
-    return { fileName, mimeType: "text/plain", contents, rows, synthetic: /^SYNTHETIC_DEMO/i.test(fileName) || rows.some(row => /^#?\s*SYNTHETIC_DEMO\b/.test(row.text)) };
+    return { fileName, mimeType: "text/plain", contents, rows, synthetic: /^SYNTHETIC_DEMO/i.test(fileName) || rows.some(row => /^#?\s*SYNTHETIC_DEMO\b/.test(row.text)), format: extension as "csv" | "txt" | "xlsx" };
 }

@@ -1,4 +1,4 @@
-﻿# Current solo architecture — Contract v1.1
+# Current solo architecture — Contract v1.1
 
 This describes the implemented non-P4 local MVP. Old four-person ownership and light-theme documents are historical. `AGENTS.md` and `OVERNIGHT-MISSION.md` govern this branch.
 
@@ -7,7 +7,8 @@ This describes the implemented non-P4 local MVP. Old four-person ownership and l
 ```text
 PDF / CSV / XLSX / TXT
   -> validated bytes, extension, MIME, signature and expansion/content limits
-  -> Gemini structured JSON (server key; one attempt; 120-second request deadline)
+  -> explicit canonical table parser OR Gemini structured JSON in bounded page/row sections
+     (verified configurable model; two transient attempts maximum; 45 seconds per attempt; 240 seconds overall)
   -> ExtractionSchema, text excerpt/row verification and timeline validation
   -> pure buildWellReport(extraction, scenario, sourceKind)
   -> canonical WellTelemetryReportSchema
@@ -15,6 +16,8 @@ PDF / CSV / XLSX / TXT
 ```
 
 `src/types/telemetry.ts` is the canonical runtime and TypeScript contract. v1.1 preserves the v1 event/scenario field names and adds optional `evidence.row`/`sheet`, canonical report output schemas, and metrics for unknown/unobserved minutes, report-day coverage and drilling-benchmark eligibility. Old snapshots are parsed conservatively, recomputed, and never promoted to human verified.
+
+Current ingestion follow-up: canonical CSV/XLSX parsing bypasses Gemini; PDFs are validated and chunked with original page mapping; streamed stages commit only on a validated terminal result. Model default is the live-verified `gemini-3.1-flash-lite`. See `INGESTION-FIX-REPORT.md` for timings, test evidence and remaining limits.
 
 ## Time, depth and assumptions
 

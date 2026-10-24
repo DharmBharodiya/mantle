@@ -88,3 +88,28 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Final code validation: 48 tests PASS; typecheck PASS; lint PASS; build PASS; 7 offline HTTP checks PASS.
 - Staged diff whitespace check PASS. Staged key-pattern filename scan returned no matches; `.env.local` remains ignored.
 - Remaining work is external/manual verification only, detailed in OVERNIGHT-RESULTS.md. There is no claimed live real-report success or new screenshot evidence.
+
+## Critical ingestion follow-up — 2026-10-24
+- Investigated the 120-second SDK / 300-second browser cutoff without assuming the original document was too large. Existing PDF path sent the whole document, unstructured and canonical spreadsheets both used Gemini, and cancellation was classified as provider timeout.
+- Configured model metadata check: HTTP 200, generateContent supported, ~799 ms. A tiny synthetic structured LOW-thinking generation probe reached its 15-second diagnostic deadline (~14.5 s) without a response; generation latency can occur independently of document size. User subsequently observed an explicit provider-busy error.
+- Implemented content-free request/stage/attempt timing, model verification/cache, supported LOW thinking (Gemini 3) / zero thinking budget (2.5 Flash), 8,192 output-token extraction budget, 2 attempts only for recognized transient responses, and separate timeout/cancellation/deadline error codes.
+- Added explicit canonical CSV/XLSX parsing without Gemini. Noncanonical sources still require model extraction. PDF parsing/page chunks use pdf-lib; up to 24 pages, groups of 2, concurrency 2, exact original page mapping. Entire single-day output is validated and exact duplicates removed before unchanged analytics.
+- Added server-originated NDJSON progress and a terminal result/error transaction. The client preserves the previous dashboard until a validated final result is received. No percentages are fabricated.
+- Tests now PASS: 72 in 10 files. Typecheck/lint/default build PASS. Initial production HTTP verification failed because Next build artifacts were inconsistent (missing generated 611.js); verification output is now isolated from a running IDE dev session using BORESIGHT_INGESTION_CHECK=1.
+- Live HTTP fixture verification and final fix report are in progress. No new live generation success is claimed yet.
+
+## Follow-up live extraction verified
+- On gemini-3.8-flash, instrumented one-page synthetic PDF (1,244 bytes): preparation 1 ms, chunk parse 15 ms, model verification 438 ms, generation attempts returned busy after 7,357 ms and 12,232 ms; request ended ~20.6 s. This isolated generation capacity, not preprocessing, for that reproduction.
+- One alternative-model check was made using a temporary process override. gemini-3.1-flash-lite metadata supported generation; actual one-page PDF extraction then PASSED with 3 events and 60 NPT minutes in 49,437 ms. Attempt 1 busy; single 500 ms backoff; attempt 2 succeeded (~9,997 ms).
+- Updated only GEMINI_MODEL in .env.local to the verified passing model; the API key line was checked unchanged and was never printed/staged. Server fallback and .env.example now use gemini-3.1-flash-lite.
+- Canonical CSV/XLSX HTTP imports PASSED without Gemini (~206/98 ms in the first run, ~213/114 ms in the alternative-server run). 7 existing offline HTTP smoke checks PASSED on the isolated production build.
+- Regression suite: 72 tests PASS. Final model rebuild/check cleanup is in progress. INGESTION-FIX-REPORT.md records exact scope, protocol, evidence and limitations.
+
+## Critical ingestion follow-up final verification
+- Final 72 tests PASS; typecheck PASS; lint PASS; production build PASS (isolated profile avoids dev/build artifact collisions).
+- Final saved-model/default is gemini-3.1-flash-lite. Actual synthetic one-page PDF extraction succeeded earlier on that model with all assertions; no duplicate live call was needed after equivalent configuration was saved.
+- Final production HTTP checks: canonical CSV PASS (~200 ms), canonical XLSX PASS (~116 ms), all 7 previous smoke assertions PASS.
+- Restored Next's normal generated type reference after the isolated build, kept the optional verification type glob, and verified typecheck/lint again.
+- Browser inventory was checked again and returned no surfaces. No browser visual/progress observation or real geothermal file validation is claimed.
+- User must restart an existing dev server to load the updated model setting. API key unchanged; .env.local stays ignored.
+- INGESTION-FIX-REPORT.md is the authoritative follow-up report; prior overnight results are explicitly marked historical.

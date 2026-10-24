@@ -77,3 +77,38 @@ describe("honest depth presentation", () => {
         expect(formatMinute(1440)).toBe("24:00");
     });
 });
+describe("streaming import transaction", () => {
+    function streamResponse(messages: unknown[], split = 7) {
+        const bytes = new TextEncoder().encode(messages.map(message => JSON.stringify(message)).join("\n") + "\n");
+        return new Response(new ReadableStream<Uint8Array>({ start(controller) { for (let index = 0; index < bytes.length; index += split)
+                controller.enqueue(bytes.slice(index, index + split)); controller.close(); } }), { headers: { "Content-Type": "application/x-ndjson" } });
+    }
+    it("handles split UTF-8 frames and reports real stages before committing a result", async () => {
+        const next = report();
+        next.events[0].note = "Synthétique test";
+        const stages: string[] = [];
+        vi.stubGlobal("fetch", vi.fn().mockResolvedValue(streamResponse([{ type: "stage", requestId: "test", elapsedMs: 1, stage: "preparing" }, { type: "stage", requestId: "test", elapsedMs: 2, stage: "ready" }, { type: "result", requestId: "test", report: next }], 1)));
+        expect(await ingestReport(new File(["test"], "report.csv"), new AbortController().signal, event => stages.push(event.stage))).toEqual(next);
+        expect(stages).toEqual(["preparing", "ready"]);
+    });
+    it("never replaces the previous dashboard report on a streamed provider error", async () => {
+        const previous = report();
+        let dashboard = previous;
+        vi.stubGlobal("fetch", vi.fn().mockResolvedValue(streamResponse([{ type: "stage", requestId: "test", elapsedMs: 1, stage: "extracting" }, { type: "error", requestId: "test", status: 504, code: "PROVIDER_TIMEOUT", error: "Generation timed out" }])));
+        await expect(ingestReport(new File(["test"], "report.csv"), new AbortController().signal).then(next => { dashboard = next; })).rejects.toThrow(/Generation timed out/);
+        expect(dashboard).toBe(previous);
+    });
+    it("does not treat a ready stage or closed connection as a successful import", async () => {
+        const stages: string[] = [];
+        vi.stubGlobal("fetch", vi.fn().mockResolvedValue(streamResponse([{ type: "stage", requestId: "test", elapsedMs: 1, stage: "ready" }])));
+        await expect(ingestReport(new File(["test"], "report.csv"), new AbortController().signal, event => stages.push(event.stage))).rejects.toThrow(/before a complete report/);
+        expect(stages).toEqual([]);
+    });
+    it("rejects malformed progress and cancelled imports", async () => {
+        vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(streamResponse([{ type: "result", requestId: "test", report: { events: [] } }])).mockResolvedValueOnce(streamResponse([{ type: "result", requestId: "test", report: report() }])));
+        await expect(ingestReport(new File(["test"], "report.csv"), new AbortController().signal)).rejects.toThrow(/invalid progress/);
+        const controller = new AbortController();
+        controller.abort();
+        await expect(ingestReport(new File(["test"], "report.csv"), controller.signal)).rejects.toThrow(/cancelled/);
+    });
+});

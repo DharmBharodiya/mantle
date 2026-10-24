@@ -1,14 +1,16 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { PDFDocument } from "pdf-lib";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import ExcelJS from "exceljs";
 import { prepareUpload, csvRecords, MAX_UPLOAD_BYTES } from "@/lib/ingestion/prepare";
 import { POST } from "@/app/api/ingest/route";
 import { DEMO_EXTRACTION } from "@/data/demo-report";
 import { providerError } from "@/lib/server/errors";
 const { generate } = vi.hoisted(() => ({ generate: vi.fn() }));
-vi.mock("@google/genai", () => ({ GoogleGenAI: class {
-        models = { generateContent: generate };
+vi.mock("@google/genai", () => ({ ThinkingLevel: { LOW: "LOW" }, GoogleGenAI: class {
+        models = { generateContent: generate, get: vi.fn().mockResolvedValue({ supportedActions: ["generateContent"], outputTokenLimit: 8192 }) };
     } }));
-afterEach(() => { vi.unstubAllEnvs(); vi.clearAllMocks(); });
+beforeEach(() => { generate.mockReset(); vi.spyOn(console, "info").mockImplementation(() => { }); });
+afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 function request(file?: File) {
     const body = new FormData();
     if (file)
@@ -104,7 +106,10 @@ describe("ingestion endpoint", () => {
     it("marks explicitly synthetic uploads as synthetic and warns on unverified PDF pages", async () => {
         vi.stubEnv("GEMINI_API_KEY", "test-only");
         generate.mockResolvedValue({ text: JSON.stringify(DEMO_EXTRACTION) });
-        const response = await POST(request(new File(["%PDF-1.4\nsynthetic test"], "SYNTHETIC_DEMO.pdf", { type: "application/pdf" })));
+        const pdf = await PDFDocument.create();
+        pdf.addPage();
+        const bytes = await pdf.save();
+        const response = await POST(request(new File([new Uint8Array(bytes)], "SYNTHETIC_DEMO.pdf", { type: "application/pdf" })));
         const r = await response.json();
         expect(r.sourceKind).toBe("SYNTHETIC_DEMO");
         expect(r.warnings.join(" ")).toMatch(/PDF page/);

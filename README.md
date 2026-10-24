@@ -1,8 +1,8 @@
-﻿# BoreSight — evidence-backed geothermal intelligence
+# BoreSight — evidence-backed geothermal intelligence
 
 A dark, responsive local analytics workspace that converts daily drilling reports into source-linked events, drilling progress, confirmed NPT and benchmark-qualified ILT scenarios.
 
-**Status:** implemented local MVP. Live extraction is not yet verified in this run: the configured Gemini model returned service unavailable, and the older `gemini-2.5-flash` probe returned Not Found. The synthetic dashboard, deterministic analytics, tests and exports work independently. See `OVERNIGHT-RESULTS.md` for actual verification evidence and remaining checks.
+**Status:** implemented local MVP with a verified synthetic one-page PDF extraction on `gemini-3.1-flash-lite`. The critical ingestion follow-up also verified canonical CSV/XLSX imports without Gemini. The previous `gemini-3.8-flash` model returned high-demand errors. See `INGESTION-FIX-REPORT.md` for current evidence and limits; `OVERNIGHT-RESULTS.md` records the earlier run.
 
 ## Run locally
 
@@ -18,14 +18,14 @@ Open http://localhost:3000. Save the server-side key in `.env.local`:
 
 ```dotenv
 GEMINI_API_KEY=your_key_here
-GEMINI_MODEL=gemini-3.8-flash
+GEMINI_MODEL=gemini-3.1-flash-lite
 ```
 
-Restart the server after changing environment settings. Do not put a key in chat, Git, logs or `NEXT_PUBLIC_` variables. The default model is configurable; Google project access, capacity and quota still apply. [Google structured output documentation](https://ai.google.dev/gemini-api/docs/structured-output), [current model documentation](https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash).
+Restart the server after changing environment settings. Do not put a key in chat, Git, logs or `NEXT_PUBLIC_` variables. The default model is configurable; Google project access, capacity and quota still apply. [Google structured output documentation](https://ai.google.dev/gemini-api/docs/structured-output), [current model documentation](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite).
 
 ## What is implemented
 
-- PDF, UTF-8/UTF-16 CSV/TXT and XLSX ingestion through server-side Gemini structured output and Zod validation.
+- PDF and unstructured CSV/TXT/XLSX ingestion through server-side Gemini structured output and Zod validation. Canonical CSV/XLSX tables with explicit time, activity and classification columns use deterministic parsing without Gemini.
 - File, MIME, signature, byte, expanded workbook, row, character and response limits. Oversized sources are rejected rather than silently truncated.
 - One local report day, 00:00–24:00. Ambiguous cross-midnight and multi-day inputs must be split/clarified; timestamps are not guessed.
 - Evidence snippets and page/row/sheet references; text excerpts are checked against source content. PDF references remain AI-extracted/unverified.
@@ -59,7 +59,7 @@ node scripts/smoke.mjs
 node scripts/smoke.mjs --live
 ```
 
-The live check uploads `demo-fixtures/synthetic/SYNTHETIC_DEMO-single-day.csv` and asserts 3 events, 60 NPT minutes and synthetic provenance. It never fabricates a successful result. In this Windows agent sandbox, Vitest/esbuild needed approved execution outside the sandbox to read its config. This is an environment constraint, not a failing test.
+The `scripts/smoke.mjs --live` check uploads a TXT rendering of the synthetic fixture so it exercises Gemini rather than the deterministic CSV path. `node scripts/verify-ingestion.mjs` verifies canonical CSV/XLSX without Gemini; append `--live` to generate and extract a real one-page synthetic PDF. All checks assert 3 events, 60 NPT minutes and synthetic provenance. It never fabricates a successful result. In this Windows agent sandbox, Vitest/esbuild needed approved execution outside the sandbox to read its config. This is an environment constraint, not a failing test.
 
 For manual viewport, keyboard, print and three-minute demo checks, see [docs/SOLO-QA-RUNBOOK.md](docs/SOLO-QA-RUNBOOK.md). Existing screenshots in `docs/screenshots` predate the dark redesign; they are not evidence of the new UI.
 
