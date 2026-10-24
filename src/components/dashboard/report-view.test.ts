@@ -42,6 +42,11 @@ describe("dashboard report ingestion", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json({ error: "Missing GEMINI_API_KEY" }, { status: 400 })));
     await expect(ingestReport(new File(["x"], "day.txt"), new AbortController().signal)).rejects.toThrow("Missing GEMINI_API_KEY");
   });
+  it("shows the provider high-demand error rather than serialized SDK JSON", async () => {
+    const error = JSON.stringify({ error: { code: 503, message: "This model is currently experiencing high demand.", status: "UNAVAILABLE" } });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json({ error }, { status: 502 })));
+    await expect(ingestReport(new File(["synthetic test"], "day.csv"), new AbortController().signal)).rejects.toThrow("Extraction provider error (503): This model is currently experiencing high demand.");
+  });
   it("rejects unreadable service errors and silent demo substitution", async () => {
     const fetcher = vi.fn().mockResolvedValueOnce(new Response("Bad gateway", { status: 502 })).mockResolvedValueOnce(Response.json({ ...report(), sourceKind: "SYNTHETIC_DEMO" }));
     vi.stubGlobal("fetch", fetcher);

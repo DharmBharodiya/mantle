@@ -8,6 +8,7 @@ import { KpiStrip } from "@/components/dashboard/KpiStrip";
 import { DepthChart } from "@/components/dashboard/DepthChart";
 import { RigHealth } from "@/components/dashboard/RigHealth";
 import { ingestReport, sourceLabels, validateUpload } from "@/components/dashboard/report-view";
+import { watchUpload } from "@/components/dashboard/upload-deadline";
 import { Bottlenecks } from "@/components/analytics/Bottlenecks";
 import { EventTable } from "@/components/analytics/EventTable";
 import { ShiftBriefing } from "@/components/comms/ShiftBriefing";
@@ -43,6 +44,14 @@ export default function Home() {
     setStatus("Synthetic demo restored.");
     if (fileInput.current) fileInput.current.value = "";
   }
+  function stopWaiting() {
+    request.current?.abort();
+    request.current = null;
+    setUploading(false);
+    setError("");
+    setStatus("Stopped waiting for analysis. Your previous report is unchanged. The service may still be processing the upload.");
+    if (fileInput.current) fileInput.current.value = "";
+  }
   async function upload(file: File) {
     const invalid = validateUpload(file);
     if (invalid) { setError(invalid); setStatus(""); if (fileInput.current) fileInput.current.value = ""; return; }
@@ -50,7 +59,9 @@ export default function Home() {
     const controller = new AbortController();
     request.current = controller;
     setUploading(true); setError(""); setStatus(`Analyzing ${file.name}. The current dashboard stays available.`);
-    const timer = window.setTimeout(() => controller.abort("timeout"), 90000);
+    const stopDeadline = watchUpload(controller, () => {
+      if (request.current === controller) setStatus("Still waiting for the report service. Detailed extraction can take several minutes. Your current report stays available; you can stop waiting at any time.");
+    });
     try {
       const next = await ingestReport(file, controller.signal);
       if (controller.signal.aborted || request.current !== controller) return;
@@ -61,9 +72,9 @@ export default function Home() {
     } catch (cause) {
       if (request.current !== controller) return;
       setStatus("");
-      setError(controller.signal.aborted ? "Analysis timed out. Please retry. Your previous report is unchanged." : `${cause instanceof Error ? cause.message : "Upload failed."} Current report preserved.`);
+      setError(controller.signal.aborted ? "No analysis response was received within 5 minutes. Your previous report is unchanged. The service may still be processing this upload." : `${cause instanceof Error ? cause.message : "Upload failed."} Current report preserved.`);
     } finally {
-      window.clearTimeout(timer);
+      stopDeadline();
       if (request.current === controller) {
         request.current = null; setUploading(false);
         if (fileInput.current) fileInput.current.value = "";
@@ -82,7 +93,7 @@ export default function Home() {
       <section id="source-review" tabIndex={-1} aria-label="Report source and assumptions" className={`source-banner ${report.sourceKind === "SYNTHETIC_DEMO" ? "source-demo" : "source-upload"}`}><div className="flex items-center gap-2 font-semibold"><FileCheck2 size={15} aria-hidden="true" />{sourceLabels[report.sourceKind]}</div><p className="mt-1 leading-5">{report.sourceKind === "SYNTHETIC_DEMO" ? "All sample events are illustrative, including the pump repair. These are not real Utah FORGE records." : report.sourceKind === "HUMAN_VERIFIED" ? "This report is marked human verified by the source service. Review event evidence before field action." : "AI extraction from an uploaded document. A human must verify event classifications and source evidence."}</p><p className="mt-1 leading-5">Rig rate, drilling benchmark and fuel differential are scenario assumptions. Dollar exposure and modeled CO₂ are not audited losses or measured emissions.</p>
         {report.warnings.length > 0 && <details className="mt-2"><summary>Source warnings ({report.warnings.length})</summary><ul className="mt-2 list-disc space-y-1 pl-5">{report.warnings.map((warning, index) => <li key={`${index}-${warning}`}>{warning}</li>)}</ul></details>}
       </section>
-      <div role="status" aria-live="polite" className={status ? "upload-status" : "sr-only"}>{status}</div>
+      <div className={status ? "upload-status" : "sr-only"}><p role="status" aria-live="polite">{status}</p>{uploading && <button onClick={stopWaiting} className="secondary-button mt-3">Stop waiting</button>}</div>
       {error && <div role="alert" className="upload-error"><p className="font-semibold">Report could not be imported</p><p className="mt-1 [overflow-wrap:anywhere]">{error}</p><button disabled={uploading} onClick={() => fileInput.current?.click()} className="mt-3 underline underline-offset-4">Choose a report to retry</button></div>}
       {!report.events.length && <div className="card p-6 text-sm text-[#667286]"><h2 className="font-semibold text-ink">No events extracted</h2><p className="mt-2">This report contains no usable drilling intervals. Review source warnings, upload another report, or reset the demo.</p></div>}
       <KpiStrip report={report} />

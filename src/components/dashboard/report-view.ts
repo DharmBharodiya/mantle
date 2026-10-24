@@ -60,6 +60,19 @@ export function chartPoints(report: WellTelemetryReport) {
   return points;
 }
 
+export function ingestionErrorMessage(error: string): string {
+  // The ingestion route can return an SDK error serialized as a JSON string.
+  // Preserve the provider's message while making its status readable.
+  try {
+    const parsed: unknown = JSON.parse(error);
+    if (object(parsed) && object(parsed.error) && typeof parsed.error.message === "string") {
+      const code = finite(parsed.error.code) ? ` (${parsed.error.code})` : "";
+      return `Extraction provider error${code}: ${parsed.error.message}`;
+    }
+  } catch { /* Plain-text API errors already have a usable message. */ }
+  return error;
+}
+
 export async function ingestReport(file: File, signal: AbortSignal): Promise<WellTelemetryReport> {
   const error = validateUpload(file);
   if (error) throw new Error(error);
@@ -69,7 +82,7 @@ export async function ingestReport(file: File, signal: AbortSignal): Promise<Wel
   let result: unknown;
   try { result = await response.json(); }
   catch { throw new Error(`Report service returned an unreadable response (HTTP ${response.status}). Please retry.`); }
-  if (!response.ok) throw new Error(object(result) && typeof result.error === "string" ? result.error : `Report extraction failed (HTTP ${response.status}).`);
+  if (!response.ok) throw new Error(object(result) && typeof result.error === "string" ? ingestionErrorMessage(result.error) : `Report extraction failed (HTTP ${response.status}).`);
   const report = readReport(result);
   if (report.sourceKind === "SYNTHETIC_DEMO") throw new Error("Upload returned demo data instead of an extracted report. Your previous report is unchanged.");
   return report;
