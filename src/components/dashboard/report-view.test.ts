@@ -7,7 +7,7 @@ function report(): WellTelemetryReport {
   return {
     ...ExtractionSchema.parse({ wellName: "SYNTHETIC_TEST", reportDate: "2026-10-24", warnings: [], events: [{ id: "test-event", startMinute: 0, endMinute: 60, activity: "CIRCULATING", classification: "PRODUCTIVE", startHoleDepthFt: 100, endHoleDepthFt: 100, note: "Synthetic circulation", explanation: "Planned circulation", evidence: { fileName: "SYNTHETIC_TEST.txt", page: null, snippet: "Synthetic circulation" }, confidence: "HIGH" }] }),
     sourceKind: "PUBLIC_SOURCE_UNREVIEWED", scenario: ScenarioSchema.parse({}), generatedAt: "2026-10-24T00:00:00Z",
-    metrics: { observedMinutes: 60, classifiedMinutes: 60, productiveMinutes: 60, nptMinutes: 0, iltMinutes: 0, efficiencyPct: 100, estimatedLossUsd: 0, estimatedNptCostUsd: 0, estimatedIltOpportunityUsd: 0, modeledExcessFuelGallons: null, modeledExcessCo2Tons: null },
+    metrics: { unknownMinutes: 0, unobservedMinutes: 1380, coveragePct: 4.1666666667, iltEligibleMinutes: 0, benchmarkCoveragePct: 0, observedMinutes: 60, classifiedMinutes: 60, productiveMinutes: 60, nptMinutes: 0, iltMinutes: 0, efficiencyPct: 100, estimatedLossUsd: 0, estimatedNptCostUsd: 0, estimatedIltOpportunityUsd: 0, modeledExcessFuelGallons: null, modeledExcessCo2Tons: null },
     insights: [], depthCurve: [],
   };
 }
@@ -76,3 +76,4 @@ describe("honest depth presentation", () => {
     expect(formatMinute(1440)).toBe("24:00");
   });
 });
+

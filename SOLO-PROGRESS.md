@@ -25,3 +25,13 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - No new database, remote fonts, paid infrastructure or P4 integration work.
 - Human verification is never inferred from an AI response or imported browser file.
 - External failures do not prevent independent implementation/QA.
+
+## Pipeline verification
+- 40 tests PASS (ingestion, analytics, vision backend, existing dashboard). Typecheck and lint PASS. Production build PASS after restoring the shared numeric error formatter.
+- Ingestion now rejects empty/non-drilling output, invalid signatures, oversized rows/text, corrupt JSON and invalid intervals. Gemini retries are disabled (one attempt) with a 120-second provider timeout.
+- Canonical Contract v1.1 adds optional row/sheet evidence, schema-validated report output and coverage/benchmark eligibility metrics. All consumers upgraded.
+- Explicit one-day scope is validated; decreasing hole depths remain visible with warnings. Unknown trip ILT stays null. Source text excerpts are checked against supplied content.
+- PDF page/excerpt claims remain unverified and are labeled. Public GDR submission 1330 fetch returned HTTP 429; no real-source fixture is claimed.
+- Vision backend implemented and offline-tested; live/UI verification pending.
+- Browser inventory returned no apps/browsers. New visual screenshots cannot currently be captured through the available UI tool.
+

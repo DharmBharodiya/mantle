@@ -1,4 +1,4 @@
-﻿import { ExtractionSchema, ScenarioSchema, type WellTelemetryReport } from "../../types/telemetry";
+﻿import { WellTelemetryReportSchema, type WellTelemetryReport } from "../../types/telemetry";
 
 export const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 export function validateUpload(file: Pick<File, "name" | "size">): string | null {
@@ -9,29 +9,15 @@ export function validateUpload(file: Pick<File, "name" | "size">): string | null
 const object = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null;
 const finite = (value: unknown) => typeof value === "number" && Number.isFinite(value);
 
+
 // Validate the API boundary without recalculating P2's metrics.
 export function readReport(value: unknown): WellTelemetryReport {
-  const invalid = () => new Error("The server returned an incomplete report. Your previous report is unchanged.");
-  if (!object(value) || !ExtractionSchema.safeParse(value).success || !ScenarioSchema.safeParse(value.scenario).success) throw invalid();
-  if (!["SYNTHETIC_DEMO", "PUBLIC_SOURCE_UNREVIEWED", "HUMAN_VERIFIED"].includes(String(value.sourceKind))) throw invalid();
-  if (!object(value.metrics) || !Array.isArray(value.insights) || !Array.isArray(value.depthCurve) || typeof value.generatedAt !== "string") throw invalid();
-  const extraction = ExtractionSchema.parse(value);
-  const ids = new Set(extraction.events.map(event => event.id));
-  if (ids.size !== extraction.events.length) throw invalid();
-  const metrics = value.metrics;
-  for (const key of ["observedMinutes", "classifiedMinutes", "productiveMinutes", "nptMinutes", "iltMinutes", "estimatedLossUsd", "estimatedNptCostUsd", "estimatedIltOpportunityUsd"]) {
-    if (!finite(metrics[key])) throw invalid();
-  }
-  for (const key of ["efficiencyPct", "modeledExcessFuelGallons", "modeledExcessCo2Tons"]) {
-    if (metrics[key] !== null && !finite(metrics[key])) throw invalid();
-  }
-  for (const point of value.depthCurve) {
-    if (!object(point) || !finite(point.minute) || !finite(point.holeDepthFt) || typeof point.eventId !== "string" || !ids.has(point.eventId) || !["PRODUCTIVE", "NPT", "UNKNOWN"].includes(String(point.classification))) throw invalid();
-  }
-  for (const insight of value.insights) {
-    if (!object(insight) || typeof insight.eventId !== "string" || !ids.has(insight.eventId) || !finite(insight.nptMinutes) || !finite(insight.avoidableCostUsd) || (insight.iltMinutes !== null && !finite(insight.iltMinutes)) || !["NPT", "ILT", "NORMAL", "UNCERTAIN"].includes(String(insight.category))) throw invalid();
-  }
-  return { ...value, scenario: ScenarioSchema.parse(value.scenario) } as WellTelemetryReport;
+  const result = WellTelemetryReportSchema.safeParse(value);
+  if (!result.success) throw new Error("The server returned an incomplete report. Your previous report is unchanged.");
+  const report = result.data;
+  const ids = new Set(report.events.map(event => event.id));
+  if (ids.size !== report.events.length || report.insights.some(insight => !ids.has(insight.eventId)) || report.depthCurve.some(point => !ids.has(point.eventId))) throw new Error("The server returned an incomplete report with invalid event references.");
+  return report;
 }
 export const sourceLabels: Record<WellTelemetryReport["sourceKind"], string> = {
   SYNTHETIC_DEMO: "SYNTHETIC_DEMO",
@@ -84,6 +70,7 @@ export async function ingestReport(file: File, signal: AbortSignal): Promise<Wel
   catch { throw new Error(`Report service returned an unreadable response (HTTP ${response.status}). Please retry.`); }
   if (!response.ok) throw new Error(object(result) && typeof result.error === "string" ? ingestionErrorMessage(result.error) : `Report extraction failed (HTTP ${response.status}).`);
   const report = readReport(result);
-  if (report.sourceKind === "SYNTHETIC_DEMO") throw new Error("Upload returned demo data instead of an extracted report. Your previous report is unchanged.");
+  if (report.sourceKind === "SYNTHETIC_DEMO" && !/^SYNTHETIC_DEMO/i.test(file.name)) throw new Error("Upload returned demo data instead of an extracted report. Your previous report is unchanged.");
   return report;
 }
+
