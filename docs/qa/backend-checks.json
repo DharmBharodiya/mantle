@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-25T00:25:31.800Z",
+  "results": [
+    {
+      "command": "npm.cmd run typecheck",
+      "exitCode": 0,
+      "status": "PASS",
+      "elapsedMs": 4484
+    },
+    {
+      "command": "npm.cmd test",
+      "exitCode": 0,
+      "status": "PASS",
+      "elapsedMs": 5599
+    },
+    {
+      "command": "npm.cmd run lint",
+      "exitCode": 0,
+      "status": "PASS",
+      "elapsedMs": 6893
+    },
+    {
+      "command": "npm.cmd run build",
+      "exitCode": 0,
+      "status": "PASS",
+      "elapsedMs": 33403
+    },
+    {
+      "command": "npm.cmd run typecheck (normal generated reference after isolated build)",
+      "exitCode": 0,
+      "status": "PASS"
+    }
+  ]
+}

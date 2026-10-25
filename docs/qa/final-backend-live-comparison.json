@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-25T00:37:41.347Z",
+  "checks": [
+    {
+      "name": "Real three-page single report day",
+      "status": "FAIL",
+      "httpStatus": 200,
+      "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+      "elapsedMs": 13387,
+      "events": 17,
+      "mismatches": [
+        "Excerpt mismatch at interval 17",
+        "Missing original 4.0 h versus 3.5 h discrepancy warning"
+      ]
+    },
+    {
+      "name": "Real adjacent report days in one section",
+      "status": "PASS",
+      "httpStatus": 200,
+      "requestId": "d14710d2-b01f-4947-bd66-2b136e83b02f",
+      "elapsedMs": 17511,
+      "errorCode": "MULTI_DAY_REPORT",
+      "mismatches": []
+    }
+  ]
+}

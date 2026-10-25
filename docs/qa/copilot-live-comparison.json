@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-25T01:57:04.167Z",
+  "expectedCases": 4,
+  "observedCases": 2,
+  "checks": [
+    {
+      "name": "narrative with source and longest event focus",
+      "requestId": "80b59a74-49a6-41ca-a67f-e6a945b537d6",
+      "elapsedMs": 1736,
+      "mode": "DETERMINISTIC",
+      "status": "FAIL",
+      "problems": [
+        "Expected a genuine Groq explanation, not a fallback\n+ actual - expected\n\n+ 'DETERMINISTIC'\n- 'GROQ'\n"
+      ]
+    },
+    {
+      "name": "follow-up referring to previous event",
+      "requestId": "ddea451f-2974-4359-94c3-8c60471194e5",
+      "elapsedMs": 79,
+      "mode": "DETERMINISTIC",
+      "status": "FAIL",
+      "problems": [
+        "Expected a genuine Groq explanation, not a fallback\n+ actual - expected\n\n+ 'DETERMINISTIC'\n- 'GROQ'\n"
+      ]
+    }
+  ]
+}

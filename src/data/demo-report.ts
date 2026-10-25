@@ -13,7 +13,7 @@ const make = (
   evidence: {fileName:source,page:null,snippet:note},confidence:"HIGH"
 });
 export const DEMO_EXTRACTION: Extraction = {
-  wellName:"BoreSight Lab — Demo Geothermal Well",
+  wellName:"Mantle Lab — Demo Geothermal Well",
   reportDate:"2026-10-24",
   warnings:["This is a synthetic demo, not a source-verified industry report.","Drilling ROP benchmark and rig day rate are editable scenario assumptions."],
   events:[

@@ -1,0 +1,71 @@
+[
+  {
+    "name": "Real three-page single report day",
+    "file": "2021-06-28-full-day.pdf",
+    "originalPages": [
+      4,
+      5,
+      6
+    ],
+    "hash": "775206c4bf99a400146a7ec4ab30e284d2228a889373d075ff193cdd7131762d",
+    "checkedAt": "2026-10-25T00:35:30.463Z",
+    "messages": [
+      {
+        "type": "stage",
+        "stage": "preparing",
+        "requestId": "f0f69052-d682-416d-aa35-4eee97be0d10",
+        "elapsedMs": 9
+      },
+      {
+        "type": "stage",
+        "stage": "extracting",
+        "requestId": "f0f69052-d682-416d-aa35-4eee97be0d10",
+        "elapsedMs": 12
+      },
+      {
+        "type": "error",
+        "requestId": "f0f69052-d682-416d-aa35-4eee97be0d10",
+        "error": "AI output did not match the required schema. Review source quality and retry.",
+        "code": "INVALID_EXTRACTION",
+        "status": 422
+      }
+    ],
+    "httpStatus": 200,
+    "requestId": "f0f69052-d682-416d-aa35-4eee97be0d10",
+    "elapsedMs": 4298
+  },
+  {
+    "name": "Real adjacent report days in one section",
+    "file": "2021-06-28-and-29-operations.pdf",
+    "originalPages": [
+      4,
+      7
+    ],
+    "hash": "0e4e0b8dabe3c50743386e43de4ce103fa8fdc43545e373b03895a29bdbce9a8",
+    "checkedAt": "2026-10-25T00:35:34.765Z",
+    "messages": [
+      {
+        "type": "stage",
+        "stage": "preparing",
+        "requestId": "eb950fe3-a29c-444c-844a-cb30354ee43e",
+        "elapsedMs": 1
+      },
+      {
+        "type": "stage",
+        "stage": "extracting",
+        "requestId": "eb950fe3-a29c-444c-844a-cb30354ee43e",
+        "elapsedMs": 2
+      },
+      {
+        "type": "error",
+        "requestId": "eb950fe3-a29c-444c-844a-cb30354ee43e",
+        "error": "AI output did not match the required schema. Review source quality and retry.",
+        "code": "INVALID_EXTRACTION",
+        "status": 422
+      }
+    ],
+    "httpStatus": 200,
+    "requestId": "eb950fe3-a29c-444c-844a-cb30354ee43e",
+    "elapsedMs": 16232
+  }
+]

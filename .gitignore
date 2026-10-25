@@ -1,5 +1,6 @@
 node_modules/
 .next/
+.next-ingestion-check/
 .env
 .env.local
 .env.*.local
@@ -8,3 +9,10 @@ node_modules/
 coverage/
 *.tsbuildinfo
 /uploads/
+.codex-logs/
+test-results/
+playwright-report/
+*.local.json
+
+# Full public source downloaded for QA; the attributed one-page demo excerpt is versioned.
+docs/qa/forge-78b-32-original.pdf

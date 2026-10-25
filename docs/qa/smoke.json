@@ -1,0 +1,53 @@
+[
+  {
+    "check": "dashboard HTML and source labels",
+    "status": "PASS",
+    "elapsedMs": 82,
+    "httpStatus": 200
+  },
+  {
+    "check": "Mantle-style homepage and console link",
+    "status": "PASS",
+    "elapsedMs": 19,
+    "httpStatus": 200
+  },
+  {
+    "check": "synthetic report API",
+    "status": "PASS",
+    "elapsedMs": 19,
+    "events": 9
+  },
+  {
+    "check": "deterministic scenario recalculation and provenance",
+    "status": "PASS",
+    "elapsedMs": 12,
+    "nptScenarioUsd": 50000
+  },
+  {
+    "check": "unknown fuel remains null and client verification cannot be promoted",
+    "status": "PASS",
+    "elapsedMs": 7,
+    "carbonScenario": null,
+    "sourceKind": "PUBLIC_SOURCE_UNREVIEWED"
+  },
+  {
+    "check": "invalid analytics JSON is an explicit non-success",
+    "status": "PASS",
+    "elapsedMs": 6,
+    "httpStatus": 422
+  },
+  {
+    "check": "invalid upload produces explicit error",
+    "status": "PASS",
+    "elapsedMs": 11,
+    "httpStatus": 415,
+    "code": "UNSUPPORTED_FILE"
+  },
+  {
+    "check": "vision rejects invalid image before model call",
+    "status": "PASS",
+    "elapsedMs": 7,
+    "httpStatus": 415,
+    "code": "IMAGE_SIGNATURE"
+  }
+]

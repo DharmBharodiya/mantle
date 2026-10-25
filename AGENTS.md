@@ -1,46 +1,47 @@
-# BoreSight — Universal AI Agent Constitution (Codex + Claude Code)
+# BoreSight | Solo autonomous build rules
 
-> Read this complete document, `docs/02-ARCHITECTURE-CONTRACTS.md`, `docs/03-TEAM-AND-GIT.md`, and your `agent-prompts/ROLE-P*.md` **before modifying anything**. If instructions conflict, halt and ask the team lead. This repository is a hackathon prototype, not a safety-critical product.
+This replaces the OLD four-person ownership rules for the current solo development branch. `agent-prompts/ROLE-P*.md` and `docs/03-TEAM-AND-GIT.md` are historical information, not constraints. The newest user direction overrides the former light-mode requirement: BoreSight must now use a premium, modern DARK visual system. The complete target and acceptance criteria are in `OVERNIGHT-MISSION.md`.
 
-## The one sentence product
-BoreSight translates messy geothermal daily drilling reports into *evidence-backed*, interactive drilling progress, explicitly modeled non-productive-time and invisible-lost-time estimates, and reviewed shift handovers. It is visually a premium minimal **light-mode** SaaS app, NOT dark industrial cyberpunk.
+## Mission
 
-## Hard rules — do not negotiate
-1. Four people + AI coding agents work in parallel. You may edit **only** files owned by your person, as defined in `docs/03-TEAM-AND-GIT.md`. DO NOT edit `src/types/telemetry.ts`, `src/data/demo-report.ts`, shared configs, `package.json`, `package-lock.json`, `AGENTS.md`, `CLAUDE.md`, or another developer's files. Propose changes in an issue; team lead merges changes to contracts.
-2. File ownership includes tests. Add tests only inside your owned test path; propose any new root-level configuration changes to lead.
-3. `src/types/telemetry.ts` is the canonical **Contract v1.0**. Reuse `ExtractionSchema`, `ScenarioSchema`, `DrillingEventSchema`, `WellTelemetryReport` and existing API routes. Do not quietly rename fields, create parallel versions of the report, or duplicate formulas.
-4. **AI extracts observations; TypeScript computes metrics.** Never have Gemini invent NPT cost, CO2 emissions, event timings or source pages. Never silently substitute synthetic events for failed uploads. Keep sample data visibly marked `SYNTHETIC_DEMO`.
-5. Depth in this product means **hole measured depth**, not drill-bit position. Bit trips can happen while hole depth stays flat. Flat holes do NOT automatically prove an operational stoppage. Do not infer trip speed from hole depth changes.
-6. Unknown or poorly supported information is `UNKNOWN`, nullable, or accompanied by warnings. Extract exact short source snippets and page numbers where truly available. Rig-rate and fuel estimates MUST be called scenario assumptions, not real loss or measured CO2.
-7. No destructive shell commands, forced pushes, direct pushes to main, sending real field messages, leaking secrets, or installing unapproved packages. Credentials are read server-side from `.env.local`, not the client.
-8. API errors return meaningful non-2xx responses; a missing key is NOT a successful mock response. Photon dispatch is opt-in and off by default. An API request being accepted is not delivery confirmation.
-9. Never implement unsupported maintenance instructions, autonomous safety recommendations, or equipment fault diagnoses as certain. No hazardous field operations without human review.
-10. Be responsive and accessible. Keyboard focus visible, legends not color alone, semantic headings, readable tooltips, zero fabricated charts or result counts.
+Finish all reasonable, locally achievable BoreSight product development other than Photon and ElevenLabs. Work iteratively through EVERY phase of `OVERNIGHT-MISSION.md` without waiting for a new human prompt between phases. Implement and test, do not stop at a plan. Use the working repository and preserve good existing code, especially the previous P3 dashboard structure and behavior.
 
-## Design constitution
-- **Canvas** #F6F7F9, surface white #FFFFFF, 1px neutral borders #E8EBEF; 20–24px radius, soft shadow, 20–28px padding.
-- **Typography** Inter/system sans; text near-black #161A24; labels muted #8993A3; large numbers tabular; generous whitespace.
-- **Primary** restrained electric indigo #5559F7. **Warning/ILT** #E7A344, **confirmed NPT** #E9736B, **productive** #27A982. Do NOT fill every card with accent colors.
-- **Information architecture** narrow left nav + page title/header + compact context/action bar + five KPI strip + 8/4 chart/gauge + 8/4 operational cards and briefing.
-- **Chart** inverted Y axis for hole depth in feet and time X axis, accurate linear line segments; highlight confirmed NPT intervals separately. Click events for original evidence.
-- **References** the FIVE `public/reference-images/*.webp` are user's design inspiration. They guide balance, spacing, structure and finish, not copied branding or unrelated modules.
-- Reference details and exact acceptance specs are in `docs/04-UI-UX-DESIGN-SYSTEM.md`.
+## Authority and boundaries
 
-## Cross-role API contracts (already established)
-- GET `/api/analytics` → seeded synthetic `WellTelemetryReport`.
-- POST `/api/analytics` body `{extraction,scenario?}` → computed report.
-- POST `/api/ingest` multipart key `file` → report OR explicit error.
-- POST `/api/briefing` `{extraction,scenario,sourceKind,mode:'script'|'audio'}` → `{script}` or MPEG audio.
-- POST `/api/dispatch` `{extraction,scenario,recipient:{spaceId,senderId,idempotencyKey}}` → accepted, never claim delivered.
+- You are the only active local developer. You may edit application source, tests, types, dependencies, scripts, docs, fixtures, and UI. Coordinate changes internally, keep contracts consistent.
+- Work inside this repository on the current solo branch. Do not force-push, reset away changes, delete other branches, manipulate unrelated directories, or deploy/publish/spend money.
+- Do not send messages, upload private files to new services, create external accounts, or enable paid infrastructure. Google Gemini calls on the provided server-side API key are authorized for developing and testing BoreSight with public/synthetic data. Never expose keys.
+- DO NOT implement, integrate, test, or call Photon or ElevenLabs. Disable or clearly label their existing controls as 'Coming later'; no dead functioning-looking buttons. Leave preexisting P4 code alone unless necessary to fix build/UI routing.
+- Prefer existing Next.js App Router, TypeScript, Tailwind, Recharts, `@google/genai`, ExcelJS, Zod, and Vitest. Avoid major framework swaps and unneeded databases.
+- Never claim tests, live API calls, or data sources succeeded unless you actually observed them. If API credentials, a real PDF, or network access are unavailable, complete all independent work with clearly labeled synthetic fixtures and document the precise external verification that remains.
 
-## Workflow for EVERY agent work session
-1. State your role, branch and exact file allow-list. Inspect existing implementation and tests first.
-2. Briefly outline intended edits **only in owned paths**; do one coherent vertical slice at a time.
-3. Implement; keep existing exports/backward-compatible contracts; never delete other people's implementations.
-4. Run `npm run typecheck`, `npm test`, `npm run lint`, `npm run build` if available. If network/environment prevents install, state that explicitly; do not claim tests passed.
-5. Report the list of changed files, tests actually executed, demo interaction to verify, blockers, and any proposals for the team lead.
-6. Before commit: `git diff --name-only origin/main...HEAD` must be limited to your ownership. If not, remove out-of-scope changes.
-7. Open a PR targeting main; never cherry-pick other person's unreviewed changes into your branch.
+## Engineering truth
 
-## Definition of done
-Feature functions with the synthetic seed, clearly identifies source and uncertainty, has functional loading/error/empty states, passes typecheck and relevant unit test, does not modify other owners' files, follows UI design, and can be demonstrated in 20 seconds.
+- Use Gemini for extraction, transcription and contextualization only. Deterministic TypeScript code produces time, ILT/NPT, cost, carbon and benchmarks; include assumptions.
+- Preserve report provenance: source filename, exact quote/snippet where available, actual page if genuinely extracted, confidence and warnings. No fabricated numbers, quotes, safety recommendations or root causes.
+- **Hole measured depth is not drill-bit position.** A flat hole-depth curve does NOT, by itself, imply downtime. Trip speed cannot be calculated from hole depth alone.
+- Overlaps, cross-midnight reports, missing values, units, duplicate events, and unknown classification require explicit handling. Do not silently miscalculate or replace missing data with made-up values.
+- Treat all financial/carbon outputs as **scenario estimates**, not audited losses or measured emissions.
+- Failed uploads should return useful errors, never silently report demo data as a successful import.
+- Don't expose provider secrets via `NEXT_PUBLIC_`, logging, UI, tests, commits, or docs. Restrict upload sizes and MIME types and validate server-side.
+
+## UI
+
+- Replace the old light palette with a restrained **dark industrial-luxe** analytics workspace. Modern _sans-serif_ typography (Geist Sans or equivalent sans with robust local fallbacks), refined spacing, subtle borders, high contrast, and minimal clutter.
+- Suggested tokens: canvas `#080C14`, elevated nav `#0E1522`, cards `#121B2A`, raised cards `#172235`, border `#263349`, primary type `#EDF4FF`, secondary `#98A9C1`; productive teal `#2DD4BF`, ILT amber `#FBBF24`, NPT coral `#FB7185`, plan periwinkle `#94A3FF`, action cobalt `#6487FF`.
+- Use tasteful radial/linear background atmosphere, subtle card gradients, and carefully composed _chart_ gradients. No neon overload, rusty steampunk ornaments, glowing everything, or glass blur on every element.
+- Graphs must represent observed values honestly: linear or step segments for actual depths; use shaded time intervals / markers for actual NPT or ILT classifications. Smooth area fills are optional but never distort the data. Tooltip -> inspectable source event.
+- Responsive to 390px, accessible keyboard navigation, focus visible, reduced-motion respect, loading/error/empty states, 1366x768 usability.
+
+## Autonomous development loop
+
+1. Inspect actual git state, repo files, tests, env names and dependency versions before edits; do not assume the starter matches historical docs exactly.
+2. Create/update `SOLO-PROGRESS.md` with milestone checklist, evidence of each verification command and unresolved blockers. Create an actionable plan then **immediately implement it**; do not stop for plan review.
+3. Implement milestones in the order specified in `OVERNIGHT-MISSION.md`, adapting based on actual repo state. After each milestone, run the relevant checks, fix regressions and record results. Make local checkpoint commits for verified milestones if git is usable.
+4. Continue onto the NEXT milestone without asking to proceed. When a detail is not specified, pick a conservative reversible default and document it; when blocked by external access, mark blocked and work on the next independent task.
+5. Before finishing, run `npm run typecheck`, `npm test`, `npm run lint`, `npm run build`, inspect `git diff`, verify source-vs-demo UI state and create `OVERNIGHT-RESULTS.md` with completed/blocked/untested items.
+6. Stop only when the acceptance criteria are met or available environment/tool limits genuinely prevent more meaningful work. Never represent partial completion as full completion.
+
+## Homepage design update
+
+For the requested Mantle-style homepage integration, `docs/MANTLE-HOMEPAGE.md` records the current scoped design rules and compatibility decisions. The supplied `mantle-kit/AGENTS.md` is the visual reference. The new homepage at `/` may use that kit's near-black thermal palette, typography and restrained italic accent. The existing console at `/console` retains its working design until a separate visual migration. Canonical telemetry schemas, analytics, unknown/null handling and source integrity remain authoritative; never replace them with the kit's demo-only formulas.

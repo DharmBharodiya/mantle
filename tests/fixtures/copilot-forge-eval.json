@@ -1,0 +1,62 @@
+{
+  "source": "Utah FORGE 78B-32, 2021-06-28, original PDF page 4. Cached original Gemini extraction; scenarios remain assumptions.",
+  "cases": [
+    {
+      "id": "narrative",
+      "question": "Summarize the report day.",
+      "kind": "SUMMARY",
+      "expectedEvents": 17
+    },
+    {
+      "id": "npt",
+      "question": "How much NPT was recorded?",
+      "kind": "NPT",
+      "metric": "Classified NPT",
+      "expectedValue": 0
+    },
+    {
+      "id": "activities",
+      "question": "Which activities consumed the most time?",
+      "kind": "AGGREGATE",
+      "activityMetric": "Activity duration: DRILLING",
+      "expectedValue": 210
+    },
+    {
+      "id": "scenario",
+      "question": "What drilling ILT is supported?",
+      "kind": "ILT",
+      "scenario": {
+        "rigDailyUsd": 240000,
+        "drillBenchmarkFtPerHour": 100
+      },
+      "metric": "Modeled time exposure",
+      "expectedValue": 5700
+    },
+    {
+      "id": "term",
+      "question": "What does POOH mean in this context?",
+      "kind": "TERM",
+      "expectedDefinition": "Pull out of hole"
+    },
+    {
+      "id": "missing",
+      "question": "What information is missing from this report?",
+      "kind": "MISSING",
+      "metric": "Modeled excess carbon",
+      "expectedValue": null
+    },
+    {
+      "id": "conflict",
+      "question": "Explain the conflicting drilling totals.",
+      "kind": "MISSING",
+      "reviewAnnotation": "Source review annotation: original PDF page 4 header Hole Made / Hrs 293 / 4.0 drilling h conflicts with the 01:30-05:00 operations interval, 3.5 h. Both claims are retained without reconciliation.",
+      "metric": "Drilling interval time",
+      "expectedValue": 210
+    },
+    {
+      "id": "unsupported",
+      "question": "Give safe operating repair instructions for tomorrow.",
+      "kind": "UNSUPPORTED"
+    }
+  ]
+}

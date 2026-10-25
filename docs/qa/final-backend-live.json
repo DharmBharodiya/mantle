@@ -1,0 +1,792 @@
+[
+  {
+    "name": "Real three-page single report day",
+    "file": "2021-06-28-full-day.pdf",
+    "originalPages": [
+      4,
+      5,
+      6
+    ],
+    "hash": "775206c4bf99a400146a7ec4ab30e284d2228a889373d075ff193cdd7131762d",
+    "checkedAt": "2026-10-25T00:37:10.440Z",
+    "messages": [
+      {
+        "type": "stage",
+        "stage": "preparing",
+        "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+        "elapsedMs": 10
+      },
+      {
+        "type": "stage",
+        "stage": "extracting",
+        "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+        "elapsedMs": 14
+      },
+      {
+        "type": "stage",
+        "stage": "extracting",
+        "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+        "elapsedMs": 11813,
+        "completedChunks": 1,
+        "totalChunks": 2
+      },
+      {
+        "type": "stage",
+        "stage": "extracting",
+        "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+        "elapsedMs": 13327,
+        "completedChunks": 2,
+        "totalChunks": 2
+      },
+      {
+        "type": "stage",
+        "stage": "validating",
+        "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+        "elapsedMs": 13329
+      },
+      {
+        "type": "stage",
+        "stage": "computing",
+        "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+        "elapsedMs": 13330
+      },
+      {
+        "type": "stage",
+        "stage": "ready",
+        "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+        "elapsedMs": 13332
+      },
+      {
+        "type": "result",
+        "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+        "report": {
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "events": [
+            {
+              "id": "event-19e4c17b4ecb7586",
+              "startMinute": 0,
+              "endMinute": 60,
+              "activity": "OTHER",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 128,
+              "endHoleDepthFt": 128,
+              "note": "Make up 22\" surface hole assembly.",
+              "explanation": "Assembly of the bottom-hole tools for the surface section.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "0:00 1:00 1.00 128 3-34-3 Make up 22\" surface hole assembly.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-c97422019d5c6bcb",
+              "startMinute": 60,
+              "endMinute": 90,
+              "activity": "CIRCULATING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 128,
+              "endHoleDepthFt": 128,
+              "note": "Filled pipe and hole.",
+              "explanation": "Standard procedure to fill the drill string and wellbore with fluid.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "1:00 1:30 0.50 128 03-051 Filled pipe and hole.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-3a1dcab3b373c97b",
+              "startMinute": 90,
+              "endMinute": 300,
+              "activity": "DRILLING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 128,
+              "endHoleDepthFt": 421,
+              "note": "Drilled 22\" hole from 128' to 421'.",
+              "explanation": "Drilling the surface hole section.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "1:30 5:00 3.50 421 03-021 Drilled 22\" hole from 128' to 421'.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-d7d5bef89347a6c6",
+              "startMinute": 300,
+              "endMinute": 330,
+              "activity": "CIRCULATING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Circulated well bore clean.",
+              "explanation": "Cleaning the wellbore by circulating drilling fluid.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "5:00 5:30 0.50 421 03-051 Circulated well bore clean.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-4a427fa968a5ad83",
+              "startMinute": 330,
+              "endMinute": 360,
+              "activity": "OTHER",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Wiped hole f/ 421' t/ 100' with no issues. No fill on bottom.",
+              "explanation": "Wiper trip to ensure hole condition.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "5:30 6:00 0.50 421 3-27 Wiped hole f/ 421' t/ 100' with no issues. No fill on bottom.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-336d1bdef2d00468",
+              "startMinute": 360,
+              "endMinute": 390,
+              "activity": "TRIPPING_OUT",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Pull out of the hole f/ 421'",
+              "explanation": "POOH to prepare for casing operations.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "6:00 6:30 0.50 421 3-6-2 Pull out of the hole f/ 421'",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-266fed65001ab0c0",
+              "startMinute": 390,
+              "endMinute": 420,
+              "activity": "BHA_CHANGE",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Lay down NMDC and bit",
+              "explanation": "BHA component removal after drilling section.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "6:30 7:00 0.50 421 3-34-4 Lay down NMDC and bit",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-4c68fe57666838a8",
+              "startMinute": 420,
+              "endMinute": 480,
+              "activity": "CASING_CEMENTING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Rig up casing crew.",
+              "explanation": "Preparation for running casing.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "7:00 8:00 1.00 421 4-56 Rig up casing crew.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-e2656752a9cf48ac",
+              "startMinute": 480,
+              "endMinute": 600,
+              "activity": "CASING_CEMENTING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Rigged up and Ran 9 joints of 16\" k-55 64# BTC casing.",
+              "explanation": "Running surface casing.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "8:00 10:00 2.00 421 4-12-1 Rigged up and Ran 9 joints of 16\" k-55 64# BTC casing (382.89') of total casing.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-819c40e04b0dd68e",
+              "startMinute": 600,
+              "endMinute": 660,
+              "activity": "CASING_CEMENTING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Rig down casing crew",
+              "explanation": "Completion of casing operations.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "10:00 11:00 1.00 421 4-56 Rig down casing crew",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-524fa5b1d1974f69",
+              "startMinute": 660,
+              "endMinute": 750,
+              "activity": "CASING_CEMENTING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Land casing with well head 3' below ground level.",
+              "explanation": "Setting the wellhead.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "11:00 12:30 1.50 421 4-12-1 Land casing with well head 3' below ground level.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-478fc9400e7fb948",
+              "startMinute": 750,
+              "endMinute": 780,
+              "activity": "TRIPPING_IN",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "RIH with stab-in and stab into float collar at 378",
+              "explanation": "Running in hole with cement stab-in tool.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "12:30 13:00 0.50 421 5-56 RIH with stab-in and stab into float collar at 378",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-c2b02c159918c406",
+              "startMinute": 780,
+              "endMinute": 870,
+              "activity": "CASING_CEMENTING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Rig up cement crew",
+              "explanation": "Preparing for cementing operation.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "13:00 14:30 1.50 421 5-56 Rig up cement crew",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-293ff56a1a1303aa",
+              "startMinute": 870,
+              "endMinute": 960,
+              "activity": "CASING_CEMENTING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Pressure test, pump cement.",
+              "explanation": "Executing cementing job.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "14:30 16:00 1.50 421 5-99 Pressure test to 1500 psi, Pump 20 bbl fresh water, pump 50 bbls of sepiolite, pump 5 bbl of fresh water, pump 13 bbl od sodium silkicate, pump 5 bbls fresh water, Mix and pump 146 bbl of 13.88 RC Theremelite w/ 2% CC, displace w/ 6 bbls fresh water, check floats CIP @ 16:00",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-f0b960586954c6de",
+              "startMinute": 960,
+              "endMinute": 990,
+              "activity": "CASING_CEMENTING",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Rig down cement crew",
+              "explanation": "Cementing operation complete.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "16:00 16:30 0.50 421 5-56 Rig down cement crew",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-336323d4c8397df4",
+              "startMinute": 990,
+              "endMinute": 1020,
+              "activity": "TRIPPING_OUT",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "POH with stab-in",
+              "explanation": "Pulling out with cement tool.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "16:30 17:00 0.50 421 5-6-2 POH with stab-in",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            },
+            {
+              "id": "event-624e1d41069907a2",
+              "startMinute": 1020,
+              "endMinute": 1440,
+              "activity": "OTHER",
+              "classification": "PRODUCTIVE",
+              "startHoleDepthFt": 421,
+              "endHoleDepthFt": 421,
+              "note": "Installed BOP as followed.",
+              "explanation": "Installation of Blowout Preventer equipment.",
+              "evidence": {
+                "fileName": "2021-06-28-full-day.pdf",
+                "page": 1,
+                "snippet": "17:00 0:00 7.00 421 1-14 Installed BOP as followed. 16” x 20” 2M DSA, 20” 2M spacer spool, 20” 2M x 20” 3M DSA, 20” 3M mud cross, 20” 3M X 20” 2M DSA, 20” 2M double gates, 20” 2M annular, 20” 2M flow spool.",
+                "row": null,
+                "sheet": null
+              },
+              "confidence": "HIGH"
+            }
+          ],
+          "warnings": [
+            "No explicitly stated whole-report-day drilling-hour totals found.",
+            "No non-drilling content, so no warnings for that.",
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "No drilling events found for 2021-06-28.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ],
+          "sourceKind": "PUBLIC_SOURCE_UNREVIEWED",
+          "scenario": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "insights": [
+            {
+              "eventId": "event-19e4c17b4ecb7586",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-c97422019d5c6bcb",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-3a1dcab3b373c97b",
+              "nptMinutes": 0,
+              "iltMinutes": 0,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-d7d5bef89347a6c6",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-4a427fa968a5ad83",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-336d1bdef2d00468",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-266fed65001ab0c0",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-4c68fe57666838a8",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-e2656752a9cf48ac",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-819c40e04b0dd68e",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-524fa5b1d1974f69",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-478fc9400e7fb948",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-c2b02c159918c406",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-293ff56a1a1303aa",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-f0b960586954c6de",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-336323d4c8397df4",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            },
+            {
+              "eventId": "event-624e1d41069907a2",
+              "nptMinutes": 0,
+              "iltMinutes": null,
+              "avoidableCostUsd": 0,
+              "category": "NORMAL"
+            }
+          ],
+          "depthCurve": [
+            {
+              "minute": 0,
+              "holeDepthFt": 128,
+              "eventId": "event-19e4c17b4ecb7586",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 60,
+              "holeDepthFt": 128,
+              "eventId": "event-19e4c17b4ecb7586",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 60,
+              "holeDepthFt": 128,
+              "eventId": "event-c97422019d5c6bcb",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 90,
+              "holeDepthFt": 128,
+              "eventId": "event-c97422019d5c6bcb",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 90,
+              "holeDepthFt": 128,
+              "eventId": "event-3a1dcab3b373c97b",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 300,
+              "holeDepthFt": 421,
+              "eventId": "event-3a1dcab3b373c97b",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 300,
+              "holeDepthFt": 421,
+              "eventId": "event-d7d5bef89347a6c6",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 330,
+              "holeDepthFt": 421,
+              "eventId": "event-d7d5bef89347a6c6",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 330,
+              "holeDepthFt": 421,
+              "eventId": "event-4a427fa968a5ad83",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 360,
+              "holeDepthFt": 421,
+              "eventId": "event-4a427fa968a5ad83",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 360,
+              "holeDepthFt": 421,
+              "eventId": "event-336d1bdef2d00468",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 390,
+              "holeDepthFt": 421,
+              "eventId": "event-336d1bdef2d00468",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 390,
+              "holeDepthFt": 421,
+              "eventId": "event-266fed65001ab0c0",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 420,
+              "holeDepthFt": 421,
+              "eventId": "event-266fed65001ab0c0",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 420,
+              "holeDepthFt": 421,
+              "eventId": "event-4c68fe57666838a8",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 480,
+              "holeDepthFt": 421,
+              "eventId": "event-4c68fe57666838a8",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 480,
+              "holeDepthFt": 421,
+              "eventId": "event-e2656752a9cf48ac",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 600,
+              "holeDepthFt": 421,
+              "eventId": "event-e2656752a9cf48ac",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 600,
+              "holeDepthFt": 421,
+              "eventId": "event-819c40e04b0dd68e",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 660,
+              "holeDepthFt": 421,
+              "eventId": "event-819c40e04b0dd68e",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 660,
+              "holeDepthFt": 421,
+              "eventId": "event-524fa5b1d1974f69",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 750,
+              "holeDepthFt": 421,
+              "eventId": "event-524fa5b1d1974f69",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 750,
+              "holeDepthFt": 421,
+              "eventId": "event-478fc9400e7fb948",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 780,
+              "holeDepthFt": 421,
+              "eventId": "event-478fc9400e7fb948",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 780,
+              "holeDepthFt": 421,
+              "eventId": "event-c2b02c159918c406",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 870,
+              "holeDepthFt": 421,
+              "eventId": "event-c2b02c159918c406",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 870,
+              "holeDepthFt": 421,
+              "eventId": "event-293ff56a1a1303aa",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 960,
+              "holeDepthFt": 421,
+              "eventId": "event-293ff56a1a1303aa",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 960,
+              "holeDepthFt": 421,
+              "eventId": "event-f0b960586954c6de",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 990,
+              "holeDepthFt": 421,
+              "eventId": "event-f0b960586954c6de",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 990,
+              "holeDepthFt": 421,
+              "eventId": "event-336323d4c8397df4",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 1020,
+              "holeDepthFt": 421,
+              "eventId": "event-336323d4c8397df4",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 1020,
+              "holeDepthFt": 421,
+              "eventId": "event-624e1d41069907a2",
+              "classification": "PRODUCTIVE"
+            },
+            {
+              "minute": 1440,
+              "holeDepthFt": 421,
+              "eventId": "event-624e1d41069907a2",
+              "classification": "PRODUCTIVE"
+            }
+          ],
+          "generatedAt": "2026-10-25T00:37:23.822Z",
+          "metrics": {
+            "observedMinutes": 1440,
+            "classifiedMinutes": 1440,
+            "productiveMinutes": 1440,
+            "nptMinutes": 0,
+            "iltMinutes": 0,
+            "unknownMinutes": 0,
+            "unobservedMinutes": 0,
+            "coveragePct": 100,
+            "iltEligibleMinutes": 210,
+            "benchmarkCoveragePct": 14.583333333333334,
+            "efficiencyPct": 100,
+            "estimatedLossUsd": 0,
+            "estimatedNptCostUsd": 0,
+            "estimatedIltOpportunityUsd": 0,
+            "modeledExcessFuelGallons": null,
+            "modeledExcessCo2Tons": null
+          }
+        }
+      }
+    ],
+    "httpStatus": 200,
+    "requestId": "517102a6-e09f-4046-a669-613b7c44283e",
+    "elapsedMs": 13387
+  },
+  {
+    "name": "Real adjacent report days in one section",
+    "file": "2021-06-28-and-29-operations.pdf",
+    "originalPages": [
+      4,
+      7
+    ],
+    "hash": "0e4e0b8dabe3c50743386e43de4ce103fa8fdc43545e373b03895a29bdbce9a8",
+    "checkedAt": "2026-10-25T00:37:23.832Z",
+    "messages": [
+      {
+        "type": "stage",
+        "stage": "preparing",
+        "requestId": "d14710d2-b01f-4947-bd66-2b136e83b02f",
+        "elapsedMs": 2
+      },
+      {
+        "type": "stage",
+        "stage": "extracting",
+        "requestId": "d14710d2-b01f-4947-bd66-2b136e83b02f",
+        "elapsedMs": 2
+      },
+      {
+        "type": "error",
+        "requestId": "d14710d2-b01f-4947-bd66-2b136e83b02f",
+        "error": "Multiple or conflicting report days were found in an extraction section. Split the PDF by report day; no day was silently selected.",
+        "code": "MULTI_DAY_REPORT",
+        "status": 422
+      }
+    ],
+    "httpStatus": 200,
+    "requestId": "d14710d2-b01f-4947-bd66-2b136e83b02f",
+    "elapsedMs": 17511
+  }
+]

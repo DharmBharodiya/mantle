@@ -1,0 +1,95 @@
+{
+  "reportDate": "2021-06-28",
+  "originalPage": 4,
+  "excerptPage": 1,
+  "source": "https://gdr.openei.org/files/1330/78B-32-DailyDrillingReports-6-27thru7-31.pdf",
+  "review": "Manually compared against the original operations table. Final printed 0:00 ends the report day: 17:00 + explicit 7.00 hours = 24:00. Productive is an interpretation of planned operations; the source has no marked Non-Prod entries.",
+  "intervals": [
+    [
+      0,
+      60,
+      128
+    ],
+    [
+      60,
+      90,
+      128
+    ],
+    [
+      90,
+      300,
+      421
+    ],
+    [
+      300,
+      330,
+      421
+    ],
+    [
+      330,
+      360,
+      421
+    ],
+    [
+      360,
+      390,
+      421
+    ],
+    [
+      390,
+      420,
+      421
+    ],
+    [
+      420,
+      480,
+      421
+    ],
+    [
+      480,
+      600,
+      421
+    ],
+    [
+      600,
+      660,
+      421
+    ],
+    [
+      660,
+      750,
+      421
+    ],
+    [
+      750,
+      780,
+      421
+    ],
+    [
+      780,
+      870,
+      421
+    ],
+    [
+      870,
+      960,
+      421
+    ],
+    [
+      960,
+      990,
+      421
+    ],
+    [
+      990,
+      1020,
+      421
+    ],
+    [
+      1020,
+      1440,
+      421
+    ]
+  ],
+  "operationsText": "0:00 1:00 1.00 128 3-34-3 Make up 22\" surface hole assembly.\n1:00 1:30 0.50 128 03-051 Filled pipe and hole.\n1:30 5:00 3.50 421 03-021 Drilled 22\" hole from 128' to 421'.\n5:00 5:30 0.50 421 03-051 Circulated well bore clean.\n5:30 6:00 0.50 421 3-27 Wiped hole f/ 421' t/ 100' with no issues. No fill on bottom.\n6:00 6:30 0.50 421 3-6-2 Pull out of the hole f/ 421'\n6:30 7:00 0.50 421 3-34-4 Lay down NMDC and bit\n7:00 8:00 1.00 421 4-56 Rig up casing crew.\n8:00 10:00 2.00 421 4-12-1 Rigged up and Ran 9 joints of 16\" k-55 64# BTC casing (382.89') of total casing.\nLanded out with 33' landing joint. Shoe set at 416' KB. Float collar at 372' KB.\n10:00 11:00 1.00 421 4-56 Rig down casing crew\n11:00 12:30 1.50 421 4-12-1 Land casing with well head 3' below ground level.\n12:30 13:00 0.50 421 5-56 RIH with stab-in and stab into float collar at 378\n13:00 14:30 1.50 421 5-56 Rig up cement crew\n14:30 16:00 1.50 421 5-99 Pressure test to 1500 psi, Pump 20 bbl fresh water, pump 50 bbls of sepiolite, pump\n5 bbl of fresh water, pump 13 bbl od sodium silkicate, pump 5 bbls fresh water, Mix\nand pump 146 bbl of 13.88 RC Theremelite w/ 2% CC, displace w/ 6 bbls fresh water,\ncheck floats CIP @ 16:00\n16:00 16:30 0.50 421 5-56 Rig down cement crew\n16:30 17:00 0.50 421 5-6-2 POH with stab-in\n17:00 0:00 7.00 421 1-14 Installed BOP as followed. 16” x 20” 2M DSA, 20” 2M spacer spool, 20” 2M x 20” 3M\nDSA, 20” 3M mud cross, 20” 3M X 20” 2M DSA, 20” 2M double gates, 20” 2M\nannular, 20” 2M flow spool."
+}

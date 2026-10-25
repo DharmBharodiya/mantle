@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-25T00:35:51.000Z",
+  "checks": [
+    {
+      "name": "Real three-page single report day",
+      "status": "FAIL",
+      "httpStatus": 200,
+      "requestId": "f0f69052-d682-416d-aa35-4eee97be0d10",
+      "elapsedMs": 4298,
+      "errorCode": "INVALID_EXTRACTION",
+      "mismatches": [
+        "No completed real-day report: {\"type\":\"error\",\"requestId\":\"f0f69052-d682-416d-aa35-4eee97be0d10\",\"error\":\"AI output did not match the required schema. Review source quality and retry.\",\"code\":\"INVALID_EXTRACTION\",\"status\":422}"
+      ]
+    },
+    {
+      "name": "Real adjacent report days in one section",
+      "status": "FAIL",
+      "httpStatus": 200,
+      "requestId": "eb950fe3-a29c-444c-844a-cb30354ee43e",
+      "elapsedMs": 16232,
+      "errorCode": "INVALID_EXTRACTION",
+      "mismatches": [
+        "Expected MULTI_DAY_REPORT and no report; observed {\"type\":\"error\",\"requestId\":\"eb950fe3-a29c-444c-844a-cb30354ee43e\",\"error\":\"AI output did not match the required schema. Review source quality and retry.\",\"code\":\"INVALID_EXTRACTION\",\"status\":422}"
+      ]
+    }
+  ]
+}

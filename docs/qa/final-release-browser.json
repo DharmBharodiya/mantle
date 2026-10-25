@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-10-25T00:55:52.460Z",
+  "tool": "Windows Computer Use (@oai/sky); browser connector unavailable",
+  "base": "http://127.0.0.1:3100",
+  "observedWindowImageSize": {
+    "width": 1430,
+    "height": 854
+  },
+  "verified": [
+    {
+      "check": "Desktop homepage rendered",
+      "result": "PASS",
+      "observation": "Thermal hero, navigation and report intake visibly rendered in Chrome."
+    },
+    {
+      "check": "Homepage to console navigation",
+      "result": "PASS",
+      "observation": "Clicked Open console and observed production /console, synthetic report, controls and canonical KPIs."
+    },
+    {
+      "check": "Reports navigation",
+      "result": "PASS",
+      "observation": "Clicked Reports; observed Import snapshot, report list and summary controls."
+    },
+    {
+      "check": "Open snapshot picker",
+      "result": "PARTIAL",
+      "observation": "Import snapshot opened JSON picker; actual import could not be completed."
+    }
+  ],
+  "blocked": [
+    {
+      "check": "File picker input",
+      "reason": "element 866 is not available in cached app state; refreshed coordinate retry twice reported point over chrome.exe empty title, not target Mantle window."
+    },
+    {
+      "check": "Remaining browser QA",
+      "reason": "Computer Use stopped: it could not determine the current browser URL on Windows with enough confidence to enforce policy. No further app input issued."
+    }
+  ],
+  "unverified": [
+    "Exactly 390px mobile and tablet layouts",
+    "Genuine snapshot imported and inspected in live browser",
+    "End-to-end upload/cancellation/report switching",
+    "Scenario editing and comparison interactions",
+    "CSV/JSON download and reimport in browser",
+    "Tab/Shift+Tab and visible focus through all controls",
+    "Reduced-motion behavior and chart hover",
+    "Browser print preview / Save as PDF pagination and clipping"
+  ],
+  "screenshots": "Inspected tool-returned screenshots only; no screenshot artifact was saved."
+}

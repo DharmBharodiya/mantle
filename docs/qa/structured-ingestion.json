@@ -1,0 +1,32 @@
+[
+  {
+    "check": "Canonical CSV without Gemini",
+    "status": "PASS",
+    "elapsedMs": 50,
+    "requestId": "dbafd282-65bc-4495-8bb3-0d619661cdff",
+    "events": 3,
+    "nptMinutes": 60,
+    "stages": [
+      "preparing",
+      "extracting",
+      "validating",
+      "computing",
+      "ready"
+    ]
+  },
+  {
+    "check": "Canonical XLSX without Gemini",
+    "status": "PASS",
+    "elapsedMs": 46,
+    "requestId": "394a46f7-0c0f-4982-a11c-201965d132d1",
+    "events": 3,
+    "nptMinutes": 60,
+    "stages": [
+      "preparing",
+      "extracting",
+      "validating",
+      "computing",
+      "ready"
+    ]
+  }
+]

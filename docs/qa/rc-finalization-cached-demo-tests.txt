@@ -1,0 +1,15 @@
+
+> boresight-hackathon@0.1.0 test
+> vitest run tests/forge-validation.test.ts tests/release-real-report.test.tsx tests/reports.test.ts
+
+
+ RUN  v3.2.7 C:/Users/dharm/Downloads/BoreSight-Starter-Kit
+
+ ✓ tests/reports.test.ts (4 tests) 23ms
+ ✓ tests/forge-validation.test.ts (5 tests) 23ms
+ ✓ tests/release-real-report.test.tsx (2 tests) 69ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  21:00:50
+   Duration  10.03s (transform 390ms, setup 0ms, collect 1.11s, tests 115ms, environment 1ms, prepare 1.21s)

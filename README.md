@@ -1,114 +1,84 @@
-# BoreSight — Steel & Steam hackathon starter repository
+# Mantle — evidence-backed geothermal intelligence
 
-> **Turn geothermal drilling reports into evidence-backed operational intelligence.**
->
-> Light-mode bento dashboard · Google Gemini · ElevenLabs · Photon 2.0 Beta · Next.js + TypeScript.
+A dark, responsive local analytics workspace that converts daily drilling reports into source-linked events, drilling progress, confirmed NPT and benchmark-qualified ILT scenarios.
 
-**STATUS: substantial prototype scaffold, not a production-ready system.** The bundled data is explicitly synthetic. No real rig is connected. The starter code was reviewed statically but package installation, Next build, and live provider requests could not be executed in the authoring environment because the npm registry was unreachable. Perform the FIRST-RUN and verification checklist before demo day.
+**Status:** implemented local MVP with a verified synthetic one-page PDF extraction on `gemini-3.1-flash-lite`. The critical ingestion follow-up also verified canonical CSV/XLSX imports without Gemini. The previous `gemini-3.8-flash` model returned high-demand errors. See `INGESTION-FIX-REPORT.md` for current evidence and limits; `OVERNIGHT-RESULTS.md` records the earlier run.
 
-## Start here — 4 developers in 15 minutes
+## Run locally
 
-1. **Team lead** creates an empty private GitHub repository `boresight`, extracts this starter kit into the repository folder, and reads `docs/01-PRODUCT-AND-SCOPE.md` and `docs/03-TEAM-AND-GIT.md`.
-2. Team lead, from repository root, runs `npm install` (requires Node 22+ because the Photon SDK requires it). This generates `package-lock.json`; **commit it before anybody branches**. Then `npm run dev` and visit `http://localhost:3000`.
-3. Copy `.env.example` to `.env.local`. Store secrets in a password manager (NEVER GitHub chat, README, screenshots, or commits). The synthetic dashboard needs no API key. Live file parsing requires `GEMINI_API_KEY`; voice requires ElevenLabs; field dispatch is **disabled** by default.
-4. Commit scaffold to `main`, then create the four branches described in `docs/03-TEAM-AND-GIT.md`.
-5. Every developer reads `AGENTS.md` and their specific `agent-prompts/P*.md` **before opening their coding agent**.
-6. Open four GitHub issues, link their owned files and acceptance criteria, then work in parallel. All PRs to `main` should pass checks and get a human review.
-
-## Windows PowerShell quick start
+Requires Node.js 22+ and npm. Existing dependencies are locked in `package-lock.json`.
 
 ```powershell
-# In the extracted folder
-node --version
-npm install
-Copy-Item .env.example .env.local
-npm run dev
-# Open http://localhost:3000
+npm.cmd ci
+# Only if .env.local does not exist: copy .env.example to .env.local.
+npm.cmd run dev
 ```
+
+Open http://localhost:3000 for the Mantle homepage. Select **Open console** for the Mantle analysis workspace at http://localhost:3000/console. The homepage upload sends a real report to the existing API and opens its completed analysis in the console. See [design integration notes](MANTLE-DESIGN-INTEGRATION.md).
+
+Save the server-side key in `.env.local`:
+
+```dotenv
+GEMINI_API_KEY=your_key_here
+GEMINI_MODEL=gemini-3.1-flash-lite
+```
+
+Restart the server after changing environment settings. Do not put a key in chat, Git, logs or `NEXT_PUBLIC_` variables. The default model is configurable; Google project access, capacity and quota still apply. [Google structured output documentation](https://ai.google.dev/gemini-api/docs/structured-output), [current model documentation](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite).
+
+## What is implemented
+
+- PDF and unstructured CSV/TXT/XLSX ingestion through server-side Gemini structured output and Zod validation. Canonical CSV/XLSX tables with explicit time, activity and classification columns use deterministic parsing without Gemini.
+- File, MIME, signature, byte, expanded workbook, row, character and response limits. Oversized sources are rejected rather than silently truncated.
+- One local report day, 00:00–24:00. Ambiguous cross-midnight and multi-day inputs must be split/clarified; timestamps are not guessed.
+- Evidence snippets and page/row/sheet references; text excerpts are checked against source content. PDF references remain AI-extracted/unverified.
+- Pure TypeScript NPT, supported drilling ILT, time coverage, unknown time and optional incremental fuel/CO₂ calculations.
+- Dark dashboard, inverted linear hole-depth chart, assumed benchmark illustration, 24-hour activity strip, inline evidence panel and searchable/filterable event table.
+- Editable rig rate, drilling benchmark, incremental fuel and emissions factor. Recalculation uses no Gemini call and preserves synthetic provenance.
+- Up to 20 in-tab full analyses (including the demo), scenario copies and report comparison. Up to 30 optional browser-local **aggregate summaries**, with deletion controls.
+- CSV event export (spreadsheet-formula protection), JSON analysis snapshot export/import (metrics recomputed), and a print stylesheet for a compact operational summary.
+- Equipment Vision: PNG/JPEG/WebP upload, validated region-based visual observations, uncertainty and limits. No automatic diagnosis, IADC grade, repair orders or safety clearance.
+- **Photon + ElevenLabs remain unimplemented/paused for this mission.** Their old internal files are retained, UI controls are absent, and the old API endpoints return 501 without calling either provider.
+
+## Source integrity
+
+The initial well and all example incidents are `SYNTHETIC_DEMO`, not actual FORGE incidents. Uploaded reports are `PUBLIC_SOURCE_UNREVIEWED`; AI never promotes them to human verified. An imported JSON snapshot cannot promote its verification status either.
+
+Hole measured depth is not bit position. Flat depth alone is not downtime. Missing trip movement means trip ILT is unavailable, not zero. The illustrative drilling benchmark is formation dependent. All dollar/fuel/carbon outputs are scenario models, not measured savings, accounting losses or emissions.
+
+Full reports and excerpts stay in memory unless explicitly downloaded. Local summary saving is opt-in and includes only aggregate metrics, scenario assumptions, well/date labels and depth endpoints. Do not save commercially sensitive labels on a shared device. No raw uploaded files or API keys are stored in the browser.
+
+## Verification
 
 ```powershell
-# After team lead pushes a clean main containing package-lock.json
-# Developer 1 / 2 / 3 / 4: choose your OWN branch name
- git switch -c feat/p1-ingestion
-# OR: feat/p2-analytics | feat/p3-dashboard | feat/p4-field-comms
- git push -u origin HEAD
+npm.cmd run typecheck
+npm.cmd test
+npm.cmd run lint
+npm.cmd run build
+npm.cmd run start -- --hostname 127.0.0.1 --port 3100
+# In another terminal:
+node scripts/smoke.mjs
+# Only when you want an actual Gemini call on synthetic data:
+node scripts/smoke.mjs --live
 ```
 
-## Instant offline preview — no installation
+The `scripts/smoke.mjs --live` check uploads a TXT rendering of the synthetic fixture so it exercises Gemini rather than the deterministic CSV path. `node scripts/verify-ingestion.mjs` verifies canonical CSV/XLSX without Gemini; append `--live` to generate and extract a real one-page synthetic PDF. All checks assert 3 events, 60 NPT minutes and synthetic provenance. It never fabricates a successful result. In this Windows agent sandbox, Vitest/esbuild needed approved execution outside the sandbox to read its config. This is an environment constraint, not a failing test.
 
-Open `preview.html` in Chrome, Edge or Firefox. It is a **self-contained interactive UI preview** (not the production Next.js application): browse the chart, open source-inspection modals, search shift events, adjust the rig-rate scenario, and export a scenario CSV. Vendor buttons explicitly explain that actual Gemini/ElevenLabs/Photon calls require running the Next.js app. The preview clearly labels its synthetic data.
+For manual viewport, keyboard, print and three-minute demo checks, see [docs/SOLO-QA-RUNBOOK.md](docs/SOLO-QA-RUNBOOK.md). Existing screenshots in `docs/screenshots` predate the dark redesign; they are not evidence of the new UI.
 
-## What works out of the box after dependencies install
+## APIs
 
-- A fully labeled **synthetic** geothermal telemetry dashboard with five scenario KPIs.
-- An actual event-based hole-depth chart, bottleneck bars, shift records and click-to-inspect evidence.
-- Deterministic NPT, drilling ILT and scenario-cost calculations with tests.
-- Drag-and-drop-by-picker PDF/CSV/XLSX/TXT upload API backed by Gemini **when configured**.
-- ElevenLabs briefing API **when configured**, with a useful text briefing before voice.
-- Photon 2.0 Beta outgoing-message adapter requiring configured valid conversation IDs and enabled opt-in.
+| Endpoint | Request | Result |
+|---|---|---|
+| `GET /api/analytics` | none | labeled synthetic report |
+| `POST /api/analytics` | `{extraction, scenario?, sourceKind?}` | recalculated report; no Gemini call |
+| `POST /api/ingest` | multipart `file` | validated report or meaningful non-2xx error |
+| `POST /api/vision` | multipart image `file` | unverified observations or meaningful error |
+| `POST /api/briefing`, `/api/dispatch` | paused | 501; providers never called |
 
-## Features your team must still finish (NOT misrepresented as complete)
+Canonical schemas: `src/types/telemetry.ts` (v1.1) and `src/types/vision.ts`. All server credentials stay server-side. HTTP errors include a stable `code` where appropriate; no raw provider URLs or key-bearing errors are returned.
 
-- Real Utah FORGE sample import; daily page partitioning and verified page citations.
-- Further field validation and better spreadsheet normalization, partial data/unknowns UX.
-- Photon 2.0 agent onboarding, real incoming events and actual verified delivery confirmation.
-- Secure user auth, rate limiting, durable storage, background job architecture if turning into production SaaS.
-- Real equipment-photo analysis and maintenance blueprints: **stretch**, not core acceptance criterion.
+## Real-source verification still required
 
-## Repo map
+The public [Utah FORGE GDR submission 1330](https://gdr.openei.org/submissions/1330) was rate limited (HTTP 429) during this run. No real DOE/FORGE document was downloaded, redistributed or successfully extracted. Follow the runbook to verify a legally accessible single-day source against original times, depths and pages.
 
-```text
-boresight/
-├── README.md, AGENTS.md, CLAUDE.md
-├── docs/                         # 7 detailed implementation & demo documents
-├── agent-prompts/                # One explicit prompt per teammate
-├── public/reference-images/      # 5 user-provided visual references
-├── src/types/telemetry.ts        # Contract locked by team lead
-├── src/data/demo-report.ts       # Explicitly fabricated seed, lead-owned
-├── src/lib/analytics/            # P2-owned formulas
-├── src/lib/ingestion/            # P1-owned Gemini and file conversion
-├── src/lib/comms/                # P4-owned provider adapters
-├── src/components/dashboard/     # P3-owned main UX
-├── src/components/analytics/     # P2-owned operational UI
-├── src/components/comms/         # P4-owned field UI
-├── src/app/page.tsx              # P3-owned app integration shell
-├── src/app/api/ingest/           # P1
-├── src/app/api/analytics/        # P2
-├── src/app/api/briefing,dispatch # P4
-└── tests/                        # P2 tests; each role owns its own test files
-```
-
-## Canonical paths and interfaces
-
-| Endpoint | Method | Owner | Body / response |
-| --- | --- | --- | --- |
-| `/api/analytics` | GET | P2 | Returns seeded synthetic `WellTelemetryReport` |
-| `/api/analytics` | POST | P2 | `{ extraction: Extraction, scenario?: Scenario }` → report |
-| `/api/ingest` | POST | P1 | multipart form: `file` → parsed & computed report; errors never replaced by fake success |
-| `/api/briefing` | POST | P4 | `{ extraction, scenario, sourceKind, mode:'script'|'audio' }` → JSON script or MP3 |
-| `/api/dispatch` | POST | P4 | `{ extraction, scenario, recipient:{spaceId,senderId,idempotencyKey} }` → accepted (NOT delivered) |
-
-## Strongest demo scenario
-
-A judge uploads an authentic 2021 Utah FORGE daily report → Gemini extracts the time blocks with evidence → BoreSight shows drilling progress and NPT estimates → the judge opens an activity and reads the source quote → ElevenLabs speaks an evidence-based incoming-shift briefing → Photon sends a message to an opted-in, existing rig-team test conversation, **if the live integration is working**. A synthetic fallback supports demo flow without misrepresenting any real incident.
-
-## Documentation index
-
-1. `docs/01-PRODUCT-AND-SCOPE.md` — user journey, features, non-goals, prize strategy, engineering integrity
-2. `docs/02-ARCHITECTURE-CONTRACTS.md` — system map, types, state flow, provider handling, math, source integrity
-3. `docs/03-TEAM-AND-GIT.md` — bootstrap, strict ownership, PR/merge rules, shared AI-agent procedure
-4. `docs/04-UI-UX-DESIGN-SYSTEM.md` — high-fidelity light-mode design specification based on all five screenshots
-5. `docs/05-BUILD-TIMELINE-AND-QA.md` — timeboxed schedule, tests, release, failure modes
-6. `docs/06-DATA-PROVIDERS-AND-SECURITY.md` — provider setup, documented links, dataset provenance, security
-7. `docs/07-PITCH-AND-DEMO.md` — rehearsed 3-minute demo and backup decision tree
-
-## Source of the datasets and technical documentation
-
-- Utah FORGE dataset 1330: https://gdr.openei.org/submissions/1330 (real reports from **2021**; not bundled here)
-- Gemini PDF handling: https://ai.google.dev/gemini-api/docs/document-processing
-- Gemini structured outputs: https://ai.google.dev/gemini-api/docs/structured-output
-- ElevenLabs voice API: https://elevenlabs.io/docs/api-reference/text-to-speech/convert
-- Photon 2.0 Beta: https://photon.codes/docs/beta/get-started/imessage
-- MLH prize list: https://www.mlh.com/events/sbuhacks-5f/prizes
-
-**Safety:** no recommendations from this demo are authorized for field execution. This is a decision-support visualization, not a well-control, emergency-response or maintenance-instruction product.
+This local prototype has no production authentication, durable source storage, or per-user rate limiting. Do not deploy it publicly without those controls. No infrastructure was provisioned, no remote branch was pushed, and no deployment was performed.

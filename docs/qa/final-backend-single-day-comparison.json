@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-25T00:42:52.591Z",
+  "checks": [
+    {
+      "name": "Real three-page single report day",
+      "status": "FAIL",
+      "httpStatus": 200,
+      "requestId": "fc3b8ba0-3456-4821-9575-bd6dddf19e5e",
+      "elapsedMs": 12520,
+      "events": 17,
+      "mismatches": [
+        "Excerpt mismatch at interval 14"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-10-24T21:56:05.278Z",
+  "results": [
+    {
+      "command": "npm.cmd run typecheck",
+      "exitCode": 0,
+      "status": "PASS",
+      "elapsedMs": 4733
+    },
+    {
+      "command": "npm.cmd test",
+      "exitCode": 0,
+      "status": "PASS",
+      "elapsedMs": 5645
+    },
+    {
+      "command": "npm.cmd run lint",
+      "exitCode": 0,
+      "status": "PASS",
+      "elapsedMs": 7218
+    },
+    {
+      "command": "npm.cmd run build",
+      "exitCode": 0,
+      "status": "PASS",
+      "elapsedMs": 35835
+    }
+  ]
+}

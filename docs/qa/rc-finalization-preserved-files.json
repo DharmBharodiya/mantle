@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-10-25T01:02:29.790Z",
+  "sourceChangeInThisFinalization": false,
+  "preserved": [
+    {
+      "path": "docs/qa/forge-http.json",
+      "sha256": "74c9e19aa05e8660e599f457225c1c42ee25ed32fbe33a75afc24bf60ddf9cfa",
+      "unchanged": true
+    },
+    {
+      "path": "src/components/mantle/console/EventLog.tsx",
+      "sha256": "7d7e1a6fdf592152d77fc95372e360c37fb29def5983246fdb0d0db54c08bc94",
+      "unchanged": true
+    },
+    {
+      "path": "src/styles/mantle.css",
+      "sha256": "aad502d05fc118b1ecf0cd276249e978b736b6b9068a8eac0c657925db585374",
+      "unchanged": true
+    },
+    {
+      "path": "tests/forge-validation.test.ts",
+      "sha256": "3e0409eecf6a894c467e4a8bff5e4a7f04cf9f7524b08229733247067c0f4f22",
+      "unchanged": true
+    },
+    {
+      "path": "demo-fixtures/public/forge-78b-32/2021-06-28-reviewed.snapshot.json",
+      "sha256": "fc1688f1b2665e093d9dafd15b083d64c9ebe3ba3d5933c67b36f7e01f1f29ef",
+      "unchanged": true
+    },
+    {
+      "path": "docs/qa/release-build.txt",
+      "sha256": "8b18b194d42f75b0313980e65d6ebe3358cdd6949d40ff2b8ee475cc8707d2d5",
+      "unchanged": true
+    },
+    {
+      "path": "docs/qa/release-checks.json",
+      "sha256": "71a87472f1f8293eedc65325f7822fa3430894db9bf5457a2cad1d0894153b64",
+      "unchanged": true
+    },
+    {
+      "path": "docs/qa/release-lint.txt",
+      "sha256": "6e793e4b02e8d671a8d13cf4c24c080730b8226028886d84eabc393c7b49f710",
+      "unchanged": true
+    },
+    {
+      "path": "docs/qa/release-tests.txt",
+      "sha256": "0810c85eb7c54cfdf18a6648e67cfc677529634f76147e530ed53994388cca88",
+      "unchanged": true
+    },
+    {
+      "path": "docs/qa/release-typecheck.txt",
+      "sha256": "7345ba02083dcc7ad870eae958ec129f56bfa75e3c0495f6318897f503561bbf",
+      "unchanged": true
+    }
+  ]
+}

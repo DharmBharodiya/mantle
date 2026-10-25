@@ -1,0 +1,8 @@
+import type { WellTelemetryReport } from "@/types/telemetry";
+import { bottleneckGroups } from "@/lib/analytics/compute";
+import { fmtMoney, fmtNum } from "@/lib/mantle/report";
+/** Kit loss ranking layout, using the existing deterministic bottleneck aggregation. */
+export function LossLedger({report,onSelect,onScenario}:{report:WellTelemetryReport;onSelect:(id:string)=>void;onScenario:()=>void}) {
+  const rows=bottleneckGroups(report);const max=Math.max(1,...rows.map(r=>r.minutes));
+  return <section className="m-panel flex flex-col gap-5"><h2>Time exposure</h2>{rows.length?rows.map(r=><div key={r.label}><button className="m-ledger-row" onClick={()=>onSelect(r.eventIds[0])}><span>{r.label.toLowerCase()}</span><span className="font-mono text-xs">{fmtNum(r.minutes/60)} h · {fmtMoney(r.costUsd)}</span></button><div className="mt-2 h-1 rounded-full bg-white/5"><div className={`h-full rounded-full ${r.category==="NPT"?"bg-npt":"bg-ilt"}`} style={{width:`${r.minutes/max*100}%`}}/></div></div>):<p className="text-sm text-steam-3">No supported NPT or drilling ILT in this report.</p>}<div className="flex flex-wrap items-baseline justify-between gap-2 border-t border-m-line pt-4"><span className="text-sm text-steam-3">Total scenario</span><span className="text-3xl">{fmtMoney(report.metrics.estimatedLossUsd)}</span></div><dl className="m-assumptions"><div><dt>Rig day rate</dt><dd>{fmtMoney(report.scenario.rigDailyUsd)}</dd></div><div><dt>Drilling benchmark</dt><dd>{report.scenario.drillBenchmarkFtPerHour} ft/h</dd></div><div><dt>Incremental fuel</dt><dd>{report.scenario.excessFuelGallonsPerHour??"Unknown"} gal/h</dd></div></dl><button className="m-btn-ghost" onClick={onScenario}>Edit assumptions</button></section>;
+}

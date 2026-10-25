@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-10-25T00:39:27.267Z",
+  "checks": [
+    {
+      "name": "Real report scenario uses 293 ft / 3.5 h and explicit assumptions",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Source verification cannot be promoted",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Conflicting intervals return an error, never report metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Negative scenario rate is rejected",
+      "status": "PASS",
+      "httpStatus": 422
+    }
+  ]
+}

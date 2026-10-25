@@ -1,0 +1,85 @@
+{
+  "checkedAt": "2026-10-25T00:43:09.484Z",
+  "providerCalls": 0,
+  "totalAssertions": 21,
+  "checks": [
+    {
+      "script": "scripts/smoke.mjs",
+      "args": [],
+      "exitCode": 0,
+      "status": "PASS",
+      "output": "[\n  {\n    \"check\": \"dashboard HTML and source labels\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 88,\n    \"httpStatus\": 200\n  },\n  {\n    \"check\": \"Mantle-style homepage and console link\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 22,\n    \"httpStatus\": 200\n  },\n  {\n    \"check\": \"synthetic report API\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 23,\n    \"events\": 9\n  },\n  {\n    \"check\": \"deterministic scenario recalculation and provenance\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 14,\n    \"nptScenarioUsd\": 50000\n  },\n  {\n    \"check\": \"unknown fuel remains null and client verification cannot be promoted\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 9,\n    \"carbonScenario\": null,\n    \"sourceKind\": \"PUBLIC_SOURCE_UNREVIEWED\"\n  },\n  {\n    \"check\": \"invalid analytics JSON is an explicit non-success\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 8,\n    \"httpStatus\": 422\n  },\n  {\n    \"check\": \"invalid upload produces explicit error\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 13,\n    \"httpStatus\": 415,\n    \"code\": \"UNSUPPORTED_FILE\"\n  },\n  {\n    \"check\": \"vision rejects invalid image before model call\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 7,\n    \"httpStatus\": 415,\n    \"code\": \"IMAGE_SIGNATURE\"\n  }\n]\n",
+      "error": ""
+    },
+    {
+      "script": "scripts/verify-ingestion.mjs",
+      "args": [],
+      "exitCode": 0,
+      "status": "PASS",
+      "output": "[\n  {\n    \"check\": \"Canonical CSV without Gemini\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 70,\n    \"requestId\": \"82159200-85a9-4a29-a185-b2f6eaf0ca67\",\n    \"events\": 3,\n    \"nptMinutes\": 60,\n    \"stages\": [\n      \"preparing\",\n      \"extracting\",\n      \"validating\",\n      \"computing\",\n      \"ready\"\n    ]\n  },\n  {\n    \"check\": \"Canonical XLSX without Gemini\",\n    \"status\": \"PASS\",\n    \"elapsedMs\": 50,\n    \"requestId\": \"4a8c1f87-2a16-4dd2-a88e-8bde120bec5c\",\n    \"events\": 3,\n    \"nptMinutes\": 60,\n    \"stages\": [\n      \"preparing\",\n      \"extracting\",\n      \"validating\",\n      \"computing\",\n      \"ready\"\n    ]\n  }\n]\n",
+      "error": ""
+    },
+    {
+      "name": "Real report scenario uses 293 ft / 3.5 h and explicit assumptions",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Source verification cannot be promoted",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Conflicting intervals reject without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Negative scenario rejects without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Empty analytics reject without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Duplicate CSV columns reject without report",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "Conflicting time aliases emit only terminal stream error",
+      "status": "PASS",
+      "httpStatus": 200,
+      "terminalStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "Equivalent clock/minute aliases preserve coverage and source",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Malformed depth grouping rejects",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "INVALID_STRUCTURED_ROW"
+    },
+    {
+      "name": "XLSX duplicate columns reject after decoding",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "25-page PDF rejects before model generation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "terminalStatus": 413,
+      "code": "PDF_PAGE_LIMIT"
+    }
+  ]
+}

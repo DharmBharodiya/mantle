@@ -1,0 +1,356 @@
+/* Shared Mantle design tokens and motion; compatible with Tailwind 3. */
+
+:root, .mantle-page {
+  /* ground — near-black, never pure #000 */
+  --m-ink: #050506;
+  --m-ink-1: #08080a;
+  --m-ink-2: #0b0b0e;
+  --m-ink-3: #121216;
+
+  /* text — "steam" whites */
+  --m-steam: #f2f0ec;
+  --m-steam-2: #c9c6c0;
+  --m-steam-3: #a09e9a;
+  --m-steam-4: #8f8c88;
+  --m-steam-5: #6f6c78; /* non-text only: dividers, decor */
+
+  /* hairlines */
+  --m-line: rgb(255 255 255 / 0.08);
+  --m-line-strong: rgb(255 255 255 / 0.14);
+
+  /* data semantics — heat marks loss */
+  --m-productive: #6a5cd6;
+  --m-productive-flat: #4b4196;
+  --m-productive-ink: #b3aaf7;
+  --m-ilt: #ffb357;
+  --m-ilt-ink: #ffc27a;
+  --m-npt: #ff4f6e;
+  --m-npt-ink: #ff8597;
+
+  /* thermal heat ramp (brand accent) */
+  --m-heat-0: #120a1f;
+  --m-heat-1: #2b0f52;
+  --m-heat-2: #5a1a7e;
+  --m-heat-3: #8e2386;
+  --m-heat-4: #c2307a;
+  --m-heat-5: #e9466b;
+  --m-heat-6: #ff6f4d;
+  --m-heat-7: #ff9a3d;
+  --m-heat-8: #ffc56b;
+  --m-heat-9: #fff1d6;
+}
+
+.mantle-page ::selection {
+  background: var(--m-heat-5);
+  color: var(--m-ink);
+}
+
+.mantle-page :focus-visible {
+    outline: 2px solid var(--m-heat-6);
+    outline-offset: 2px;
+  }
+
+/* Component classes live in the components layer so Tailwind utilities can still override them. */
+/* ---------- surfaces ---------- */
+/* Glass: only for elements that float over an ASCII canvas. */
+.mantle-page .m-glass {
+    background: rgb(14 13 17 / 0.74);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    box-shadow: 0 30px 80px rgb(0 0 0 / 0.65), inset 0 1px 0 rgb(255 255 255 / 0.06);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
+/* The single brand gradient — heat. Text use: one phrase per section, max. */
+.mantle-page .m-heat-text {
+    background: linear-gradient(92deg, var(--m-heat-5), var(--m-heat-7) 55%, var(--m-heat-8));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+.mantle-page .m-heat-fill {
+    background: linear-gradient(135deg, var(--m-heat-5), var(--m-heat-7));
+  }
+/* ---------- buttons ---------- */
+.mantle-page .m-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background: var(--m-steam);
+    color: #0a0a0b;
+    font-weight: 500;
+    font-size: 14.5px;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s;
+  }
+.mantle-page .m-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 5px rgb(242 240 236 / 0.08), 0 12px 34px rgb(233 70 107 / 0.28);
+  }
+.mantle-page .m-btn-primary:hover .m-arrow {
+    transform: translateX(3px);
+  }
+.mantle-page .m-arrow {
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+.mantle-page .m-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    color: var(--m-steam);
+    font-size: 14.5px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+.mantle-page .m-btn-ghost:hover {
+    background: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.24);
+  }
+.mantle-page .m-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 0 13px;
+    border-radius: var(--radius-chip, 12px);
+    background: rgb(255 255 255 / 0.035);
+    border: 1px solid rgb(255 255 255 / 0.09);
+    color: var(--m-steam-2);
+    font-weight: 500;
+    font-size: 13px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+.mantle-page .m-chip:hover {
+    background: rgb(255 255 255 / 0.08);
+    color: var(--m-steam);
+    border-color: rgb(255 255 255 / 0.2);
+  }
+.mantle-page .m-send {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18), 0 8px 26px rgb(233 70 107 / 0.38);
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s;
+  }
+.mantle-page .m-send:hover {
+    transform: scale(1.08) rotate(-10deg);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3), 0 10px 36px rgb(233 70 107 / 0.6);
+  }
+/* ---------- motion ---------- */
+.mantle-page .m-lift {
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s, background-color 0.3s;
+  }
+.mantle-page .m-lift:hover {
+    transform: translateY(-3px);
+    border-color: rgb(255 255 255 / 0.17);
+  }
+.mantle-page .m-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin-left: 2px;
+    vertical-align: -0.18em;
+    background: var(--m-heat-6);
+    animation: m-blink 1s steps(1) infinite;
+  }
+@keyframes m-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+.mantle-page .m-pulse-npt {
+    animation: m-pulse-npt 2.2s ease-out infinite;
+  }
+@keyframes m-pulse-npt {
+    0% { box-shadow: 0 0 0 0 rgb(255 79 110 / 0.55); }
+    100% { box-shadow: 0 0 0 10px rgb(255 79 110 / 0); }
+  }
+.mantle-page .m-pulse-ilt {
+    animation: m-pulse-ilt 2.2s ease-out infinite;
+  }
+@keyframes m-pulse-ilt {
+    0% { box-shadow: 0 0 0 0 rgb(255 179 87 / 0.55); }
+    100% { box-shadow: 0 0 0 10px rgb(255 179 87 / 0); }
+  }
+.mantle-page .m-pulse-productive {
+    animation: m-pulse-productive 2.2s ease-out infinite;
+  }
+@keyframes m-pulse-productive {
+    0% { box-shadow: 0 0 0 0 rgb(123 110 224 / 0.6); }
+    100% { box-shadow: 0 0 0 9px rgb(123 110 224 / 0); }
+  }
+.mantle-page .m-marquee {
+    animation: m-marquee 52s linear infinite;
+  }
+.mantle-page .m-marquee-host:hover .m-marquee {
+    animation-play-state: paused;
+  }
+@keyframes m-marquee {
+    to { transform: translateX(-50%); }
+  }
+.mantle-page .m-scan {
+    animation: m-scan 3.4s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+  }
+@keyframes m-scan {
+    0% { transform: translateY(0); opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { transform: translateY(150px); opacity: 0; }
+  }
+.mantle-page .m-seg {
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s;
+    transform-origin: 50% 100%;
+  }
+.mantle-page .m-seg:hover {
+    transform: scaleY(1.35);
+    filter: brightness(1.25);
+  }
+.mantle-page .m-spin {
+    animation: m-spin 0.9s linear infinite;
+  }
+@keyframes m-spin {
+    to { transform: rotate(360deg); }
+  }
+@media (prefers-reduced-motion: reduce) {
+    .mantle-page .m-caret, .mantle-page .m-pulse-npt, .mantle-page .m-pulse-ilt, .mantle-page .m-pulse-productive, .mantle-page .m-marquee, .mantle-page .m-scan, .mantle-page .m-spin {
+      animation: none;
+    }
+    .mantle-page .m-lift:hover, .mantle-page .m-btn-primary:hover, .mantle-page .m-send:hover, .mantle-page .m-seg:hover {
+      transform: none;
+    }
+  }
+
+/* Tailwind 3 compatibility and route-local resets; the console retains its current design. */
+.mantle-page {
+  --tw-ink: var(--m-ink);
+  --tw-line: var(--m-line);
+  --radius-chip: 12px;
+  font-size: 16px;
+  line-height: 1.55;
+  isolation: isolate;
+}
+.mantle-page h1, .mantle-page h2, .mantle-page h3 { font-weight: 500; }
+.mantle-page a { color: inherit; }
+.mantle-page .m-btn-primary { color: var(--m-ink); }
+.mantle-page :where(button, a, input, select, summary, textarea, [tabindex]):focus-visible { outline: 2px solid var(--m-heat-6); outline-offset: 4px; }
+.mantle-page textarea { font: inherit; }
+.mantle-page .m-preview-frame { background: var(--m-ink-1); }
+.mantle-page .m-prompt-drag { border-color: var(--m-heat-6); box-shadow: 0 0 0 6px rgb(255 111 77 / .12); }
+.mantle-page .m-nav-glass { background: rgb(18 18 22 / .55); }
+.mantle-page .m-theme-surface { background: radial-gradient(ellipse at 50% 72%, rgb(233 70 107 / .1), transparent 62%), var(--m-ink-1); }
+.mantle-page .m-cta-surface { background: radial-gradient(ellipse at 50% 120%, rgb(233 70 107 / .22), transparent 60%), var(--m-ink-1); }
+.mantle-page .m-hero-badge { background: rgb(8 8 10 / .7); }
+.mantle-page .m-annotation { background: rgb(8 8 10 / .8); }
+.mantle-page .m-annotation-value { color: var(--m-steam-4); }
+.mantle-page .m-panel { border: 1px solid var(--m-line); border-radius: 20px; padding: 22px; background: rgb(255 255 255 / .015); min-width: 0; }
+.mantle-console { --text: var(--m-steam); --muted: var(--m-steam-3); --subtle: var(--m-steam-4); --line: var(--m-line); --surface: var(--m-ink-1); --raised: var(--m-ink-2); --brand: var(--m-heat-6); --productive: var(--m-productive); --ilt: var(--m-ilt); --npt: var(--m-npt); --plan: var(--m-steam-2); overflow-wrap: anywhere; }
+.mantle-console .m-console-layout { display: flex; flex-wrap: wrap; max-width: 1920px; margin: 0 auto; }
+.mantle-console .m-console-sidebar { flex: 1 1 248px; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; border-right: 1px solid var(--m-line); background: var(--m-ink-1); min-width: 0; max-width: 100%; }
+.mantle-console .m-console-main { flex: 999 1 560px; min-width: 0; padding: 0 28px 36px; }
+.mantle-console .m-console-topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--m-line); }
+.mantle-console h1 { line-height: 1.05; letter-spacing: -.04em; }
+.mantle-console h2 { font-size: 18px; letter-spacing: -.015em; }
+.mantle-console .m-analysis-row { display: flex; flex-wrap: wrap; gap: 20px; align-items: start; }
+.mantle-console .m-report-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; border: 1px solid var(--m-line); padding: 18px 22px; border-radius: 20px; margin-bottom: 24px; }
+.mantle-console :is(select,input[type=number],input[type=search],input[type=text]) { min-height: 44px; background: var(--m-ink-2); border: 1px solid var(--m-line-strong); border-radius: 12px; padding: 10px 12px; color: var(--m-steam); font-size: 13px; max-width: 100%; }
+.mantle-console input::placeholder { color: var(--m-steam-4); }
+.mantle-console input[type=checkbox] { accent-color: var(--m-heat-6); width: 20px; height: 20px; }
+.mantle-console .m-kpi-strip { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,150px),1fr)); border: 1px solid var(--m-line); border-radius: 20px; background: rgb(255 255 255 / .015); }
+.mantle-console .m-kpi-strip article { min-width: 0; padding: 18px 20px; border-right: 1px solid var(--m-line); border-bottom: 1px solid var(--m-line); }
+.mantle-console .m-kpi-strip article:last-child { border-right: 0; }
+.mantle-console .m-formula { position: relative; flex-shrink: 0; }
+.mantle-console .m-formula summary { display: flex; min-width: 44px; min-height: 44px; justify-content: center; align-items: center; font-size: 17px; list-style: none; }
+.mantle-console .m-formula p { position: absolute; top: 100%; right: 0; z-index: 20; padding: 14px; width: min(260px,65vw); background: var(--m-ink-3); border: 1px solid var(--m-line-strong); border-radius: 12px; color: var(--m-steam-2); font-size: 13px; }
+.mantle-console .m-event-table { width: 100%; min-width: 820px; border-collapse: collapse; font-size: 13px; }
+.mantle-console .m-event-table th { font-weight: 400; color: var(--m-steam-4); text-align: left; }
+.mantle-console .m-event-table td, .mantle-console .m-event-table th { padding: 14px 12px; border-bottom: 1px solid var(--m-line); vertical-align: top; }
+.mantle-console .m-event-table td:nth-child(2) { min-width: 260px; max-width: 400px; }
+.mantle-console .m-ledger-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; min-height: 44px; width: 100%; text-align: left; font-size: 13px; }
+.mantle-console .m-assumptions { font-size: 13px; color: var(--m-steam-3); }
+.mantle-console .m-assumptions > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 8px 0; }
+.mantle-console .m-assumptions dd { font-family: var(--font-mantle-mono),monospace; }
+.mantle-console .m-trust-note { border-top: 1px solid var(--m-line); margin-top: 32px; padding-top: 22px; font-size: 12.5px; color: var(--m-steam-4); line-height: 1.7; }
+.mantle-console .m-trust-note summary { min-height: 44px; display: flex; align-items: center; }
+/* Remaining feature views reuse the same tokens and control treatments. */
+.mantle-console .card { background: rgb(255 255 255 / .015); border-color: var(--m-line); box-shadow: none; border-radius: 20px; }
+.mantle-console .caption, .mantle-console .field .caption, .mantle-console .stat-grid span { font-size: 12.5px; color: var(--m-steam-4); }
+.mantle-console .primary-button, .mantle-console .secondary-button, .mantle-console .ghost-button, .mantle-console .icon-button { min-height: 44px; border-radius: 999px; padding: 0 18px; font-size: 13px; font-weight: 500; box-shadow: none; border-color: var(--m-line-strong); background: transparent; color: var(--m-steam-2); }
+.mantle-console .icon-button { min-width: 44px; padding: 0; }
+.mantle-console .primary-button { background: var(--m-steam); color: var(--m-ink); }
+.mantle-console :where(.primary-button,.secondary-button,.ghost-button,.icon-button):hover:not(:disabled) { filter: none; border-color: var(--m-steam-4); }
+.mantle-console .badge { background: var(--m-ink-2); color: var(--m-steam-3); border-color: var(--m-line); font-size: 11px; letter-spacing: 0; font-weight: 400; border-radius: 12px; }
+.mantle-console .report-list { display: flex; flex-direction: column; gap: 0; }
+.mantle-console .report-card, .mantle-console .report-card.active { border: 0; border-bottom: 1px solid var(--m-line); border-radius: 0; background: transparent; padding: 24px 0; }
+.mantle-console .report-card.active { box-shadow: none; }
+.mantle-console .stat-grid b { font-weight: 500; }
+.mantle-console .compare-bar { background: var(--m-ink-3); }
+.mantle-console .compare-values, .mantle-console .field { font-size: 13px; }
+.mantle-console .compare-values .number { font-family: var(--font-mantle-mono),monospace; font-size: 13px; }
+.mantle-console .drop-area, .mantle-console .vision-preview, .mantle-console .vision-observation { background: var(--m-ink-2); border-color: var(--m-line-strong); border-radius: 12px; }
+.mantle-console .source-banner, .mantle-console .source-banner.upload, .mantle-console .notice { background: var(--m-ink-2); color: var(--m-steam-3); border: 1px solid var(--m-line); border-radius: 12px; font-size: 13px; }
+.mantle-console .quality-list li { border: 0; padding-left: 0; font-size: 13px; }
+.mantle-console .form-error { color: var(--m-npt-ink); }
+.mantle-console .upload-status, .mantle-console .upload-error { background: var(--m-ink-2); color: var(--m-steam-2); border-color: var(--m-line-strong); }
+.mantle-console .skeleton { background: var(--m-steam-4); animation: none; }
+@media(max-width:600px) {
+  .mantle-console .m-console-main { padding: 0 16px 28px; }
+  .mantle-console .m-report-bar { gap: 12px; align-items: stretch; }
+  .mantle-console .m-report-bar > div { flex-basis: 100%; }
+  .mantle-console .m-console-sidebar { border-right: 0; border-bottom: 1px solid var(--m-line); }
+  .mantle-console .m-console-sidebar nav { flex-direction: row; flex-wrap: wrap; }
+  .mantle-console .m-panel { padding: 18px; }
+  .mantle-console .compare-grid, .mantle-console .form-grid { grid-template-columns: minmax(0,1fr); }
+}
+@media print {
+  .mantle-console { display: block !important; min-height: 0; overflow: visible; }
+  .mantle-console .m-skip { display: none !important; }
+  .mantle-console .m-console-layout { display: none !important; }
+  .mantle-console .print-title { font-size: 24px; font-weight: 500; margin-bottom: 8px; }
+  .mantle-console { background: white; color: black; }
+  .mantle-console .print-summary { display: block !important; width: 100%; overflow: visible; font-family: var(--font-mantle-sans),sans-serif; }
+  .mantle-console .print-summary h2 { font-size: 15px; margin: 20px 0 8px; break-after: avoid; }
+  .mantle-console .print-summary h3 { font-size: 12px; margin: 14px 0 6px; break-after: avoid; }
+  .mantle-console .print-summary :is(p,li,td,th,blockquote) { font-size: 10px; line-height: 1.5; color: black; overflow-wrap: anywhere; }
+  .mantle-console .print-summary .print-title { font-size: 24px; font-weight: 500; }
+  .mantle-console .print-summary table { table-layout: fixed; margin: 10px 0 16px; }
+  .mantle-console .print-summary caption { text-align: left; font-size: 12px; font-weight: 500; margin-bottom: 8px; }
+  .mantle-console .print-summary th { font-weight: 600; }
+  .mantle-console .print-summary td, .mantle-console .print-summary th { vertical-align: top; padding: 7px; }
+  .mantle-console .print-summary thead { display: table-header-group; }
+  .mantle-console .print-summary tr { break-inside: avoid; }
+  .mantle-console .print-summary .print-stats { break-inside: avoid; }
+  .mantle-console .print-summary blockquote { margin: 8px 0; padding: 8px 0; white-space: pre-wrap; font-family: var(--font-mantle-mono),monospace; }
+  .mantle-console .print-summary ul { padding-left: 18px; }
+  .mantle-console .print-summary li { margin: 5px 0; }
+  .mantle-console .print-summary .print-evidence { border-top: 1px solid; padding-top: 4px; }
+  .mantle-console .print-summary .print-end { margin-top: 24px; }
+}
+.mantle-page .m-status { border: 1px solid var(--m-line-strong); border-radius: 12px; padding: 12px 16px; font-size: 13px; color: var(--m-steam-2); background: var(--m-ink-2); }
+.mantle-page .m-preview-strip { display: flex; align-items: end; gap: 3px; }
+.mantle-page .m-preview-strip > span { min-width: 0; }
+.mantle-page .m-mobile-nav { display: flex; gap: 8px; overflow-x: auto; padding: 0 20px 12px; position: relative; z-index: 5; }
+.mantle-page .m-mobile-nav a { white-space: nowrap; min-height: 44px; display: inline-flex; align-items: center; padding: 0 12px; color: var(--m-steam-3); font-size: 13px; }
+.mantle-page .m-skip { position: fixed; top: 8px; left: 16px; z-index: 100; transform: translateY(-180%); padding: 12px 18px; border-radius: 12px; background: var(--m-ink-2); color: var(--m-steam); }
+.mantle-page .m-skip:focus { transform: translateY(0); }
+@media (min-width: 768px) { .mantle-page .m-mobile-nav { display: none; } }
+@media (max-width: 639px) { .mantle-page .m-preview-kpis > div { padding: 14px; } .mantle-page .m-preview-kpis > div:last-child { grid-column: span 2; } }
+/* Hide marketing content only; the console contains the printable analysis. */
+@media print { .mantle-page:not(.mantle-console) { display: none; } }
+
+.mantle-page #top { max-width: 1600px; margin-inline: auto; }
+.mantle-page .m-event-select { max-width: 100%; }
+
+
+/* The animation is illustrative, not a feed from a real rig. */
+.mantle-page .m-glyph-caption { color: var(--m-steam-4); }
+.mantle-page #report-intake { scroll-margin-top: 32px; }

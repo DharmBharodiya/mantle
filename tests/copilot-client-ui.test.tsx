@@ -1,0 +1,21 @@
+import {readFileSync} from 'node:fs';
+import {afterEach,describe,expect,it,vi} from 'vitest';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {CopilotRequestSchema,CopilotResponseSchema,type CopilotResponse} from '@/types/copilot';
+import {canonicalScope,fallbackIntent,retrieve} from '@/lib/copilot/retrieve';
+import {askCopilot} from '@/lib/copilot/client';
+import {RigSupervisorCopilot} from '@/components/mantle/copilot/RigSupervisorCopilot';
+import {CopilotAnswer} from '@/components/mantle/copilot/CopilotAnswer';
+const report=JSON.parse(readFileSync('demo-fixtures/public/forge-78b-32/2021-06-28-gemini.snapshot.json','utf8')).report;
+const input=CopilotRequestSchema.parse({question:'Summarize',reports:[{id:'forge',extraction:report,scenario:report.scenario,sourceKind:report.sourceKind}]});
+const data=retrieve(input.question,fallbackIntent(input.question,canonicalScope(input)),canonicalScope(input),[]);
+const response:CopilotResponse={requestId:'test-request',mode:'DETERMINISTIC',providerNotice:'Gemini unavailable. Deterministic results remain available.',intent:data.intent,scope:[{id:'forge',wellName:report.wellName,reportDate:report.reportDate,sourceKind:'PUBLIC_SOURCE_UNREVIEWED'}],summary:data.summary,statements:[],citations:data.citations,calculations:data.calculations,warnings:data.warnings,focus:data.focus,matchedEventCount:data.matchedEventCount,retrievalTruncated:data.retrievalTruncated};
+afterEach(()=>vi.unstubAllGlobals());
+describe('copilot client and canonical console presentation',()=>{
+ it('validates an actual scoped response without any document upload to Gemini',async()=>{const fetcher=vi.fn().mockResolvedValue(Response.json(response));vi.stubGlobal('fetch',fetcher);expect((await askCopilot(input,new AbortController().signal)).scope[0].id).toBe('forge');expect(fetcher.mock.calls[0][0]).toBe('/api/copilot');expect(JSON.parse(fetcher.mock.calls[0][1].body).reports).toHaveLength(1);});
+ it('does not commit a late response after cancellation',async()=>{const controller=new AbortController();vi.stubGlobal('fetch',vi.fn().mockImplementation(()=>{controller.abort();return Response.json(response);}));let selected:CopilotResponse|null=null;await expect(askCopilot(input,controller.signal).then(answer=>{selected=answer;})).rejects.toThrow(/cancelled/);expect(selected).toBeNull();});
+ it('rejects malformed or out-of-scope answers',async()=>{vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(Response.json({mode:'GEMINI'})).mockResolvedValueOnce(Response.json({...response,scope:[{...response.scope[0],id:'other-session'}]})));await expect(askCopilot(input,new AbortController().signal)).rejects.toThrow(/incomplete/);await expect(askCopilot(input,new AbortController().signal)).rejects.toThrow(/scope/);});
+ it('renders full escaped evidence, calculation assumptions and navigation controls',()=>{const answer=structuredClone(response);answer.citations[0].snippet='<script>do not execute</script>\nThe complete source line stays visible.';const html=renderToStaticMarkup(<CopilotAnswer answer={answer} onInspect={()=>{}}/>);expect(html).toContain('&lt;script&gt;do not execute&lt;/script&gt;\nThe complete source line stays visible.');expect(html).toContain('Inspect original event');expect(html).toContain('Reporting period');expect(html).toContain('Included source records');expect(html).toContain('unknown');expect(html).not.toContain('<script>do not execute');});
+ it('renders actual available report scope, suggested questions and labeled controls in Mantle',()=>{const html=renderToStaticMarkup(<RigSupervisorCopilot reports={[{id:'forge',report,fileName:'FORGE public snapshot'}]} activeReportId="forge" visible onInspect={()=>{}}/>);for(const label of ['Report scope','FORGE public snapshot','Ask copilot','Clear conversation','How much NPT','Unverified source','copilot-question'])expect(html).toContain(label);expect(html).toContain('checked=""');expect(html).not.toContain('PUMP #2 LINER SEAL FAILED');});
+ it('validates the response contract for calculated data, preserving null carbon',()=>{expect(CopilotResponseSchema.parse(response).calculations.find(c=>c.metric==='Modeled excess carbon')?.value).toBeNull();});
+});

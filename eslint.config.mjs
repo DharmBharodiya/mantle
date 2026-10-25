@@ -2,4 +2,8 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
 const compat = new FlatCompat({ baseDirectory: dirname(fileURLToPath(import.meta.url)) });
-export default [...compat.extends("next/core-web-vitals", "next/typescript")];
+const config = [
+  { ignores: [".next/**", ".next-ingestion-check/**", "node_modules/**", "coverage/**", "next-env.d.ts", ".codex-logs/**", "mantle-kit/**"] },
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+];
+export default config;
