@@ -4,6 +4,43 @@
 
 **Decision: local demo materials and automated verification are ready; full release sign-off is incomplete.** Use the previously validated cached FORGE report with the labeled synthetic fallback. Two gates remain open: successful fresh quote verification and complete browser/mobile/print rehearsal. Neither is represented as passing.
 
+## Release-candidate finalization
+
+Finalization base: f2cc5cadea92d7bd6864b42518cafddcc2639dda on feat/solo-overnight. This follow-up changes **documentation only**, plus separate check-result files; application source, tests, contracts, configuration, dependencies and existing working changes were not edited. No Gemini call, push, merge or deployment was made.
+
+**Recommendation:** use the cached genuine report for a local demo **after completing the manual rehearsal**. Hold public-release sign-off until browser/mobile/print checks and the corrected live-quote gate are complete. The cached path is Gemini-independent; it is not a promise that the whole app works with browser networking disabled.
+
+### Final confirmed items
+
+- The original real snapshot exists (20,477 bytes). Snapshot import recalculates locally without Gemini; evidence/JSON/CSV exports are local. Scenario editing calls /api/analytics on the running app server and uses deterministic TypeScript, not Gemini.
+- Existing focused checks were rerun with GEMINI_API_KEY and GOOGLE_API_KEY empty in the test process: **11 tests / 3 files PASS**, including genuine-source intervals/excerpts, snapshot round-trip, scenario amounts, exports and real-report/print markup. No provider request was made. Evidence: [cached demo checks](docs/qa/rc-finalization-cached-demo-checks.json), [test output](docs/qa/rc-finalization-cached-demo-tests.txt).
+- The prior full **170-test / 21-HTTP-check / TypeScript / lint / build** results remain the latest full-suite evidence. They were not rerun for this documentation-only finalization. No source file changed, so the user's source-change rerun condition was not triggered.
+- Git remains intentionally dirty with the same pre-existing UI/test/evidence/reference-kit work. Ten existing modified/untracked files were compared by SHA-256 and remained byte-for-byte unchanged: [preservation record](docs/qa/rc-finalization-preserved-files.json). Nothing in mantle-kit was edited. Do not discard these changes or assume a plain remote checkout contains the tested working tree; the maintainer must choose the intended release contents before packaging.
+- Local .env.local has nonempty GEMINI_API_KEY and GEMINI_MODEL; only presence was checked, without exposing values. Only .env.example is tracked, and no NEXT_PUBLIC_ secret-name setting was found. This confirms local configuration presence, **not** production configuration or current provider capacity.
+- Node route handling, normal/isolated build-directory behavior and current source limits were reviewed. No separate vercel.json exists. Host configuration remains unverified: the app's 8 MB upload limit cannot override a lower ingress limit. Vercel's official documentation still lists 4.5 MB payloads and a 300-second Fluid Compute Hobby maximum. [Official limits](https://vercel.com/docs/functions/limitations). Existing server budget 240 seconds, advertised route limit 270 and browser wait 300 remain unchanged; a longer browser wait cannot extend the host deadline.
+
+### Demo claim audit
+
+| Claim class | Approved wording / scope |
+|---|---|
+| Source-reported observations | The PDF reports 01:30-05:00 drilling and hole MD 128-421 ft. These were compared with the original; they are not independently measured by Mantle. |
+| Extracted evidence and interpretation | The cached extraction contains 17 intervals and source excerpts; productive/NPT/activity categories involve interpretation and remain unverified in the app. No claim of a live call today, perfect extraction or field diagnosis. |
+| Deterministic derived values | 293 ft, 210 drilling minutes and 24.0 h interval coverage derive from those extracted observations. Zero extracted NPT is not proof of zero inefficiency or independently measured perfect performance. |
+| Source conflict | Header 4.0 h versus explicit timeline 3.5 h remains a discrepancy. The old raw snapshot predates automatic warning support; show the PDF and do not claim the old snapshot contains the new warning. |
+| Scenario estimates | 100 ft/h and $240,000/day are illustrative assumptions; 34.2 min ILT and $5,700 are modeled opportunity, not established costs or proven savings. Default 35 ft/h is also an assumption. Blank incremental fuel leaves carbon unknown, not zero. |
+| Synthetic backup | Homepage and synthetic fallback statistics are labeled synthetic and must not be attributed to FORGE. |
+
+JUDGE-PITCH.md and DEMO-READY.md now explicitly describe classifications as interpretations, source depths as reported observations, and opportunity as a scenario. No product UI was changed.
+
+### Exact remaining manual actions
+
+1. Follow [MANUAL-BROWSER-QA.md](MANUAL-BROWSER-QA.md), recording PASS / FAIL / NOT TESTED: 1440 x 900, 768 x 1024 and 390 x 844; import cached FORGE; inspect drilling/cementing evidence; apply/copy/compare the scenario; upload/switch the synthetic CSV; reject the non-snapshot JSON; cancel a throttled deterministic CSV without Gemini; export/reimport; keyboard/reduced-motion checks; print and inspect every saved PDF page for real and scenario reports.
+2. Rehearse the three-minute cached-report sequence once with the source PDF alongside it and the synthetic fallback ready. Keep the local app server running, retain UNVERIFIED labels and export before refreshing.
+3. Leave corrected quote extraction **unverified** while the provider is busy. At a later non-busy opportunity, one authorized live check must produce a complete report and exact non-abbreviated excerpts before that gate can close. There was no new attempt in this finalization.
+4. Before any separate deployment, review the preserved working changes, select the intended release contents, configure server-only environment variables on the actual host, verify ingress/runtime/streaming limits and run the production smoke gate in DEPLOYMENT-CHECKLIST.md. None of those host checks is claimed complete here.
+
+The earlier browser stop and PROVIDER_BUSY evidence below remain applicable. Mobile, full interactions, keyboard, reduced motion, browser downloads and print/Save as PDF are still pending; static tests do not replace them. Photon and ElevenLabs remain deferred. Remote CI remains unverified because no push or workflow was triggered.
+
 ## Verified in this sprint
 
 | Check | Actual result | Evidence |

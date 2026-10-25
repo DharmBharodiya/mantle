@@ -8,11 +8,11 @@ Use with the exact screen sequence in DEMO-READY.md. Rehearse at a calm pace wit
 
 ## 0:20-0:45 - Genuine report overview
 
-"This is a saved extraction of Utah FORGE well 78B-32 from June 28, 2021. We compared all seventeen intervals and ending hole depths with the original report. The day has twenty-four observed hours and finishes at 421 feet. It reports no non-productive time. Flat depth during planned casing or circulation is not automatically downtime."
+"This is a saved extraction of Utah FORGE well 78B-32 from June 28, 2021. We compared all seventeen intervals and ending hole depths with the original report. Those extracted intervals cover twenty-four hours, ending at a reported depth of 421 feet. The extraction classifies no interval as NPT; planned-activity labels are interpretations for review. Flat depth alone is not downtime."
 
 ## 0:45-1:15 - Evidence and conflicting source claims
 
-"Select the drilling interval: 1:30 to 5:00, from 128 to 421 feet. Here is the source quote and its page reference. The header says four drilling hours, while this interval is three and a half. Mantle's newer extraction path flags that disagreement. We preserve both claims and calculate from the explicit timeline; we do not stretch an event to make the numbers agree."
+"Select the drilling interval: 1:30 to 5:00, from a reported 128 to 421 feet. Here is the extracted source quote and its page reference. The header says four drilling hours, while this interval is three and a half. Mantle's newer extraction path flags that disagreement. We preserve both claims and calculate from the explicit timeline; we do not stretch an event to make the numbers agree."
 
 ## 1:15-1:55 - Explicit scenario
 

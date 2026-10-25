@@ -91,3 +91,11 @@ Then manually:
 - Test invalid uploads and cancellation with a previous valid report selected. Confirm proxy limits/errors are understandable and do not replace it. Review host logs for request IDs, not credentials.
 
 Proceed with a public release only after the maintainer reviews the remaining gates. No production smoke, rollback or host-configuration result is claimed here.
+
+## Release-candidate configuration review
+
+- Local .env.local exists; GEMINI_API_KEY and GEMINI_MODEL are nonempty (presence checked without exposing values). No NEXT_PUBLIC_ secret-name setting was found. Only .env.example is tracked; actual production secret/account configuration was not inspected.
+- No required variable is missing for the cached demo: snapshot import/exports are local, while scenario editing needs the running local /api/analytics service. This is Gemini-independent, not a claim that every action works with browser networking disabled.
+- next.config.ts still selects .next-ingestion-check only when BORESIGHT_INGESTION_CHECK=1; normal deployment uses .next. Node route handling is required; static export/Edge-only hosting is unsuitable for this pipeline. No separate vercel.json exists; actual managed-host duration/body settings remain unverified.
+- Verified source limits remain: 8 MB uploads, 24 PDF pages, 240-second server budget, advertised route maxDuration 270, and a 300-second browser wait. The browser wait does not extend host/server limits. Vercel documentation rechecked for this finalization still states 4.5 MB request/response payloads and a 300-second Fluid Compute Hobby maximum. The app ceiling does not override those host limits. [Official limits](https://vercel.com/docs/functions/limitations).
+- Retain unknown fuel/carbon, source-verification labels and the explicit source-total conflict. The cached raw snapshot predates the newer conflict warning: display the original PDF rather than claiming that old snapshot carries it. Complete MANUAL-BROWSER-QA.md and the production smoke gate before release sign-off.

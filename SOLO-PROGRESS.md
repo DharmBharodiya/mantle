@@ -207,3 +207,11 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Final local checks PASS: 170 tests / 20 files, TypeScript, ESLint, isolated production build, normal post-build TypeScript; 21 deterministic HTTP assertions rerun against the final rebuilt server, no provider calls. New reproducible release scripts preserve older evidence.
 - Updated DEMO-READY.md; created timed JUDGE-PITCH.md, DEPLOYMENT-CHECKLIST.md and FINAL-RELEASE-REPORT.md with verified/unverified/deferred sections and actual browser/provider limitations. No full-release sign-off claimed.
 - No runtime/UI/contracts/dependency changes, push, merge, deploy, Photon or ElevenLabs. Pre-existing working changes are preserved outside the release checkpoint.
+
+## Release-candidate finalization - documentation only
+
+- Inspected Git and preserved existing changes; ten tracked/untracked working files retain identical SHA-256 hashes. No application/test/config/package changes.
+- Confirmed cached genuine import/scenario/export/rendering through 11 existing tests / 3 files with Gemini credentials empty: PASS, no provider calls. Prior 170-test / 21-HTTP / TypeScript / lint / build remains the latest full verification; no source-change rerun was needed.
+- Created MANUAL-BROWSER-QA.md with exact actions, viewports and deterministic CSV cancellation. Clarified pitch/demo claims: report observations versus extracted interpretations versus derived/scenario amounts, source conflict and unknown carbon.
+- Reviewed local environment presence without exposing values and hosting/runtime limitations. Production setup remains unverified. Updated FINAL-RELEASE-REPORT.md and DEPLOYMENT-CHECKLIST.md with confirmed facts and exact unresolved gates.
+- Recommend cached-demo rehearsal; hold release sign-off for manual QA and the later successful quote check. No Gemini retry, Photon, ElevenLabs, UI redesign, push, merge or deployment.

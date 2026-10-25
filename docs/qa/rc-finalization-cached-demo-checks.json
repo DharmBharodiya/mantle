@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-10-25T01:01:00.983Z",
+  "command": "npm.cmd test -- tests/forge-validation.test.ts tests/release-real-report.test.tsx tests/reports.test.ts",
+  "geminiKeyInTestProcess": "empty",
+  "providerCalls": 0,
+  "exitCode": 0,
+  "elapsedMs": 14581,
+  "scope": "Existing offline snapshot/scenario/export and real-report markup checks only; no live browser or production-host verification."
+}
