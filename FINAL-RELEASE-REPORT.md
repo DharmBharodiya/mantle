@@ -1,8 +1,14 @@
-# Mantle final release report
-
 24 October 2026 (America/New_York); evidence timestamps are 25 October UTC. Repository: C:\Users\dharm\Downloads\BoreSight-Starter-Kit. Branch: feat/solo-overnight. Starting checkpoint: d623540e8e0691cc3c58933249d5bd948e34eefe.
 
 **Decision: local demo materials and automated verification are ready; full release sign-off is incomplete.** Use the previously validated cached FORGE report with the labeled synthetic fallback. Two gates remain open: successful fresh quote verification and complete browser/mobile/print rehearsal. Neither is represented as passing.
+
+## Rig Supervisor Copilot follow-up
+
+Added a request-scoped Groq copilot inside the existing console with explicit selected reports, validated intent, keyword/terminology retrieval, deterministic canonical calculations, source citations, scoped previous-event follow-ups, comparison, missing-data/conflict warnings, cancellation and event navigation. No ingestion/telemetry/dependency change or server report cache. Architecture/configuration, tests, demo and limits: [RIG-SUPERVISOR-COPILOT.md](docs/RIG-SUPERVISOR-COPILOT.md).
+
+Latest copilot integration checks: **271 tests / 27 files, TypeScript, lint, production build, post-build TypeScript and 41 deterministic HTTP assertions PASS**. Sixty-three new tests cover retrieval, API/provider/client/UI and the offline FORGE evaluation. The 41 HTTP checks used a provider-disabled QA process and do not imply live Groq success.
+
+Live verification is partial: request 80b59a74-49a6-41ca-a67f-e6a945b537d6 successfully parsed intent but withheld an ungrounded explanation; ddea451f-2974-4359-94c3-8c60471194e5 hit Groq rate limit and used deterministic fallback. No further live retry. Subsequent per-statement validation/context reduction is offline-tested; an accepted live narrative and full four-case live smoke remain unresolved. Deterministic API/client/component and public-source evaluation tests pass. Final counts and actual command/HTTP records are in docs/qa/copilot-*; historical release checks below describe their own earlier scope. Browser inventory exposed no enabled surfaces, so interaction/mobile verification remains manual. No push, merge, deployment, Photon or ElevenLabs work.
 
 ## Report-day recovery follow-up
 

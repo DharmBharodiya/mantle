@@ -1,0 +1,166 @@
+﻿MANTLE PROJECT SUMMARY
+====================
+
+PROJECT AT A GLANCE
+------------------
+Mantle is a local-first geothermal drilling report analysis workspace. It turns daily drilling reports and operational logs into a time-ordered set of activities, calculated drilling metrics, and source-linked evidence that engineers and supervisors can review.
+
+The project repository/package has also used the name BoreSight. Mantle is the product name used by the current application and UI.
+
+In one sentence: Mantle helps a drilling team move from a dense daily report to a traceable view of what happened, how the time was classified, what the calculations show, and which assumptions affect any cost or carbon scenario.
+
+THE PROBLEM IT ADDRESSES
+------------------------
+Daily drilling information is often spread across PDFs, spreadsheets, and text logs. People may need to read the report manually, reconstruct activity timelines, compare reported totals with detailed intervals, and calculate downtime or progress before they can brief the next shift.
+
+That workflow can make it difficult to:
+- See how the report day was divided among activities.
+- Find the original source line or page behind an event.
+- Separate explicit non-productive time from slow-but-productive work.
+- Notice missing time, incomplete measurements, or conflicting report totals.
+- Compare a report with a chosen drilling benchmark without presenting the result as a proven loss.
+- Explain a shift consistently to engineers, supervisors, and energy stakeholders.
+
+Mantle aims to make this review faster and more inspectable. It is an analysis aid, not a replacement for a drilling engineer, the original report, or operational procedures.
+
+WHO IT HELPS
+-------------
+- Drilling supervisors and superintendents can review the preceding report day and prepare a shift handover.
+- Drilling and performance engineers can inspect event timing, activity classification, depth changes, evidence, and assumptions.
+- Field engineers can identify which report passages need a closer look and where the timeline is incomplete or conflicting.
+- Project and energy stakeholders can understand modeled scenarios while seeing the assumptions behind them.
+
+WHAT A USER CAN DO
+------------------
+1. Open the Mantle homepage and enter the console, or upload a report.
+2. Import PDF, CSV, XLSX, or TXT reports within the configured size and processing limits.
+3. Review extracted or table-parsed activities in a 24-hour report-day timeline.
+4. Inspect events in a searchable table and open their source evidence, such as a PDF page, spreadsheet row/sheet, or text excerpt when available.
+5. Review the depth-versus-time chart, activity strip, coverage warnings, and key metrics.
+6. Adjust scenario assumptions and recalculate the analysis deterministically.
+7. Compare reports or scenario copies, ask the Rig Supervisor Copilot questions about selected reports, and export or print results.
+8. Optionally inspect an equipment image for visual observations. Those observations are explicitly limited and are not a diagnosis or safety clearance.
+
+Reports and full source evidence are primarily held in application memory. The app can save optional aggregate summaries in the browser; this is not a shared team database or durable source-document archive.
+
+HOW THE ANALYSIS WORKS
+----------------------
+INGESTION
+- PDF and unstructured report extraction use the Google Gemini API on the server. The response is checked against structured schemas and timeline rules before an analysis is returned.
+- Canonical CSV/XLSX tables with explicit time, activity, and classification columns can be parsed deterministically without a Gemini call.
+- Other CSV, XLSX, and TXT inputs may use the model-assisted extraction path.
+- Multi-day PDF handling asks for an explicit report-day/page selection when boundaries can be reviewed. It does not intentionally merge separate days into one 24-hour analysis. If dates or page boundaries are uncertain, the safe path is to provide a readable single-day source.
+- Uploads are bounded (currently 8 MB and up to 24 PDF pages). Oversized inputs are rejected rather than silently shortened.
+
+VALIDATION AND PROVENANCE
+- Zod schemas validate the event and report data shapes. Timeline checks reject invalid durations, cross-midnight intervals where unsupported, and overlapping events.
+- Source excerpts and page/row/sheet references are retained when supported. A model-provided PDF quote or page number is not automatically proof that the reference is correct.
+- Source status is labeled as SYNTHETIC_DEMO, PUBLIC_SOURCE_UNREVIEWED, or HUMAN_VERIFIED. An upload or imported snapshot cannot promote itself to HUMAN_VERIFIED.
+- Exact repeated events can be deduplicated under guarded rules; conflicting overlaps are not silently reconciled.
+- Missing timestamps, depths, dates, or classifications are not invented. Unknown values remain unknown, and missing report time is shown as unobserved.
+- A failed or cancelled import should not create a successful result or replace the last valid report.
+
+DETERMINISTIC ANALYTICS
+The model can help read a report, but Mantle's TypeScript analytics code computes the numeric results from validated events. Changing scenario assumptions triggers calculation again without asking Gemini to do arithmetic.
+
+Key terms:
+- Productive time: time explicitly classified PRODUCTIVE in the supplied records.
+- NPT (non-productive time): intervals explicitly classified NPT by the source/extraction. Zero recorded NPT means no selected interval has that label; it does not prove that no operational inefficiency occurred.
+- ILT (invisible lost time): a benchmark-based opportunity estimate for eligible productive drilling intervals. It is not explicit downtime and is not guaranteed recoverable time. The current calculation needs usable start/end hole depth for productive DRILLING intervals; hole measured depth cannot be used to infer drill-string travel speed for trips.
+- Unknown time: time within observed intervals with UNKNOWN classification. It is kept out of the classified-efficiency denominator.
+- Unobserved time: gaps in the report day. A gap is not assumed to be productive.
+- Coverage: observed event minutes compared with the 1,440-minute local report day.
+- Depth: the chart uses reported hole measured depth. A flat depth line means no new penetration was recorded; by itself, it does not establish downtime or an equipment problem.
+
+The benchmark-adjusted efficiency is available only when the complete 1,440-minute report day is observed, all observed time is classified, and every productive minute is eligible for the selected drilling benchmark. Otherwise it is shown as Not available; unobserved, unknown, or unbenchmarked time is not assumed to meet target. When available, its formula is (productive minutes minus eligible ILT minutes) divided by classified minutes. It remains a scenario metric, not a universal field-efficiency or OEE score.
+
+SCENARIO ESTIMATES
+- The editable daily rig rate converts NPT and ILT scenario hours into modeled dollar exposure. The default demonstration value documented by the project is $120,000 per day; it is not a measured rate for a particular well.
+- Drilling ILT uses an editable rate-of-penetration benchmark. The documented default is 35 feet per hour for demonstration math, not a universal geothermal benchmark.
+- Fuel and CO2 are modeled only when an incremental fuel-use assumption is supplied. Unknown fuel difference remains unavailable instead of being treated as zero.
+- Cost and carbon figures are scenario outputs, not accounting losses, measured savings, metered fuel, or verified emissions reductions.
+
+RIG SUPERVISOR COPILOT
+----------------------
+The console includes a question-and-answer interface for selected report records. Gemini can interpret the question and draft a bounded explanation. Mantle retrieves event evidence, builds citations, and calculates numerical facts independently. If Gemini is unavailable or its response does not pass validation, deterministic findings and source evidence remain the fallback.
+
+The Copilot uses the same server-side Gemini configuration as ingestion. It receives selected, normalized report context rather than raw uploaded PDF bytes. Its conversational state is temporary; it is not a durable project record. Live answer quality has not been verified across every natural-language question, so users should check cited records and calculation details. A Copilot explanation is not a source of authoritative metrics.
+
+EQUIPMENT VISION
+----------------
+The optional vision path accepts supported image formats and returns bounded visual observations with uncertainty. It is intended as a visual triage aid only. It does not issue an IADC grade, diagnose the equipment, create repair orders, or determine whether equipment is safe.
+
+TECHNOLOGY STACK
+----------------
+- Next.js 15.5 with the App Router: web application, server-rendered pages, and API routes.
+- React 19: interactive dashboard and console components.
+- TypeScript: event contracts, client/server logic, and deterministic analytics.
+- Tailwind CSS 3.4: application styling and responsive layout.
+- Recharts: dashboard data visualizations.
+- Google Gemini via @google/genai: structured report extraction, Copilot intent/explanation, and constrained visual observations.
+- Zod: request, event, and model-response validation.
+- ExcelJS: spreadsheet workbook reading.
+- pdf-lib: PDF handling and page-selection workflows.
+- Vitest: automated unit and integration tests; ESLint and TypeScript checks support code quality.
+- Node.js runtime: server-side ingestion and provider calls.
+
+The visual system uses a near-black industrial surface, Instrument Sans, Instrument Serif Italic for limited accents, JetBrains Mono for data, and restrained thermal color. The charts use activity classifications semantically rather than as decoration.
+
+IMPORTANT ARCHITECTURE CHOICES
+------------------------------
+- AI is used for irregular document interpretation; arithmetic and report metrics are calculated in deterministic code.
+- Evidence and provenance are first-class parts of each event, not optional decoration.
+- A source discrepancy is surfaced as a warning rather than silently reconciled. For example, a report header total and the sum of detailed timeline intervals may disagree; both values should remain reviewable.
+- The current application is local-first and does not have production authentication, a durable shared database, or per-user rate limiting.
+- Provider credentials stay on the server in environment variables. They must not be exposed through NEXT_PUBLIC variables, committed, or copied into reports.
+
+IMPLEMENTED AREAS AND DEFERRED WORK
+-----------------------------------
+Implemented in the local MVP:
+- Report ingestion and validation for the supported formats.
+- Single-day timelines and guarded multi-day PDF day selection.
+- Deterministic drilling metrics and editable scenarios.
+- Evidence inspection, filtering, comparison, CSV/JSON export, and print layout.
+- Rig Supervisor Copilot with deterministic calculation/evidence fallback.
+- Limited equipment image observations.
+
+Deferred or intentionally unavailable:
+- Photon messaging and ElevenLabs audio briefing are paused and are not working product flows.
+- No automatic rig control, safety advice, or emergency response.
+- No production login, role-based authorization, durable source archive, or shared multi-user history.
+- No live rig telemetry or real-time alerting.
+- No claim of guaranteed cost savings or emissions reduction.
+
+VERIFICATION STATUS AND HONEST LIMITS
+-------------------------------------
+The project includes automated tests and recorded TypeScript, lint, build, and HTTP verification. The detailed QA and source comparison records are in FINAL-BACKEND-VALIDATION.md, docs/MULTI-DAY-IMPORT.md, docs/RIG-SUPERVISOR-COPILOT.md, and FINAL-RELEASE-REPORT.md. Those reports should be used for the exact latest counts and run results because they are updated at different checkpoints.
+
+A specific genuine Utah FORGE Well 78B-32 June 28 extraction was compared with the original source: the documented selected-day run matched 17 activity intervals' timestamps, durations, and ending depths and preserved the 4.0-hour header versus 3.5-hour timeline discrepancy. This is a bounded test of particular pages and responses, not proof of general extraction accuracy. A later multi-page verification found one PDF event excerpt with an unsupported omission marker; code was changed to withhold such excerpts, but the correction was not confirmed by a fresh live provider request in the cited validation report. PDF quotations and page references therefore still need human review.
+
+The Copilot's live natural-language answer quality also remains a verification limitation. Automated checks and deterministic fallback do not establish that every live model answer will be useful or correct.
+
+RUNNING LOCALLY
+---------------
+Requirements: Node.js 22 or later and npm.
+
+1. Install locked dependencies:
+   npm.cmd ci
+2. Create .env.local from .env.example if needed. Set a server-side key:
+   GEMINI_API_KEY=your_key_here
+   GEMINI_MODEL=gemini-3.1-flash-lite
+3. Start the development server:
+   npm.cmd run dev
+4. Open http://localhost:3000 and choose Open console.
+5. Restart the server after changing environment settings.
+
+Canonical structured CSV/XLSX table imports can work without Gemini. PDF, unstructured document extraction, and Copilot conversations need a valid server-side Gemini credential and available project quota. Keep the application private while using real or sensitive reports: the prototype is not hardened for broad public deployment.
+
+KEYWORDS
+--------
+GDR: Geothermal Daily Report.
+ROP: Rate of penetration, typically expressed as depth drilled per unit time.
+MD: Measured depth of the wellbore as reported in the source.
+NPT: Explicitly classified non-productive time.
+ILT: Benchmark-relative invisible lost time estimate.
+Provenance: Information that identifies where an event or claim came from and whether a person has reviewed it.
+Scenario: A calculation under named assumptions, not an observed outcome.

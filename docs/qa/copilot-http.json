@@ -1,0 +1,73 @@
+{
+  "checkedAt": "2026-10-25T02:08:31.443Z",
+  "providerCalls": 0,
+  "keyIntentionallyUnavailableInQaServer": true,
+  "totalAssertions": 13,
+  "checks": [
+    {
+      "name": "Console renders real copilot navigation and form",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Missing Groq key preserves deterministic genuine NPT calculation",
+      "status": "PASS",
+      "requestId": "b1b01ba9-ea11-4b21-ba94-0a6d52623fdd"
+    },
+    {
+      "name": "Longest activity uses genuine source events and produces focus",
+      "status": "PASS",
+      "requestId": "1a822171-5572-4d74-86e7-661fc7160364"
+    },
+    {
+      "name": "Follow-up retrieves the preceding event in the same report",
+      "status": "PASS",
+      "requestId": "240cc558-849f-4132-82e6-ea46f2b41df8"
+    },
+    {
+      "name": "Explicit scenario returns $5,700 from existing analytics and null carbon",
+      "status": "PASS",
+      "requestId": "b07676c9-3bce-4d25-b70c-21e5d2cb9aaa"
+    },
+    {
+      "name": "Conflict annotation is preserved separately from timed calculation",
+      "status": "PASS",
+      "requestId": "20acab1e-1d95-492b-adcd-cc3e83ae3af3"
+    },
+    {
+      "name": "Comparison retains separate per-report assumptions and observations",
+      "status": "PASS",
+      "requestId": "dac9fe11-9c37-47d7-b306-b477a8f26779"
+    },
+    {
+      "name": "Unresolved follow-up asks for clarification",
+      "status": "PASS",
+      "requestId": "3f7440d8-141b-463e-98ff-109016457d3d"
+    },
+    {
+      "name": "Unsupported operating instruction is not invented",
+      "status": "PASS",
+      "requestId": "ebed0537-9a97-4dd7-a47a-aea4b827bb26"
+    },
+    {
+      "name": "Invalid question rejected",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Empty report scope rejected",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Cross-origin question rejected",
+      "status": "PASS",
+      "httpStatus": 403
+    },
+    {
+      "name": "Oversized context rejected before provider",
+      "status": "PASS",
+      "httpStatus": 413
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+/*
+ * Mantle design tokens + motion primitives (Tailwind v4).
+ * Import AFTER tailwind in app/globals.css:
+ *   @import "tailwindcss";
+ *   @import "../styles/mantle.css";
+ */
+
+:root {
+  /* ground — near-black, never pure #000 */
+  --m-ink: #050506;
+  --m-ink-1: #08080a;
+  --m-ink-2: #0b0b0e;
+  --m-ink-3: #121216;
+
+  /* text — "steam" whites */
+  --m-steam: #f2f0ec;
+  --m-steam-2: #c9c6c0;
+  --m-steam-3: #a09e9a;
+  --m-steam-4: #8f8c88;
+  --m-steam-5: #6f6c78; /* non-text only: dividers, decor */
+
+  /* hairlines */
+  --m-line: rgb(255 255 255 / 0.08);
+  --m-line-strong: rgb(255 255 255 / 0.14);
+
+  /* data semantics — heat marks loss */
+  --m-productive: #6a5cd6;
+  --m-productive-flat: #4b4196;
+  --m-productive-ink: #b3aaf7;
+  --m-ilt: #ffb357;
+  --m-ilt-ink: #ffc27a;
+  --m-npt: #ff4f6e;
+  --m-npt-ink: #ff8597;
+
+  /* thermal heat ramp (brand accent) */
+  --m-heat-0: #120a1f;
+  --m-heat-1: #2b0f52;
+  --m-heat-2: #5a1a7e;
+  --m-heat-3: #8e2386;
+  --m-heat-4: #c2307a;
+  --m-heat-5: #e9466b;
+  --m-heat-6: #ff6f4d;
+  --m-heat-7: #ff9a3d;
+  --m-heat-8: #ffc56b;
+  --m-heat-9: #fff1d6;
+}
+
+@theme inline {
+  --color-ink: var(--m-ink);
+  --color-ink-1: var(--m-ink-1);
+  --color-ink-2: var(--m-ink-2);
+  --color-ink-3: var(--m-ink-3);
+  --color-steam: var(--m-steam);
+  --color-steam-2: var(--m-steam-2);
+  --color-steam-3: var(--m-steam-3);
+  --color-steam-4: var(--m-steam-4);
+  --color-steam-5: var(--m-steam-5);
+  --color-line: var(--m-line);
+  --color-line-strong: var(--m-line-strong);
+  --color-productive: var(--m-productive);
+  --color-productive-flat: var(--m-productive-flat);
+  --color-productive-ink: var(--m-productive-ink);
+  --color-ilt: var(--m-ilt);
+  --color-ilt-ink: var(--m-ilt-ink);
+  --color-npt: var(--m-npt);
+  --color-npt-ink: var(--m-npt-ink);
+  --color-heat-2: var(--m-heat-2);
+  --color-heat-4: var(--m-heat-4);
+  --color-heat-5: var(--m-heat-5);
+  --color-heat-6: var(--m-heat-6);
+  --color-heat-7: var(--m-heat-7);
+  --color-heat-8: var(--m-heat-8);
+
+  --font-sans: var(--font-mantle-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-mantle-serif), Georgia, serif;
+  --font-mono: var(--font-mantle-mono), ui-monospace, Menlo, monospace;
+
+  --radius-chip: 12px;
+  --radius-panel: 20px;
+  --radius-card: 22px;
+  --radius-hero: 30px;
+}
+
+::selection {
+  background: var(--m-heat-5);
+  color: var(--m-ink);
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--m-heat-6);
+    outline-offset: 2px;
+  }
+}
+
+/* Component classes live in the components layer so Tailwind utilities can still override them. */
+@layer components {
+  /* ---------- surfaces ---------- */
+
+  /* Glass: only for elements that float over an ASCII canvas. */
+  .m-glass {
+    background: rgb(14 13 17 / 0.74);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    box-shadow: 0 30px 80px rgb(0 0 0 / 0.65), inset 0 1px 0 rgb(255 255 255 / 0.06);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
+
+  /* The single brand gradient — heat. Text use: one phrase per section, max. */
+  .m-heat-text {
+    background: linear-gradient(92deg, var(--m-heat-5), var(--m-heat-7) 55%, var(--m-heat-8));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .m-heat-fill {
+    background: linear-gradient(135deg, var(--m-heat-5), var(--m-heat-7));
+  }
+
+  /* ---------- buttons ---------- */
+
+  .m-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    background: var(--m-steam);
+    color: #0a0a0b;
+    font-weight: 500;
+    font-size: 14.5px;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s;
+  }
+  .m-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 5px rgb(242 240 236 / 0.08), 0 12px 34px rgb(233 70 107 / 0.28);
+  }
+  .m-btn-primary:hover .m-arrow {
+    transform: translateX(3px);
+  }
+  .m-arrow {
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .m-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.04);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    color: var(--m-steam);
+    font-size: 14.5px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .m-btn-ghost:hover {
+    background: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.24);
+  }
+
+  .m-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 0 13px;
+    border-radius: var(--radius-chip, 12px);
+    background: rgb(255 255 255 / 0.035);
+    border: 1px solid rgb(255 255 255 / 0.09);
+    color: var(--m-steam-2);
+    font-weight: 500;
+    font-size: 13px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .m-chip:hover {
+    background: rgb(255 255 255 / 0.08);
+    color: var(--m-steam);
+    border-color: rgb(255 255 255 / 0.2);
+  }
+
+  .m-send {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18), 0 8px 26px rgb(233 70 107 / 0.38);
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s;
+  }
+  .m-send:hover {
+    transform: scale(1.08) rotate(-10deg);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3), 0 10px 36px rgb(233 70 107 / 0.6);
+  }
+
+  /* ---------- motion ---------- */
+
+  .m-lift {
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s, background-color 0.3s;
+  }
+  .m-lift:hover {
+    transform: translateY(-3px);
+    border-color: rgb(255 255 255 / 0.17);
+  }
+
+  .m-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin-left: 2px;
+    vertical-align: -0.18em;
+    background: var(--m-heat-6);
+    animation: m-blink 1s steps(1) infinite;
+  }
+  @keyframes m-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .m-pulse-npt {
+    animation: m-pulse-npt 2.2s ease-out infinite;
+  }
+  @keyframes m-pulse-npt {
+    0% { box-shadow: 0 0 0 0 rgb(255 79 110 / 0.55); }
+    100% { box-shadow: 0 0 0 10px rgb(255 79 110 / 0); }
+  }
+  .m-pulse-ilt {
+    animation: m-pulse-ilt 2.2s ease-out infinite;
+  }
+  @keyframes m-pulse-ilt {
+    0% { box-shadow: 0 0 0 0 rgb(255 179 87 / 0.55); }
+    100% { box-shadow: 0 0 0 10px rgb(255 179 87 / 0); }
+  }
+  .m-pulse-productive {
+    animation: m-pulse-productive 2.2s ease-out infinite;
+  }
+  @keyframes m-pulse-productive {
+    0% { box-shadow: 0 0 0 0 rgb(123 110 224 / 0.6); }
+    100% { box-shadow: 0 0 0 9px rgb(123 110 224 / 0); }
+  }
+
+  .m-marquee {
+    animation: m-marquee 52s linear infinite;
+  }
+  .m-marquee-host:hover .m-marquee {
+    animation-play-state: paused;
+  }
+  @keyframes m-marquee {
+    to { transform: translateX(-50%); }
+  }
+
+  .m-scan {
+    animation: m-scan 3.4s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+  }
+  @keyframes m-scan {
+    0% { transform: translateY(0); opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { transform: translateY(150px); opacity: 0; }
+  }
+
+  .m-seg {
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s;
+    transform-origin: 50% 100%;
+  }
+  .m-seg:hover {
+    transform: scaleY(1.35);
+    filter: brightness(1.25);
+  }
+
+  .m-spin {
+    animation: m-spin 0.9s linear infinite;
+  }
+  @keyframes m-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .m-caret,
+    .m-pulse-npt,
+    .m-pulse-ilt,
+    .m-pulse-productive,
+    .m-marquee,
+    .m-scan,
+    .m-spin {
+      animation: none;
+    }
+    .m-lift:hover,
+    .m-btn-primary:hover,
+    .m-send:hover,
+    .m-seg:hover {
+      transform: none;
+    }
+  }
+}

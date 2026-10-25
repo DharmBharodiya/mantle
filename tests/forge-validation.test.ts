@@ -40,3 +40,17 @@ describe('recorded real FORGE day, manually checked against original PDF page 4'
     expect(importSnapshot(snapshot).metrics.observedMinutes).toBe(1440);
   });
 });
+
+
+it('preserves the explicit header/timeline conflict in the reviewed demo without changing observations or metrics', () => {
+  const reviewed=importSnapshot(readFileSync(fixture+'2021-06-28-reviewed.snapshot.json','utf8'));
+  expect(reviewed.events).toEqual(report.events);
+  expect({ ...reviewed.metrics, efficiencyPct: report.metrics.efficiencyPct }).toEqual(report.metrics);
+  expect(reviewed.metrics.efficiencyPct).toBeNull();
+  expect(reviewed.sourceKind).toBe('PUBLIC_SOURCE_UNREVIEWED');
+  const warnings=reviewed.warnings.join(' ');
+  expect(warnings).toContain('4.0 drilling h');
+  expect(warnings).toContain('3.5 h (210 min)');
+  expect(warnings).toContain('not been silently reconciled');
+  expect(exportSnapshot(reviewed)).toContain('Source discrepancy (review annotation)');
+});

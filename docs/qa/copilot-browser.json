@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-25T02:06:08.445Z",
+  "browserConnectorInventory": {
+    "apps": [],
+    "browsers": []
+  },
+  "verified": "React server-rendering and real HTTP HTML/client/API checks only",
+  "unverified": [
+    "Rendered desktop interaction",
+    "390px mobile layout",
+    "Keyboard and reduced motion",
+    "Source-anchor navigation and full conversational rehearsal"
+  ],
+  "notes": "No browser screenshot or interactive success is claimed; prior Windows targeting was unreliable. Manual regression steps are in MANUAL-BROWSER-QA.md."
+}

@@ -1,0 +1,1120 @@
+[
+  {
+    "name": "narrative with source and longest event focus",
+    "question": "Which activity consumed the most time in this report day?",
+    "checkedAt": "2026-10-25T01:57:04.082Z",
+    "elapsedMs": 1736,
+    "httpStatus": 200,
+    "result": {
+      "requestId": "80b59a74-49a6-41ca-a67f-e6a945b537d6",
+      "mode": "DETERMINISTIC",
+      "providerNotice": "Groq explanation failed grounding validation. Deterministic results and exact evidence are shown instead.",
+      "intent": {
+        "kind": "AGGREGATE",
+        "reportIds": [
+          "forge"
+        ],
+        "activities": [],
+        "classifications": [],
+        "terms": [],
+        "relative": "NONE",
+        "ranking": "LONGEST",
+        "startMinute": null,
+        "endMinute": null
+      },
+      "scope": [
+        {
+          "id": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "sourceKind": "PUBLIC_SOURCE_UNREVIEWED"
+        }
+      ],
+      "summary": "Evidence retrieved from the selected records. Numerical results below are computed by Mantle.",
+      "statements": [],
+      "citations": [
+        {
+          "id": "E1",
+          "reportId": "forge",
+          "eventId": "event-624e1d41069907a2",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "OTHER 1020-1440 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "17:00 0:00 7.00 421 1-14 Installed BOP as followed.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E2",
+          "reportId": "forge",
+          "eventId": "event-3a1dcab3b373c97b",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "DRILLING 90-300 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "1:30 5:00 3.50 421 03-021 Drilled 22\" hole from 128' to 421'.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E3",
+          "reportId": "forge",
+          "eventId": "event-0286ece8ede459eb",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CASING_CEMENTING 480-600 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "8:00 10:00 2.00 421 4-12-1 Rigged up and Ran 9 joints of 16\" k-55 64# BTC casing (382.89') of total casing.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E4",
+          "reportId": "forge",
+          "eventId": "event-524fa5b1d1974f69",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CASING_CEMENTING 660-750 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "11:00 12:30 1.50 421 4-12-1 Land casing with well head 3' below ground level.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E5",
+          "reportId": "forge",
+          "eventId": "event-c2b02c159918c406",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CASING_CEMENTING 780-870 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "13:00 14:30 1.50 421 5-56 Rig up cement crew",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E6",
+          "reportId": "forge",
+          "eventId": "event-137e3ed4ef02fb44",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CASING_CEMENTING 870-960 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "14:30 16:00 1.50 421 5-99 Pressure test to 1500 psi, Pump 20 bbl fresh water, pump 50 bbls of sepiolite, pump 5 bbl of fresh water, pump 13 bbl od sodium silkicate, pump 5 bbls fresh water, Mix and pump 146 bbl of 13.88 RC Theremelite w/ 2% CC, displace w/ 6 bbls fresh water",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E7",
+          "reportId": "forge",
+          "eventId": "event-19e4c17b4ecb7586",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "OTHER 0-60 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "0:00 1:00 1.00 128 3-34-3 Make up 22\" surface hole assembly.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E8",
+          "reportId": "forge",
+          "eventId": "event-4c68fe57666838a8",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CASING_CEMENTING 420-480 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "7:00 8:00 1.00 421 4-56 Rig up casing crew.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E9",
+          "reportId": "forge",
+          "eventId": "event-819c40e04b0dd68e",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CASING_CEMENTING 600-660 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "10:00 11:00 1.00 421 4-56 Rig down casing crew",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E10",
+          "reportId": "forge",
+          "eventId": "event-c97422019d5c6bcb",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CIRCULATING 60-90 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "1:00 1:30 0.50 128 03-051 Filled pipe and hole.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E11",
+          "reportId": "forge",
+          "eventId": "event-d7d5bef89347a6c6",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CIRCULATING 300-330 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "5:00 5:30 0.50 421 03-051 Circulated well bore clean.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E12",
+          "reportId": "forge",
+          "eventId": "event-b8884dd28ca821e7",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "TRIPPING_OUT 330-360 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "5:30 6:00 0.50 421 3-27 Wiped hole f/ 421' t/ 100' with no issues. No fill on bottom.",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E13",
+          "reportId": "forge",
+          "eventId": "event-336d1bdef2d00468",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "TRIPPING_OUT 360-390 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "6:00 6:30 0.50 421 3-6-2 Pull out of the hole f/ 421'",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E14",
+          "reportId": "forge",
+          "eventId": "event-266fed65001ab0c0",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "BHA_CHANGE 390-420 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "6:30 7:00 0.50 421 3-34-4 Lay down NMDC and bit",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E15",
+          "reportId": "forge",
+          "eventId": "event-478fc9400e7fb948",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "TRIPPING_IN 750-780 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "12:30 13:00 0.50 421 5-56 RIH with stab-in and stab into float collar at 378",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E16",
+          "reportId": "forge",
+          "eventId": "event-f0b960586954c6de",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "CASING_CEMENTING 960-990 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "16:00 16:30 0.50 421 5-56 Rig down cement crew",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        },
+        {
+          "id": "E17",
+          "reportId": "forge",
+          "eventId": "event-336323d4c8397df4",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "TRIPPING_OUT 990-1020 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "16:30 17:00 0.50 421 5-6-2 POH with stab-in",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        }
+      ],
+      "calculations": [
+        {
+          "id": "C1",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Observed interval time",
+          "value": 1440,
+          "unit": "min",
+          "basis": "Sum of validated, nonoverlapping matched intervals.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-624e1d41069907a2",
+            "event-3a1dcab3b373c97b",
+            "event-0286ece8ede459eb",
+            "event-524fa5b1d1974f69",
+            "event-c2b02c159918c406",
+            "event-137e3ed4ef02fb44",
+            "event-19e4c17b4ecb7586",
+            "event-4c68fe57666838a8",
+            "event-819c40e04b0dd68e",
+            "event-c97422019d5c6bcb",
+            "event-d7d5bef89347a6c6",
+            "event-b8884dd28ca821e7",
+            "event-336d1bdef2d00468",
+            "event-266fed65001ab0c0",
+            "event-478fc9400e7fb948",
+            "event-f0b960586954c6de",
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5",
+            "E6",
+            "E7",
+            "E8",
+            "E9",
+            "E10",
+            "E11",
+            "E12",
+            "E13",
+            "E14",
+            "E15",
+            "E16",
+            "E17"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C2",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Classified NPT",
+          "value": 0,
+          "unit": "min",
+          "basis": "NPT classifications from matched source records.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-624e1d41069907a2",
+            "event-3a1dcab3b373c97b",
+            "event-0286ece8ede459eb",
+            "event-524fa5b1d1974f69",
+            "event-c2b02c159918c406",
+            "event-137e3ed4ef02fb44",
+            "event-19e4c17b4ecb7586",
+            "event-4c68fe57666838a8",
+            "event-819c40e04b0dd68e",
+            "event-c97422019d5c6bcb",
+            "event-d7d5bef89347a6c6",
+            "event-b8884dd28ca821e7",
+            "event-336d1bdef2d00468",
+            "event-266fed65001ab0c0",
+            "event-478fc9400e7fb948",
+            "event-f0b960586954c6de",
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5",
+            "E6",
+            "E7",
+            "E8",
+            "E9",
+            "E10",
+            "E11",
+            "E12",
+            "E13",
+            "E14",
+            "E15",
+            "E16",
+            "E17"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C3",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Drilling interval time",
+          "value": 210,
+          "unit": "min",
+          "basis": "Validated matched DRILLING intervals, without reconciling source header totals.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-624e1d41069907a2",
+            "event-3a1dcab3b373c97b",
+            "event-0286ece8ede459eb",
+            "event-524fa5b1d1974f69",
+            "event-c2b02c159918c406",
+            "event-137e3ed4ef02fb44",
+            "event-19e4c17b4ecb7586",
+            "event-4c68fe57666838a8",
+            "event-819c40e04b0dd68e",
+            "event-c97422019d5c6bcb",
+            "event-d7d5bef89347a6c6",
+            "event-b8884dd28ca821e7",
+            "event-336d1bdef2d00468",
+            "event-266fed65001ab0c0",
+            "event-478fc9400e7fb948",
+            "event-f0b960586954c6de",
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5",
+            "E6",
+            "E7",
+            "E8",
+            "E9",
+            "E10",
+            "E11",
+            "E12",
+            "E13",
+            "E14",
+            "E15",
+            "E16",
+            "E17"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C4",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Drilling ILT scenario",
+          "value": 0,
+          "unit": "min",
+          "basis": "computeILTMinutes via buildWellReport; unsupported benchmark time remains unavailable.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-624e1d41069907a2",
+            "event-3a1dcab3b373c97b",
+            "event-0286ece8ede459eb",
+            "event-524fa5b1d1974f69",
+            "event-c2b02c159918c406",
+            "event-137e3ed4ef02fb44",
+            "event-19e4c17b4ecb7586",
+            "event-4c68fe57666838a8",
+            "event-819c40e04b0dd68e",
+            "event-c97422019d5c6bcb",
+            "event-d7d5bef89347a6c6",
+            "event-b8884dd28ca821e7",
+            "event-336d1bdef2d00468",
+            "event-266fed65001ab0c0",
+            "event-478fc9400e7fb948",
+            "event-f0b960586954c6de",
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5",
+            "E6",
+            "E7",
+            "E8",
+            "E9",
+            "E10",
+            "E11",
+            "E12",
+            "E13",
+            "E14",
+            "E15",
+            "E16",
+            "E17"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C5",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Modeled time exposure",
+          "value": 0,
+          "unit": "USD",
+          "basis": "Matched NPT plus eligible drilling ILT, multiplied by scenario daily rig rate / 1440. Not realized savings.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-624e1d41069907a2",
+            "event-3a1dcab3b373c97b",
+            "event-0286ece8ede459eb",
+            "event-524fa5b1d1974f69",
+            "event-c2b02c159918c406",
+            "event-137e3ed4ef02fb44",
+            "event-19e4c17b4ecb7586",
+            "event-4c68fe57666838a8",
+            "event-819c40e04b0dd68e",
+            "event-c97422019d5c6bcb",
+            "event-d7d5bef89347a6c6",
+            "event-b8884dd28ca821e7",
+            "event-336d1bdef2d00468",
+            "event-266fed65001ab0c0",
+            "event-478fc9400e7fb948",
+            "event-f0b960586954c6de",
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5",
+            "E6",
+            "E7",
+            "E8",
+            "E9",
+            "E10",
+            "E11",
+            "E12",
+            "E13",
+            "E14",
+            "E15",
+            "E16",
+            "E17"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C6",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Modeled excess carbon",
+          "value": null,
+          "unit": "t CO2",
+          "basis": "Explicit incremental fuel and emissions assumptions; null means unknown.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-624e1d41069907a2",
+            "event-3a1dcab3b373c97b",
+            "event-0286ece8ede459eb",
+            "event-524fa5b1d1974f69",
+            "event-c2b02c159918c406",
+            "event-137e3ed4ef02fb44",
+            "event-19e4c17b4ecb7586",
+            "event-4c68fe57666838a8",
+            "event-819c40e04b0dd68e",
+            "event-c97422019d5c6bcb",
+            "event-d7d5bef89347a6c6",
+            "event-b8884dd28ca821e7",
+            "event-336d1bdef2d00468",
+            "event-266fed65001ab0c0",
+            "event-478fc9400e7fb948",
+            "event-f0b960586954c6de",
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5",
+            "E6",
+            "E7",
+            "E8",
+            "E9",
+            "E10",
+            "E11",
+            "E12",
+            "E13",
+            "E14",
+            "E15",
+            "E16",
+            "E17"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C7",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Activity duration: CASING_CEMENTING",
+          "value": 540,
+          "unit": "min",
+          "basis": "Sum of matched validated intervals for this activity, via buildWellReport.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-0286ece8ede459eb",
+            "event-524fa5b1d1974f69",
+            "event-c2b02c159918c406",
+            "event-137e3ed4ef02fb44",
+            "event-4c68fe57666838a8",
+            "event-819c40e04b0dd68e",
+            "event-f0b960586954c6de"
+          ],
+          "citationIds": [
+            "E3",
+            "E4",
+            "E5",
+            "E6",
+            "E8",
+            "E9",
+            "E16"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C8",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Activity duration: OTHER",
+          "value": 480,
+          "unit": "min",
+          "basis": "Sum of matched validated intervals for this activity, via buildWellReport.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-624e1d41069907a2",
+            "event-19e4c17b4ecb7586"
+          ],
+          "citationIds": [
+            "E1",
+            "E7"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C9",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Activity duration: DRILLING",
+          "value": 210,
+          "unit": "min",
+          "basis": "Sum of matched validated intervals for this activity, via buildWellReport.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-3a1dcab3b373c97b"
+          ],
+          "citationIds": [
+            "E2"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C10",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Activity duration: TRIPPING_OUT",
+          "value": 90,
+          "unit": "min",
+          "basis": "Sum of matched validated intervals for this activity, via buildWellReport.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-b8884dd28ca821e7",
+            "event-336d1bdef2d00468",
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E12",
+            "E13",
+            "E17"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C11",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Activity duration: CIRCULATING",
+          "value": 60,
+          "unit": "min",
+          "basis": "Sum of matched validated intervals for this activity, via buildWellReport.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-c97422019d5c6bcb",
+            "event-d7d5bef89347a6c6"
+          ],
+          "citationIds": [
+            "E10",
+            "E11"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C12",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Activity duration: BHA_CHANGE",
+          "value": 30,
+          "unit": "min",
+          "basis": "Sum of matched validated intervals for this activity, via buildWellReport.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-266fed65001ab0c0"
+          ],
+          "citationIds": [
+            "E14"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        },
+        {
+          "id": "C13",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Activity duration: TRIPPING_IN",
+          "value": 30,
+          "unit": "min",
+          "basis": "Sum of matched validated intervals for this activity, via buildWellReport.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"AGGREGATE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"NONE\"}",
+          "eventIds": [
+            "event-478fc9400e7fb948"
+          ],
+          "citationIds": [
+            "E15"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient."
+          ]
+        }
+      ],
+      "warnings": [
+        "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+        "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.",
+        "Classifications and excerpts are extracted observations, not independently verified field measurements. Flat hole depth does not establish downtime or drill-string speed."
+      ],
+      "focus": {
+        "reportId": "forge",
+        "eventId": "event-624e1d41069907a2"
+      },
+      "matchedEventCount": 17,
+      "retrievalTruncated": false
+    }
+  },
+  {
+    "name": "follow-up referring to previous event",
+    "question": "What happened immediately before it?",
+    "checkedAt": "2026-10-25T01:57:04.164Z",
+    "elapsedMs": 79,
+    "httpStatus": 200,
+    "result": {
+      "requestId": "ddea451f-2974-4359-94c3-8c60471194e5",
+      "mode": "DETERMINISTIC",
+      "providerNotice": "Groq rate limit reached. Deterministic results and evidence remain available; retry conversation later.",
+      "intent": {
+        "kind": "TIMELINE",
+        "reportIds": [],
+        "activities": [],
+        "classifications": [],
+        "terms": [],
+        "relative": "PREVIOUS",
+        "ranking": "RELEVANCE",
+        "startMinute": null,
+        "endMinute": null
+      },
+      "scope": [
+        {
+          "id": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "sourceKind": "PUBLIC_SOURCE_UNREVIEWED"
+        }
+      ],
+      "summary": "Retrieved the adjacent event from the same report timeline; adjacency is not proof of cause.",
+      "statements": [],
+      "citations": [
+        {
+          "id": "E1",
+          "reportId": "forge",
+          "eventId": "event-336323d4c8397df4",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "label": "TRIPPING_OUT 990-1020 min",
+          "fileName": "FORGE-78B-32-2021-06-28-original-page-4.pdf",
+          "page": 1,
+          "row": null,
+          "sheet": null,
+          "snippet": "16:30 17:00 0.50 421 5-6-2 POH with stab-in",
+          "kind": "EVENT",
+          "confidence": "HIGH"
+        }
+      ],
+      "calculations": [
+        {
+          "id": "C1",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Observed interval time",
+          "value": 30,
+          "unit": "min",
+          "basis": "Sum of validated, nonoverlapping matched intervals.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"TIMELINE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"PREVIOUS\"}",
+          "eventIds": [
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.",
+            "1410 minutes of the local report day are unobserved; missing time is not productive time."
+          ]
+        },
+        {
+          "id": "C2",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Classified NPT",
+          "value": 0,
+          "unit": "min",
+          "basis": "NPT classifications from matched source records.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"TIMELINE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"PREVIOUS\"}",
+          "eventIds": [
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.",
+            "1410 minutes of the local report day are unobserved; missing time is not productive time."
+          ]
+        },
+        {
+          "id": "C3",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Drilling interval time",
+          "value": 0,
+          "unit": "min",
+          "basis": "Validated matched DRILLING intervals, without reconciling source header totals.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"TIMELINE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"PREVIOUS\"}",
+          "eventIds": [
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.",
+            "1410 minutes of the local report day are unobserved; missing time is not productive time."
+          ]
+        },
+        {
+          "id": "C4",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Drilling ILT scenario",
+          "value": null,
+          "unit": "min",
+          "basis": "computeILTMinutes via buildWellReport; unsupported benchmark time remains unavailable.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"TIMELINE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"PREVIOUS\"}",
+          "eventIds": [
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.",
+            "1410 minutes of the local report day are unobserved; missing time is not productive time."
+          ]
+        },
+        {
+          "id": "C5",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Modeled time exposure",
+          "value": 0,
+          "unit": "USD",
+          "basis": "Matched NPT plus eligible drilling ILT, multiplied by scenario daily rig rate / 1440. Not realized savings.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"TIMELINE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"PREVIOUS\"}",
+          "eventIds": [
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.",
+            "1410 minutes of the local report day are unobserved; missing time is not productive time."
+          ]
+        },
+        {
+          "id": "C6",
+          "reportId": "forge",
+          "wellName": "78B-32",
+          "reportDate": "2021-06-28",
+          "metric": "Modeled excess carbon",
+          "value": null,
+          "unit": "t CO2",
+          "basis": "Explicit incremental fuel and emissions assumptions; null means unknown.",
+          "filters": "{\"activities\":[],\"classifications\":[],\"kind\":\"TIMELINE\",\"terms\":[],\"startMinute\":null,\"endMinute\":null,\"relative\":\"PREVIOUS\"}",
+          "eventIds": [
+            "event-336323d4c8397df4"
+          ],
+          "citationIds": [
+            "E1"
+          ],
+          "assumptions": {
+            "rigDailyUsd": 120000,
+            "tripBenchmarkFtPerHour": 800,
+            "drillBenchmarkFtPerHour": 35,
+            "excessFuelGallonsPerHour": null,
+            "kgCo2PerGallon": 10.18
+          },
+          "warnings": [
+            "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+            "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.",
+            "1410 minutes of the local report day are unobserved; missing time is not productive time."
+          ]
+        }
+      ],
+      "warnings": [
+        "PDF page references and excerpts remain AI-extracted/unverified. Page positions were mapped from the original PDF chunk; verify the original document.",
+        "ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.",
+        "Classifications and excerpts are extracted observations, not independently verified field measurements. Flat hole depth does not establish downtime or drill-string speed."
+      ],
+      "focus": {
+        "reportId": "forge",
+        "eventId": "event-336323d4c8397df4"
+      },
+      "matchedEventCount": 1,
+      "retrievalTruncated": false
+    }
+  }
+]
