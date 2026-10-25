@@ -74,7 +74,8 @@ export async function mapBounded<T, R>(items: T[], limit: number, operation: (it
     const results: R[] = new Array(items.length);
     let next = 0;
     let failure: unknown;
-    async function worker() { while (!failure) {
+    let failed = false;
+    async function worker() { while (!failed) {
         throwIfAborted(signal);
         const index = next++;
         if (index >= items.length)
@@ -83,12 +84,14 @@ export async function mapBounded<T, R>(items: T[], limit: number, operation: (it
             results[index] = await operation(items[index], index);
         }
         catch (error) {
-            failure = error;
+            if (!failed) { failure = error; failed = true; }
             throw error;
         }
     } }
     const settled = await Promise.allSettled(Array.from({ length: Math.min(limit, items.length) }, worker));
     const rejected = settled.find((result): result is PromiseRejectedResult => result.status === "rejected");
+    if (failed)
+        throw failure;
     if (rejected)
         throw rejected.reason;
     return results;

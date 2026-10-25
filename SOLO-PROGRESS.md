@@ -172,3 +172,8 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Full final checks pass: TypeScript, 124 tests / 16 files, lint and isolated production build. Normal generated-reference typecheck also passes.
 - Rebuilt production HTTP verification passes: six new source/empty-boundary assertions plus eight existing smoke, two CSV/XLSX imports and four FORGE scenario/error assertions (20 total). No new Gemini calls. Offline recorded FORGE comparison still reports no mismatches.
 - Full evidence: docs/qa/backend-checks.json, backend-http.json and backend-*.txt; scope and limits: docs/BACKEND-CORRECTNESS.md. Existing UI, reference kit and earlier preflight changes remain outside these backend commits. No push, merge or deployment.
+
+## Final backend validation — chunk failure checkpoint
+
+- Reproduced multi-worker error masking: when a later-index section fails first, mapBounded returned an earlier-index sibling cancellation instead of the original failure. It now retains the first failure and stops queued sections even for falsy thrown values.
+- Focused checks: 2 chunk-failure regressions and 12 existing ingestion-pipeline cases pass; TypeScript and scoped ESLint pass. No deadline, dependency, contract or UI change.
