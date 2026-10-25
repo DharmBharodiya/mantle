@@ -27,7 +27,7 @@ export const CitationSchema=z.object({id:z.string(),reportId:z.string(),eventId:
 export const CalculationSchema=z.object({id:z.string(),reportId:z.string(),wellName:z.string(),reportDate:z.string(),metric:z.string(),value:z.number().finite().nullable(),unit:z.string(),basis:z.string(),filters:z.string(),eventIds:z.array(z.string()),citationIds:z.array(z.string()),assumptions:ScenarioSchema,warnings:z.array(z.string())});
 export const AnswerStatementSchema=z.object({kind:z.enum(['EXPLANATION','INVESTIGATION','UNCERTAINTY']),text:z.string().min(1).max(800),citationIds:z.array(z.string()).max(12),calculationIds:z.array(z.string()).max(12)}).strict();
 export const CopilotResponseSchema=z.object({
- requestId:z.string(),mode:z.enum(['GROQ','DETERMINISTIC']),providerNotice:z.string().nullable(),intent:IntentSchema,
+ requestId:z.string(),mode:z.enum(['GEMINI','DETERMINISTIC']),providerNotice:z.string().nullable(),intent:IntentSchema,
  scope:z.array(z.object({id:z.string(),wellName:z.string(),reportDate:z.string(),sourceKind:SourceKindSchema})),
  summary:z.string(),statements:z.array(AnswerStatementSchema).max(6),citations:z.array(CitationSchema).max(32),calculations:z.array(CalculationSchema).max(80),
  warnings:z.array(z.string()).max(80),focus:FocusSchema.nullable(),matchedEventCount:z.number().int().nonnegative(),retrievalTruncated:z.boolean(),

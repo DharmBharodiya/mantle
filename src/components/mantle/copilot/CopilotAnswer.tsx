@@ -2,7 +2,7 @@ import type { CopilotResponse } from "@/types/copilot";
 import { fmtMoney, fmtNum } from "@/lib/mantle/report";
 export function CopilotAnswer({answer,onInspect}:{answer:CopilotResponse;onInspect:(reportId:string,eventId:string)=>void}){
  return <div className="min-w-0 space-y-5">
-  <p className="text-sm text-steam-4">{answer.mode==='GROQ'?'Groq explanation with Mantle calculations':'Deterministic retrieval and calculations'}</p>
+  <p className="text-sm text-steam-4">{answer.mode==='GEMINI'?'Gemini explanation with Mantle calculations':'Deterministic retrieval and calculations'}</p>
   {answer.providerNotice&&<p role="status" className="rounded-chip border border-m-line bg-m-ink-2 p-3 text-sm text-steam-2">{answer.providerNotice}</p>}
   <p className="text-base leading-relaxed text-steam-2">{answer.summary}</p>
   {answer.statements.map((statement,index)=><div key={index} className="space-y-2"><p className="text-sm text-steam-2">{statement.kind==='INVESTIGATION'?'Investigation question: ':statement.kind==='UNCERTAINTY'?'Uncertainty: ':''}{statement.text}</p><div className="flex flex-wrap gap-2">{statement.citationIds.map(id=><a className="m-chip" href={'#'+answer.requestId+'-'+id} key={id}>Source {id}</a>)}{statement.calculationIds.map(id=><a className="m-chip" href={'#'+answer.requestId+'-'+id} key={id}>Calculation {id}</a>)}</div></div>)}
