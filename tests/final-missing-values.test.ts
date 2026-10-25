@@ -46,3 +46,8 @@ describe('missing or malformed extraction values (mocked provider)',()=>{
   const merged=mergeExtractions([first,second]);expect(merged.events).toHaveLength(1);expect(merged.events[0].confidence).toBe('LOW');expect(merged.events[0].evidence.snippet).toBe('VERBATIM SOURCE');
  });
 });
+
+it('describes malformed response field paths without reflecting provider values',async()=>{
+ const value=output();(value.events[0] as Record<string,unknown>).startMinute='PRIVATE_SOURCE_DO_NOT_ECHO';
+ const {response,body}=await run(value);expect(response.status).toBe(422);expect(body.error).toContain('events.0.startMinute');expect(body.error).not.toContain('PRIVATE_SOURCE_DO_NOT_ECHO');
+});

@@ -79,3 +79,18 @@ it('honors cancellation for deterministic structured input as well as model extr
  const input=await prepareUpload(new File(['startMinute,endMinute,activity,classification\n0,60,DRILLING,PRODUCTIVE'],'table.csv'));
  const controller=new AbortController();controller.abort();await expect(extractFromGemini(input,controller.signal)).rejects.toMatchObject({code:'INGEST_CANCELLED'});expect(generate).not.toHaveBeenCalled();
 });
+
+it('sends a report-day pattern that accepts ISO dates and rejects blank labels',async()=>{
+ generate.mockResolvedValue({text:JSON.stringify(envelope([recorded.events[0]]))});
+ await extractFromGemini(await prepareUpload(await pdf(1)));
+ const pattern=generate.mock.calls[0][0].config.responseJsonSchema.properties.reportDates.items.pattern;
+ expect(new RegExp(pattern).test('2021-06-28')).toBe(true);expect(new RegExp(pattern).test('')).toBe(false);
+});
+
+it('withholds the abbreviated quote observed in the real multi-page run without altering measurements',async()=>{
+ const value=envelope([recorded.events[13]]);
+ value.events[0].evidence.snippet='14:30 16:00 1.50 421 5-99 Pressure test to 1500 psi, Pump 20 bbl fresh water...';
+ generate.mockResolvedValue({text:JSON.stringify(value)});const messages=await frames(await pdf(1));const report=messages.at(-1).report;
+ expect(report.events[0]).toMatchObject({startMinute:870,endMinute:960,startHoleDepthFt:421,endHoleDepthFt:421,confidence:'LOW',evidence:{snippet:'',page:1}});
+ expect(report.warnings.join(' ')).toContain('Unverified model excerpt');expect(report.warnings.join(' ')).toContain('fresh water...');
+});

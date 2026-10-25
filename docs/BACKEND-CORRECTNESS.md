@@ -30,3 +30,9 @@ Final command outputs and exit codes: `docs/qa/backend-checks.json`, `backend-ty
 The existing real FORGE recorded-response verifier remains an offline comparison, not a new live extraction. This backend follow-up makes no new provider calls and does not claim broader real-PDF/OCR accuracy. Ambiguous structured files now require the source columns/values to be corrected; no values are guessed or silently discarded.
 
 Observed final results: TypeScript PASS; 124 tests across 16 files PASS; lint PASS; isolated production build PASS. TypeScript also passed after restoring the normal generated development reference. All six new actual HTTP cases passed, plus the existing eight smoke, two canonical CSV/XLSX, and four real-report analytics checks (20 HTTP assertions total). No new Gemini calls were made.
+
+## Final backend validation sprint
+
+Subsequent work adds section-failure preservation, report-day metadata validation, conflicting daily-total warnings, conservative duplicate confidence and missing/abbreviated evidence handling. See [FINAL-BACKEND-VALIDATION.md](FINAL-BACKEND-VALIDATION.md) for changes, provenance, five actual live requests, failures and limits.
+
+Final source passes 168 tests / 19 files, TypeScript, lint, build and 21 local production HTTP assertions. The latest live three-page FORGE run matched 17 intervals/end depths and surfaced 4.0 h versus 3.5 h, but one quote was abbreviated: strict source comparison remains FAIL. Final quote suppression is regression-tested, not live-rerun. Earlier 124-test/no-new-provider-call results above are historical.

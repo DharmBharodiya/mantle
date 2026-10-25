@@ -27,3 +27,18 @@ Default 35 ft/h assumption produces no drilling ILT and no modeled time exposure
 - `node scripts/validate-forge.mjs`: offline recorded result versus original transcribed text; no model call.
 - `node scripts/validate-forge.mjs --http`: also tests the running local analytics API; no model call.
 - `node scripts/validate-forge.mjs --live`: uploads this public PDF through the actual ingestion/Gemini path and saves a **separate** latest-run result. Requires a local server, authorized key, capacity and quota. It does not overwrite the reviewed demo snapshot or original observation.
+
+## Final backend sprint PDF fixtures
+
+The following public-source excerpts were copied with pdf-lib from the checksum-verified original PDF; no page text or measurements were reauthored. They are input validation fixtures, not new drilling observations.
+
+| File | Original PDF pages | Purpose | SHA-256 |
+|---|---|---|---|
+| `2021-06-28-full-day.pdf` | 4, 5, 6 | Full three-page report 2 for 28 June; exercises two extraction sections and appendices | `775206c4bf99a400146a7ec4ab30e284d2228a889373d075ff193cdd7131762d` |
+| `2021-06-28-and-29-operations.pdf` | 4, 7 | Two operations pages with distinct Report For days; must reject as multi-day | `0e4e0b8dabe3c50743386e43de4ce103fa8fdc43545e373b03895a29bdbce9a8` |
+
+The same John McLennan / EGI University of Utah dataset attribution, DOI and CC BY 4.0 license above apply. Original-page references are mapped to excerpt-local page numbers on upload. The PDF copies retain public header contact information already present in the dataset; no private source was used.
+
+The final sprint also corrected corrupted typographic inch marks in the manually transcribed final operations row (`operationsText` in the expected JSON). Original PDFs, recorded raw extraction and observations were unchanged. The corrected expected text uses the original right-double-quote characters rather than encoding-substitution question marks.
+
+`node scripts/verify-final-backend.mjs --live` makes two genuine HTTP/Gemini checks and records their responses. Add `--single-day` to run only the three-page day, writing separate evidence. Without `--live`, the script compares saved evidence only. See `docs/FINAL-BACKEND-VALIDATION.md` for actual successes, failures and scope limits; fixture existence never implies live success.
