@@ -76,7 +76,7 @@ export function buildWellReport(data: Extraction, opts?: {
             depthCurve.push({ minute, holeDepthFt: depth, eventId: e.id, classification: e.classification });
             previousDepth = depth;
         }
-        if (!e.evidence.snippet)
+        if (!e.evidence.snippet.trim())
             warnings.add(`No exact evidence excerpt for ${e.id}. Human review required.`);
     }
     const excessHours = (nptMinutes + iltMinutes) / 60;

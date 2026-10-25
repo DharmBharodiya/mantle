@@ -36,16 +36,21 @@ export function mergeExtractions(extractions: Extraction[]): Extraction {
     if (names.length > 1)
         throw new ServiceError("This source contains more than one well name. Split the document by well before importing.", 422, "MULTI_WELL_REPORT");
     const warnings = extractions.flatMap(item => item.warnings);
-    const seen = new Set<string>();
+    const seen = new Map<string, number>();
     const events: DrillingEvent[] = [];
     let duplicates = 0;
     for (const event of extractions.flatMap(item => item.events)) {
         const key = JSON.stringify([event.startMinute, event.endMinute, event.activity, event.classification, event.startHoleDepthFt, event.endHoleDepthFt, event.note.replace(/\s+/g, " ").trim()]);
-        if (seen.has(key)) {
+        const duplicate = seen.get(key);
+        if (duplicate !== undefined) {
+            const previous = events[duplicate];
+            const confidenceRank = { LOW: 0, MEDIUM: 1, HIGH: 2 };
+            if (confidenceRank[event.confidence] < confidenceRank[previous.confidence]) previous.confidence = event.confidence;
+            if (!previous.evidence.snippet.trim() && event.evidence.snippet.trim()) previous.evidence = { ...event.evidence };
             duplicates++;
             continue;
         }
-        seen.add(key);
+        seen.set(key, events.length);
         events.push({ ...event, id: `event-${createHash("sha256").update(key).digest("hex").slice(0, 16)}` });
     }
     if (duplicates)

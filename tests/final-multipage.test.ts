@@ -61,3 +61,21 @@ describe('source drilling-total conflicts',()=>{
   const messages=await frames(await pdf(3));expect(messages.at(-1).report.warnings.join(' ')).toMatch(/4\.0.*3\.5/);expect(messages.at(-1).report.warnings.join(' ')).toContain('page 3');
  });
 });
+
+it('does not commit a partial document when a later PDF section has malformed extraction',async()=>{
+ const first=envelope([recorded.events[0]]);
+ generate.mockResolvedValueOnce({text:JSON.stringify(first)}).mockResolvedValueOnce({text:'{"events":[]}'});
+ const messages=await frames(await pdf(3));expect(messages.at(-1)).toMatchObject({type:'error',code:'INVALID_EXTRACTION'});expect(messages.some(message=>message.type==='result'||message.stage==='ready')).toBe(false);
+});
+it('cancels an active extraction and returns no final report',async()=>{
+ let generationStarted!:()=>void;const started=new Promise<void>(resolve=>{generationStarted=resolve;});
+ generate.mockImplementation(()=>{generationStarted();return new Promise(()=>{});});
+ const data=new FormData();data.append('file',await pdf(1));const controller=new AbortController();
+ const response=await POST(new Request('http://localhost/api/ingest',{method:'POST',body:data,signal:controller.signal,headers:{Accept:'application/x-ndjson'}}));
+ const body=response.text();await started;controller.abort();const messages=(await body).trim().split('\n').map(line=>JSON.parse(line));
+ expect(messages.at(-1)).toMatchObject({type:'error',code:'INGEST_CANCELLED'});expect(messages.some(message=>message.type==='result')).toBe(false);
+});
+it('honors cancellation for deterministic structured input as well as model extraction',async()=>{
+ const input=await prepareUpload(new File(['startMinute,endMinute,activity,classification\n0,60,DRILLING,PRODUCTIVE'],'table.csv'));
+ const controller=new AbortController();controller.abort();await expect(extractFromGemini(input,controller.signal)).rejects.toMatchObject({code:'INGEST_CANCELLED'});expect(generate).not.toHaveBeenCalled();
+});

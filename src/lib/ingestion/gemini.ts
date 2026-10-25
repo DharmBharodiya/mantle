@@ -53,6 +53,11 @@ async function extractChunk(input: ExtractionChunk, signal?: AbortSignal, contex
     const events = parsed.events.map(event => {
         let snippet = event.evidence.snippet;
         let confidence = event.confidence;
+        if (!snippet.trim()) {
+            snippet = "";
+            confidence = "LOW";
+            warnings.push("An activity has no source excerpt. Evidence is unavailable; human source review is required.");
+        }
         let page: number | null = null;
         const text = typeof input.contents === "string";
         if (text && snippet && !normalize(rawSource).includes(normalize(snippet))) {

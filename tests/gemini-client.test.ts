@@ -95,3 +95,27 @@ describe("bounded Gemini extraction requests", () => {
         expect(serialized).not.toContain("fileName");
     });
 });
+
+it('rejects a cancelled request before any provider metadata or generation call',async()=>{
+ const controller=new AbortController();controller.abort();
+ await expect(run(controller.signal)).rejects.toMatchObject({code:'INGEST_CANCELLED'});
+ expect(getModel).not.toHaveBeenCalled();expect(generate).not.toHaveBeenCalled();
+});
+it('cancels transient backoff instead of starting a retry',async()=>{
+ vi.useFakeTimers();generate.mockRejectedValue({status:503});const controller=new AbortController();
+ const assertion=expect(run(controller.signal)).rejects.toMatchObject({code:'INGEST_CANCELLED'});
+ await vi.advanceTimersByTimeAsync(1);controller.abort();await assertion;
+ await vi.advanceTimersByTimeAsync(1000);expect(generate).toHaveBeenCalledOnce();
+});
+it('rejects unsupported generation models before uploading source',async()=>{
+ getModel.mockResolvedValue({supportedActions:['embedContent'],outputTokenLimit:8192});
+ await expect(run()).rejects.toMatchObject({code:'PROVIDER_MODEL'});expect(generate).not.toHaveBeenCalled();
+});
+it('caps output by verified model capacity and never retries empty output',async()=>{
+ getModel.mockResolvedValue({supportedActions:['generateContent'],outputTokenLimit:2048});
+ generate.mockResolvedValue({text:''});await expect(run()).rejects.toMatchObject({code:'EMPTY_OUTPUT'});
+ expect(generate.mock.calls[0][0].config.maxOutputTokens).toBe(2048);expect(generate).toHaveBeenCalledOnce();
+});
+it.each([{status:429,message:'Per-day quota exhausted'},{status:401},{status:404}])('does not retry nontransient provider failure %j',async failure=>{
+ generate.mockRejectedValue(failure);await expect(run()).rejects.toBeInstanceOf(Error);expect(generate).toHaveBeenCalledOnce();
+});
