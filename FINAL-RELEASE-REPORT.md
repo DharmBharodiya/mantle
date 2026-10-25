@@ -4,6 +4,16 @@
 
 **Decision: local demo materials and automated verification are ready; full release sign-off is incomplete.** Use the previously validated cached FORGE report with the labeled synthetic fallback. Two gates remain open: successful fresh quote verification and complete browser/mobile/print rehearsal. Neither is represented as passing.
 
+## Report-day recovery follow-up
+
+The subsequent MULTI_DAY_REPORT fix adds an explicit, source-reviewed date/page-range workflow on homepage and console. This is assisted selection, not automatic verified segmentation: no day/page defaults, required original-header confirmation, selected pages extracted with original references, and every section must agree with the chosen day before the existing single-day analytics runs. Unclear boundaries still require a single-day PDF.
+
+The user confirmed the example source as 2021-06-28-and-29-operations.pdf, the genuine two-day fixture; the old rejection correctly enforced the old single-day contract. Exact raw dates from that request were not retained. Full implementation, diagnosis, API changes, tests, bounds and fallback: [MULTI-DAY-IMPORT.md](docs/MULTI-DAY-IMPORT.md).
+
+Latest checks for this follow-up: 208 tests / 22 files, TypeScript, lint and production build PASS; 28 deterministic HTTP assertions PASS. One actual selected-day public request da58d6c5-22cb-4d79-b760-0c19bd4d8f23 completed in 8,028 ms: June 28 alone, all 17 intervals/end depths/pages and event excerpts match the original. This updates the earlier blanket quote-unverified statement for this selected-page response only; previous failed observations remain preserved and three-page/appendix behavior is not inferred. The daily-summary quote remains model-extracted/unverified. See docs/qa/report-day-* evidence.
+
+Interactive recovery, mobile, keyboard and print checks remain pending; source selection does not confer HUMAN_VERIFIED provenance. No dependencies/deadlines changed, no unrelated work overwritten, and no push/merge/deploy or Photon/ElevenLabs work. The earlier release history below remains an accurate record of its own runs.
+
 ## Release-candidate finalization
 
 Finalization base: f2cc5cadea92d7bd6864b42518cafddcc2639dda on feat/solo-overnight. This follow-up changes **documentation only**, plus separate check-result files; application source, tests, contracts, configuration, dependencies and existing working changes were not edited. No Gemini call, push, merge or deployment was made.

@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-25T01:26:02.739Z",
+  "exampleRequestId": "4c2864ff-fec9-4a96-a44b-51087de901fb",
+  "serverConsoleObservation": {
+    "generationOutcome": "ok",
+    "generationElapsedMs": 15920,
+    "generationDurationMs": 14769,
+    "inputTokens": 1626,
+    "outputTokens": 5118,
+    "terminalCode": "MULTI_DAY_REPORT",
+    "terminalElapsedMs": 15923
+  },
+  "existingBrowserAccessibilityObservation": {
+    "url": "http://127.0.0.1:3100/",
+    "attachedFileName": "2021-06-28-and-29-operations.pdf",
+    "displayedSize": "0.1 MB",
+    "displayedErrorRequestId": "4c2864ff-fec9-4a96-a44b-51087de901fb"
+  },
+  "knownFixture": {
+    "path": "demo-fixtures/public/forge-78b-32/2021-06-28-and-29-operations.pdf",
+    "days": [
+      "2021-06-28",
+      "2021-06-29"
+    ],
+    "originalPdfPages": [
+      4,
+      7
+    ],
+    "uploadedPdfPages": [
+      1,
+      2
+    ]
+  },
+  "limitations": [
+    "The original request did not log its returned date labels or input checksum. Filename matches the known two-day fixture, but original upload bytes were not recovered.",
+    "Browser accessibility text identified the attached file/error. Screenshot did not correspond reliably to the target window, so no input or rendered recovery interaction was verified."
+  ],
+  "userConfirmation": {
+    "fileName": "2021-06-28-and-29-operations.pdf",
+    "confirmed": true
+  }
+}

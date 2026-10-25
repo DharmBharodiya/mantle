@@ -9,7 +9,7 @@ export type ExtractionChunk = PreparedUpload & {
     originalPages?: number[];
     chunkIndex: number;
 };
-export async function pdfChunks(input: PreparedUpload, signal?: AbortSignal): Promise<ExtractionChunk[]> {
+export async function pdfChunks(input: PreparedUpload, signal?: AbortSignal, selectedPages?: number[]): Promise<ExtractionChunk[]> {
     if (!(input.contents instanceof Uint8Array))
         throw new ServiceError("Expected PDF bytes.", 422, "INVALID_PDF");
     throwIfAborted(signal);
@@ -25,7 +25,9 @@ export async function pdfChunks(input: PreparedUpload, signal?: AbortSignal): Pr
         throw new ServiceError(`PDF must contain 1–${MAX_PDF_PAGES} pages. Split larger files into single-day reports; no pages were discarded.`, 413, "PDF_PAGE_LIMIT");
     if (document.context.enumerateIndirectObjects().length > 10000)
         throw new ServiceError("PDF is too complex to process within this request. Export a simpler single-day report.", 413, "PDF_COMPLEXITY");
-    if (count <= PDF_PAGES_PER_CHUNK && input.contents.length <= 2 * 1024 * 1024)
+    if (selectedPages && (!selectedPages.length || selectedPages.some((page, index) => !Number.isInteger(page) || page < 1 || page > count || (index > 0 && page !== selectedPages[index - 1] + 1))))
+        throw new ServiceError("Choose an existing, contiguous page range from the original PDF. No report was imported.", 400, "INVALID_REPORT_PAGES");
+    if (!selectedPages && count <= PDF_PAGES_PER_CHUNK && input.contents.length <= 2 * 1024 * 1024)
         return [{ ...input, originalPages: Array.from({ length: count }, (_, i) => i + 1), chunkIndex: 0 }];
     const result: ExtractionChunk[] = [];
     async function add(indices: number[]) {
@@ -43,8 +45,9 @@ export async function pdfChunks(input: PreparedUpload, signal?: AbortSignal): Pr
             throw new ServiceError("A single PDF page exceeds the processing limit. Export that page at a lower image resolution.", 413, "PDF_PAGE_SIZE");
         result.push({ ...input, contents: bytes, originalPages: indices.map(index => index + 1), chunkIndex: result.length });
     }
-    for (let page = 0; page < count; page += PDF_PAGES_PER_CHUNK)
-        await add(Array.from({ length: Math.min(PDF_PAGES_PER_CHUNK, count - page) }, (_, i) => page + i));
+    const indices = selectedPages ? selectedPages.map(page => page - 1) : Array.from({length: count}, (_, index) => index);
+    for (let page = 0; page < indices.length; page += PDF_PAGES_PER_CHUNK)
+        await add(indices.slice(page, page + PDF_PAGES_PER_CHUNK));
     return result;
 }
 export function textChunks(input: PreparedUpload): ExtractionChunk[] {

@@ -1,6 +1,8 @@
 ﻿'use client';
 
 import Link from 'next/link';
+import { ReportDayReviewError, type ReportDaySelection as DaySelection } from '@/types/report-day';
+import { ReportDaySelection } from './ReportDaySelection';
 import { useEffect, useId, useRef, useState, type DragEvent, type FormEvent } from 'react';
 import { IconArrowUp, IconAttach, IconSpark, IconTable, IconX } from './Icons';
 import { cn } from '@/lib/mantle/cn';
@@ -14,7 +16,7 @@ const ACCEPT_SHEETS = '.csv,.xlsx';
 
 export interface ReportPromptProps {
   /** Called with the typed question and/or the attached report. Return a promise to show the busy state. */
-  onSubmit?: (input: { text: string; file: File | null }) => void | Promise<void>;
+  onSubmit?: (input: { text: string; file: File | null; selection?: DaySelection }) => void | Promise<void>;
   demoHref?: string;
   prompts?: string[];
   maxBytes?: number;
@@ -61,6 +63,7 @@ export function ReportPrompt({ onSubmit, demoHref = '/console', prompts = DEFAUL
   const [focused, setFocused] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [dayReview, setDayReview] = useState<ReportDayReviewError | null>(null);
   const [dragging, setDragging] = useState(false);
   const [busy, setBusy] = useState(false);
   const typing = !focused && !text;
@@ -73,6 +76,7 @@ export function ReportPrompt({ onSubmit, demoHref = '/console', prompts = DEFAUL
     if (!ACCEPT_ALL.split(',').includes(ext)) { setFile(null); return setError('Use a PDF, CSV, XLSX or TXT report.'); }
     if (f.size > maxBytes) { setFile(null); return setError(`That file is ${(f.size / 1048576).toFixed(1)} MB — the limit is ${Math.round(maxBytes / 1048576)} MB.`); }
     setError(null);
+    setDayReview(null);
     setFile(f);
   };
 
@@ -82,8 +86,7 @@ export function ReportPrompt({ onSubmit, demoHref = '/console', prompts = DEFAUL
     fileRef.current.click();
   };
 
-  const submit = async (e: FormEvent) => {
-    e.preventDefault();
+  const analyze = async (selection?: DaySelection) => {
     if (!text.trim() && !file) {
       setError("Attach a report or paste its operational time blocks.");
       textRef.current?.focus();
@@ -91,10 +94,13 @@ export function ReportPrompt({ onSubmit, demoHref = '/console', prompts = DEFAUL
     }
     if (!onSubmit || busy) return;
     setError(null);
+    if (!selection) setDayReview(null);
     try {
       setBusy(true);
-      await onSubmit({ text: text.trim(), file });
+      await onSubmit({ text: text.trim(), file, selection });
+      setDayReview(null);
     } catch (cause) {
+      if (cause instanceof ReportDayReviewError && file && /\.pdf$/i.test(file.name)) setDayReview(cause);
       setError(cause instanceof Error ? cause.message : "The report could not be analyzed. Please retry.");
     } finally {
       setBusy(false);
@@ -111,7 +117,7 @@ export function ReportPrompt({ onSubmit, demoHref = '/console', prompts = DEFAUL
 
   return (
     <form
-      onSubmit={submit}
+      onSubmit={(event: FormEvent) => {event.preventDefault();if (!dayReview) void analyze();}}
       onDragOver={(e) => {
         e.preventDefault();
         setDragging(true);
@@ -151,7 +157,7 @@ export function ReportPrompt({ onSubmit, demoHref = '/console', prompts = DEFAUL
         <div className="mt-2 inline-flex max-w-full items-center gap-2 rounded-chip border border-m-line bg-m-ink-2 py-1.5 pr-1 pl-3 font-mono text-xs text-steam-2">
           <span className="truncate">{file.name}</span>
           <span className="text-steam-4">{(file.size / 1048576).toFixed(1)} MB</span>
-          <button type="button" aria-label="Remove attached report" disabled={busy} onClick={() => { setFile(null); if (fileRef.current) fileRef.current.value = ""; }} className="inline-flex size-11 items-center justify-center rounded-lg text-steam-4 hover:bg-white/5 hover:text-steam">
+          <button type="button" aria-label="Remove attached report" disabled={busy} onClick={() => { setDayReview(null); setFile(null); if (fileRef.current) fileRef.current.value = ""; }} className="inline-flex size-11 items-center justify-center rounded-lg text-steam-4 hover:bg-white/5 hover:text-steam">
             <IconX size={14} />
           </button>
         </div>
@@ -159,6 +165,7 @@ export function ReportPrompt({ onSubmit, demoHref = '/console', prompts = DEFAUL
       {status && <div className="m-status mt-3"><p role="status" aria-live="polite">{status}</p>{busy && onCancel && <button type="button" className="m-chip mt-2" onClick={onCancel}>Stop waiting</button>}</div>}
       {error && <p role="alert" className="mt-2 text-[13px] text-npt-ink">{error}</p>}
 
+      {dayReview && file && <ReportDaySelection key={dayReview.requestId} review={dayReview.review} fileName={file.name} requestId={dayReview.requestId} busy={busy} onAnalyze={analyze} onDismiss={() => {setDayReview(null);setError(null);}}/>}
       <div className="mt-2.5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
           <button type="button" disabled={busy} className="m-chip" onClick={() => pick(ACCEPT_ALL)}>
@@ -171,7 +178,7 @@ export function ReportPrompt({ onSubmit, demoHref = '/console', prompts = DEFAUL
             <IconSpark size={15} />Try the demo well
           </Link>
         </div>
-        <button type="submit" aria-label="Analyze report" disabled={busy} className="m-send m-heat-fill disabled:opacity-70">
+        <button type="submit" aria-label="Analyze report" disabled={busy || dayReview !== null} className="m-send m-heat-fill disabled:opacity-70">
           {busy ? <span className="m-spin size-4 rounded-full border-2 border-white/40 border-t-white" /> : <IconArrowUp size={18} strokeWidth={2} />}
         </button>
       </div>

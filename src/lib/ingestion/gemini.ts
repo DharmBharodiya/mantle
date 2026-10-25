@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { ReportDayDateSchema as ReportDateSchema, ReportDaySelectionSchema, type ReportDaySelection } from "@/types/report-day";
+import { ReportDayBoundaryError } from "./report-day-error";
 import { boundedWarnings } from "@/lib/report-warnings";
 import { ActivitySchema, ClassificationSchema, ConfidenceSchema, ExtractionSchema, type Extraction } from "@/types/telemetry";
 import { generateStructured } from "@/lib/server/gemini-client";
@@ -18,7 +20,6 @@ const responseSchema = { type: "object", required: ["wellName", "reportDate", "r
                     evidence: { type: "object", required: ["page", "snippet"], properties: { page: nullableNumber, row: nullableNumber, sheet: { anyOf: [{ type: "string" }, { type: "null" }] }, snippet: { type: "string", maxLength: 240 } } }
                 } } }
     } };
-const ReportDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value, "Invalid report date");
 const DrillingSummarySchema = z.object({ hours: z.number().finite().min(0).max(24), snippet: z.string().trim().min(1).max(240), page: z.number().int().positive().nullable() });
 const EnvelopeSchema = z.object({ wellName: z.string(), reportDate: z.union([ReportDateSchema, z.literal("")]), reportDates: z.array(ReportDateSchema).max(24), reportedDrillingHours: z.array(DrillingSummarySchema).max(24), warnings: z.array(z.string()), events: z.array(z.record(z.unknown())) });
 type DrillingSummary = z.infer<typeof DrillingSummarySchema> & { fileName: string };
@@ -38,7 +39,7 @@ async function extractChunk(input: ExtractionChunk, signal?: AbortSignal, contex
     const envelope = validateModel(EnvelopeSchema, result);
     const dates = [...new Set([...envelope.reportDates, ...(envelope.reportDate ? [envelope.reportDate] : [])])];
     if (dates.length > 1)
-        throw new ServiceError("Multiple or conflicting report days were found in an extraction section. Split the PDF by report day; no day was silently selected.", 422, "MULTI_DAY_REPORT");
+        throw new ReportDayBoundaryError("Multiple or conflicting report days were found in an extraction section. Check the date headers in the original PDF; select one source-reviewed day and its pages, or upload a single-day PDF. No day was selected automatically.", dates, input.originalPages ?? []);
     const reportDate = dates[0] ?? "";
     const parsed = validateModel(ExtractionSchema, { ...envelope, reportDate, events: envelope.events.map((event, index) => ({ ...event, id: `chunk-${input.chunkIndex}-event-${index}`, evidence: { ...(typeof event.evidence === "object" && event.evidence !== null ? event.evidence : {}), fileName: input.fileName } })) });
     const warnings = [...parsed.warnings];
@@ -95,15 +96,19 @@ async function extractChunk(input: ExtractionChunk, signal?: AbortSignal, contex
     });
     return { extraction: { ...parsed, events, warnings: boundedWarnings(warnings) }, summaries };
 }
-export async function extractFromGemini(input: PreparedUpload, signal?: AbortSignal, context?: IngestionContext): Promise<Extraction> {
+export async function extractFromGemini(input: PreparedUpload, signal?: AbortSignal, context?: IngestionContext, selection?: ReportDaySelection): Promise<Extraction> {
     throwIfAborted(signal ?? context?.signal);
+    if (selection) {
+        ReportDaySelectionSchema.parse(selection);
+        if (input.mimeType !== "application/pdf") throw new ServiceError("Report-day page selection is available for PDFs only.", 400, "INVALID_REPORT_SELECTION");
+    }
     context?.stage("extracting");
     const structured = extractStructuredTable(input);
     if (structured) {
         context?.trace({ phase: "structured_table", rows: input.rows?.length, chunks: 0 });
         return structured;
     }
-    const chunkOperation = () => input.mimeType === "application/pdf" ? pdfChunks(input, signal) : Promise.resolve(textChunks(input));
+    const chunkOperation = () => input.mimeType === "application/pdf" ? pdfChunks(input, signal, selection?.pages) : Promise.resolve(textChunks(input));
     const chunks = context ? await context.measure("chunk_document", chunkOperation) : await chunkOperation();
     context?.trace({ phase: "document_size", bytes: typeof input.contents === "string" ? Buffer.byteLength(input.contents) : input.contents.length, rows: input.rows?.length, chunks: chunks.length, pages: chunks.reduce((count, chunk) => count + (chunk.originalPages?.length ?? 0), 0) });
     let completedChunks = 0;
@@ -112,6 +117,8 @@ export async function extractFromGemini(input: PreparedUpload, signal?: AbortSig
     const results = await mapBounded(chunks, 2, async (chunk) => {
         try {
             const output = await extractChunk(chunk, chunkSignal, context);
+            if (selection && output.extraction.reportDate !== selection.reportDate)
+                throw new ReportDayBoundaryError("The selected pages do not consistently identify the chosen report day. Check the original date headers and page boundaries, or upload a single-day PDF; no date was invented or overwritten.", output.extraction.reportDate ? [output.extraction.reportDate] : [], chunk.originalPages ?? [], "REPORT_DAY_MISMATCH");
             completedChunks++;
             context?.stage("extracting", { completedChunks, totalChunks: chunks.length });
             return output;
@@ -123,7 +130,11 @@ export async function extractFromGemini(input: PreparedUpload, signal?: AbortSig
     }, chunkSignal);
     if (!results.length)
         throw new ServiceError("No extraction sections were produced.", 422, "NO_DRILLING_EVENTS");
+    const detectedDates = [...new Set(results.map(result => result.extraction.reportDate).filter(Boolean))];
+    if (detectedDates.length > 1)
+        throw new ReportDayBoundaryError("Extraction sections identify different report days. Check the original headers and select one source-reviewed day and its page range, or upload a single-day PDF. No days were combined.", detectedDates, chunks.flatMap(chunk => chunk.originalPages ?? []));
     const merged = mergeExtractions(results.map(result => result.extraction));
+    if (selection) merged.warnings.push(`User-selected source pages ${selection.pages.join(", ")} for report day ${selection.reportDate}; original document page references retained. Date agreement was checked across extraction sections; source evidence remains unverified.`);
     const timelineHours = merged.events.filter(event => event.activity === "DRILLING").reduce((total, event) => total + event.endMinute - event.startMinute, 0) / 60;
     const summaries = results.flatMap(result => result.summaries);
     for (const summary of summaries) {

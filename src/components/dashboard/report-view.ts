@@ -1,3 +1,4 @@
+import { readReportDayError, type ReportDaySelection } from "../../types/report-day";
 import { IngestionMessageSchema, type IngestionMessage } from "../../types/ingestion";
 import { WellTelemetryReportSchema, type WellTelemetryReport } from "../../types/telemetry";
 export const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
@@ -70,7 +71,7 @@ export function ingestionErrorMessage(error: string): string {
 export type IngestionProgress = Extract<IngestionMessage, {
     type: "stage";
 }>;
-export async function ingestReport(file: File, signal: AbortSignal, onStage?: (progress: IngestionProgress) => void): Promise<WellTelemetryReport> {
+export async function ingestReport(file: File, signal: AbortSignal, onStage?: (progress: IngestionProgress) => void, selection?: ReportDaySelection): Promise<WellTelemetryReport> {
     if (signal.aborted)
         throw new Error("Upload cancelled. Current report preserved.");
     const error = validateUpload(file);
@@ -78,6 +79,7 @@ export async function ingestReport(file: File, signal: AbortSignal, onStage?: (p
         throw new Error(error);
     const data = new FormData();
     data.append("file", file);
+    if (selection) data.append("reportDay", JSON.stringify(selection));
     const response = await fetch("/api/ingest", { method: "POST", body: data, signal, headers: { Accept: "application/x-ndjson" } });
     let report: WellTelemetryReport;
     if (response.ok && response.headers.get("content-type")?.includes("application/x-ndjson")) {
@@ -101,8 +103,11 @@ export async function ingestReport(file: File, signal: AbortSignal, onStage?: (p
             const event = result.data;
             if (terminal)
                 throw new Error("The report service returned data after its final result. Current report preserved.");
-            if (event.type === "error")
+            if (event.type === "error") {
+                const review = readReportDayError(event);
+                if (review) throw review;
                 throw new Error(`${event.error} [${event.code}; request ${event.requestId}]`);
+            }
             if (event.type === "stage") {
                 last = event;
                 if (event.stage !== "ready")
@@ -156,6 +161,10 @@ export async function ingestReport(file: File, signal: AbortSignal, onStage?: (p
         }
         catch {
             throw new Error(`Report service returned an unreadable response (HTTP ${response.status}). Please retry.`);
+        }
+        if (!response.ok && object(result)) {
+            const review = readReportDayError(result);
+            if (review) throw review;
         }
         if (!response.ok)
             throw new Error(object(result) && typeof result.error === "string" ? ingestionErrorMessage(result.error) : `Report extraction failed (HTTP ${response.status}).`);

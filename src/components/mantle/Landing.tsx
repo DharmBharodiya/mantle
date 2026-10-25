@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { MantleLogo } from './Logo';
 import { ThermalField } from './ThermalField';
-import { ReportPrompt } from './ReportPrompt';
+import { ReportPrompt, type ReportPromptProps } from './ReportPrompt';
 import { EventTicker } from './EventTicker';
 import { DecodeCard } from './DecodeCard';
 import { LandingPreview } from './LandingPreview';
@@ -58,7 +58,7 @@ export interface LandingProps {
   /** Where "Open console" and "Try the demo well" go. */
   consoleHref?: string;
   /** Wire the hero upload box to your existing /api upload route. */
-  onAnalyze?: (input: { text: string; file: File | null }) => void | Promise<void>;
+  onAnalyze?: ReportPromptProps["onSubmit"];
   teamNames?: string;
   repoHref?: string;
   uploadStatus?: string;

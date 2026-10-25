@@ -27,3 +27,7 @@ Files, relative to the repository root:
 Finish with the real report selected and synthetic fallback available. Rehearse the exact three-minute sequence once. Keep cached data clearly labeled as a saved genuine extraction, not a fresh live result. Do not refresh without exporting JSON; full reports live in memory.
 
 Release gate: unresolved FAIL or NOT TESTED items remain open in FINAL-RELEASE-REPORT.md. Corrected live quote extraction is a **separate pending gate**; do not retry it while the provider is busy, and do not present a failed attempt as verified.
+
+## Report-day recovery regression
+
+On the updated build, attach demo-fixtures/public/forge-78b-32/2021-06-28-and-29-operations.pdf. Confirm the current valid report remains selected after the boundary error. In Choose one report day verify the date/range/confirmation start empty and analysis is disabled. Choose June 28 and page 1, confirm the original source and analyze; expect 17 events with original page 1 evidence. Repeat separately for June 29/page 2. Selecting both pages must still reject. Check Cancel day selection, Stop waiting, and Enter in the homepage page-range field (it must not submit the whole document). Repeat at 390px; no clipping and all controls reachable. These UI actions remain pending manual verification. See docs/MULTI-DAY-IMPORT.md for limits and safe fallback.

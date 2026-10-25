@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { ReportDaySelectionSchema, type ReportDaySelection } from "@/types/report-day";
+import { reportDayDetails } from "@/lib/ingestion/report-day-error";
 import { prepareUpload, validateFile, MAX_UPLOAD_BYTES } from "@/lib/ingestion/prepare";
 import { extractFromGemini } from "@/lib/ingestion/gemini";
 import { buildWellReport, validateTimeline } from "@/lib/analytics/compute";
@@ -10,12 +12,13 @@ export const runtime = "nodejs";
 // The code enforces 240s; deployments may enforce a lower host-specific cap.
 export const maxDuration = 270;
 export async function POST(req: Request) {
+    let selection: ReportDaySelection | undefined;
     let emit: ((message: IngestionMessage) => void) | undefined;
     const context = new IngestionContext(req.signal, message => emit?.(message));
     async function pipeline(file: File): Promise<WellTelemetryReport> {
         context.stage("preparing");
         const prepared = await context.measure("prepare_upload", () => prepareUpload(file));
-        const extraction = await context.measure("extract_activities", () => extractFromGemini(prepared, context.signal, context));
+        const extraction = await context.measure("extract_activities", () => extractFromGemini(prepared, context.signal, context, selection));
         context.stage("validating");
         await context.measure("validate_events", async () => { ExtractionSchema.parse(extraction); const issues = validateTimeline(extraction.events); if (issues.length)
             throw new ServiceError(issues.join("; "), 422, "INVALID_TIMELINE"); });
@@ -48,6 +51,14 @@ export async function POST(req: Request) {
         if (!(file instanceof File))
             throw new ServiceError("Missing file field.", 400, "MISSING_FILE");
         validateFile(file); // Early request errors retain normal non-2xx HTTP responses.
+        const day = data.get("reportDay");
+        if (day !== null) {
+            try {
+                if (typeof day !== "string" || day.length > 1024) throw new Error();
+                selection = ReportDaySelectionSchema.parse(JSON.parse(day));
+                if (!/\.pdf$/i.test(file.name)) throw new Error();
+            } catch { throw new ServiceError("Choose a valid date and contiguous PDF page range, and confirm that you checked them against the source.", 400, "INVALID_REPORT_SELECTION"); }
+        }
         if (req.headers.get("accept")?.includes("application/x-ndjson")) {
             const encoder = new TextEncoder();
             const stream = new ReadableStream<Uint8Array>({
@@ -59,7 +70,7 @@ export async function POST(req: Request) {
                         const result = safeApiError(error);
                         context.trace({ phase: "failed", outcome: "error", code: result.code });
                         try {
-                            emit?.({ type: "error", requestId: context.requestId, error: result.error, code: result.code, status: result.status });
+                            emit?.({ type: "error", requestId: context.requestId, error: result.error, code: result.code, status: result.status, ...reportDayDetails(error) });
                         }
                         catch { /* Client already closed the stream. */ }
                     }).finally(() => { open = false; context.dispose(); try {
@@ -80,6 +91,6 @@ export async function POST(req: Request) {
         const result = safeApiError(error);
         context.trace({ phase: "failed", outcome: "error", code: result.code });
         context.dispose();
-        return NextResponse.json({ error: result.error, code: result.code, requestId: context.requestId }, { status: result.status, headers: { "Cache-Control": "no-store", "X-Request-Id": context.requestId, "Server-Timing": context.serverTiming() } });
+        return NextResponse.json({ error: result.error, code: result.code, requestId: context.requestId, ...reportDayDetails(error) }, { status: result.status, headers: { "Cache-Control": "no-store", "X-Request-Id": context.requestId, "Server-Timing": context.serverTiming() } });
     }
 }

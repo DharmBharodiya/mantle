@@ -1,0 +1,203 @@
+{
+  "checkedAt": "2026-10-25T01:42:18.695Z",
+  "base": "http://127.0.0.1:3100",
+  "providerCalls": 0,
+  "totalAssertions": 28,
+  "checks": [
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "dashboard HTML and source labels",
+      "status": "PASS",
+      "elapsedMs": 100,
+      "httpStatus": 200
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "Mantle-style homepage and console link",
+      "status": "PASS",
+      "elapsedMs": 37,
+      "httpStatus": 200
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "synthetic report API",
+      "status": "PASS",
+      "elapsedMs": 21,
+      "events": 9
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "deterministic scenario recalculation and provenance",
+      "status": "PASS",
+      "elapsedMs": 12,
+      "nptScenarioUsd": 50000
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "unknown fuel remains null and client verification cannot be promoted",
+      "status": "PASS",
+      "elapsedMs": 7,
+      "carbonScenario": null,
+      "sourceKind": "PUBLIC_SOURCE_UNREVIEWED"
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "invalid analytics JSON is an explicit non-success",
+      "status": "PASS",
+      "elapsedMs": 7,
+      "httpStatus": 422
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "invalid upload produces explicit error",
+      "status": "PASS",
+      "elapsedMs": 11,
+      "httpStatus": 415,
+      "code": "UNSUPPORTED_FILE"
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "vision rejects invalid image before model call",
+      "status": "PASS",
+      "elapsedMs": 8,
+      "httpStatus": 415,
+      "code": "IMAGE_SIGNATURE"
+    },
+    {
+      "script": "scripts/verify-ingestion.mjs",
+      "check": "Canonical CSV without Gemini",
+      "status": "PASS",
+      "elapsedMs": 63,
+      "requestId": "28f79cfd-2206-4cc9-b93b-d24e110d7737",
+      "events": 3,
+      "nptMinutes": 60,
+      "stages": [
+        "preparing",
+        "extracting",
+        "validating",
+        "computing",
+        "ready"
+      ]
+    },
+    {
+      "script": "scripts/verify-ingestion.mjs",
+      "check": "Canonical XLSX without Gemini",
+      "status": "PASS",
+      "elapsedMs": 61,
+      "requestId": "3420a6a2-8ad1-4413-be9f-f5bcd8e161f3",
+      "events": 3,
+      "nptMinutes": 60,
+      "stages": [
+        "preparing",
+        "extracting",
+        "validating",
+        "computing",
+        "ready"
+      ]
+    },
+    {
+      "name": "FORGE scenario: 293 ft / 3.5 h, 34.2 min ILT / $5,700; null carbon",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Cannot promote source verification",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Overlaps reject without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Invalid scenario rejects without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Empty report rejects without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Duplicate CSV headers reject",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "Conflicting aliases return terminal error only",
+      "status": "PASS",
+      "httpStatus": 200,
+      "terminalStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "Equivalent aliases preserve source and coverage",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Malformed depth grouping rejects",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "INVALID_STRUCTURED_ROW"
+    },
+    {
+      "name": "XLSX duplicate headers reject after decoding",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "25-page PDF rejects before provider generation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "terminalStatus": 413,
+      "code": "PDF_PAGE_LIMIT"
+    },
+    {
+      "name": "Invalid selection JSON rejects before provider",
+      "status": "PASS",
+      "httpStatus": 400,
+      "code": "INVALID_REPORT_SELECTION"
+    },
+    {
+      "name": "Unconfirmed selection rejects before provider",
+      "status": "PASS",
+      "httpStatus": 400,
+      "code": "INVALID_REPORT_SELECTION"
+    },
+    {
+      "name": "Duplicate pages reject before provider",
+      "status": "PASS",
+      "httpStatus": 400,
+      "code": "INVALID_REPORT_SELECTION"
+    },
+    {
+      "name": "Impossible date rejects before provider",
+      "status": "PASS",
+      "httpStatus": 400,
+      "code": "INVALID_REPORT_SELECTION"
+    },
+    {
+      "name": "Non-PDF day selection rejects before provider",
+      "status": "PASS",
+      "httpStatus": 400,
+      "code": "INVALID_REPORT_SELECTION"
+    },
+    {
+      "name": "Out-of-document range emits no report",
+      "status": "PASS",
+      "httpStatus": 200,
+      "code": "INVALID_REPORT_PAGES"
+    },
+    {
+      "name": "Source PDF page cap still applies to selections",
+      "status": "PASS",
+      "httpStatus": 200,
+      "code": "PDF_PAGE_LIMIT"
+    }
+  ]
+}

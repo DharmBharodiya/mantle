@@ -6,6 +6,8 @@ import { KpiStrip } from "@/components/mantle/console/KpiStrip";
 import { latestHoleDepth } from "@/components/dashboard/report-view";
 import { takeConsoleReport, readConsoleSession, saveConsoleSession } from "@/lib/mantle/console-handoff";
 import { useEffect, useRef, useState } from "react";
+import { ReportDayReviewError, type ReportDaySelection as DaySelection } from "@/types/report-day";
+import { ReportDaySelection } from "@/components/mantle/ReportDaySelection";
 import { INGESTION_STAGE_LABELS } from "@/types/ingestion";
 import type { Scenario } from "@/types/telemetry";
 import { DEMO_REPORT } from "@/data/demo-report";
@@ -29,6 +31,7 @@ export default function Home() {
     const [scenarioBusy, setScenarioBusy] = useState(false);
     const [error, setError] = useState("");
     const [status, setStatus] = useState("");
+    const [dayReview, setDayReview] = useState<{file: File; error: ReportDayReviewError} | null>(null);
     const [dragging, setDragging] = useState(false);
     const [summaries, setSummaries] = useState<ReportSummary[]>([]);
     const [storageError, setStorageError] = useState("");
@@ -69,15 +72,16 @@ export default function Home() {
         });
     }
     function navigate(next: string) { setView(next); setEventId(""); requestAnimationFrame(() => { heading.current?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" }); heading.current?.focus({ preventScroll: true }); }); }
-    function stopWaiting() { request.current?.abort(); request.current = null; setUploading(false); setScenarioBusy(false); setError(""); setStatus("Stopped waiting. Your report is unchanged. Gemini may still process an already accepted request."); if (fileInput.current)
+    function stopWaiting() { setDayReview(null); request.current?.abort(); request.current = null; setUploading(false); setScenarioBusy(false); setError(""); setStatus("Stopped waiting. Your report is unchanged. Gemini may still process an already accepted request."); if (fileInput.current)
         fileInput.current.value = ""; }
-    function resetDemo() { request.current?.abort(); request.current = null; setUploading(false); setScenarioBusy(false); setReports(previous => [demoEntry, ...previous.filter(item => item.id !== "demo")]); setReportId("demo"); setView("Overview"); setEventId(""); setError(""); setStatus("Synthetic demo restored with its original assumptions."); if (fileInput.current)
+    function resetDemo() { setDayReview(null); request.current?.abort(); request.current = null; setUploading(false); setScenarioBusy(false); setReports(previous => [demoEntry, ...previous.filter(item => item.id !== "demo")]); setReportId("demo"); setView("Overview"); setEventId(""); setError(""); setStatus("Synthetic demo restored with its original assumptions."); if (fileInput.current)
         fileInput.current.value = ""; }
     function selectReport(id: string) { if (busy)
         return; setReportId(id); setEventId(""); setError(""); setStatus(""); setView("Overview"); }
-    async function upload(file: File) {
+    async function upload(file: File, selection?: DaySelection) {
         if (busy)
             return;
+        if (!selection) setDayReview(null);
         const invalid = validateUpload(file);
         if (invalid) {
             setError(invalid);
@@ -96,11 +100,12 @@ export default function Home() {
         try {
             const next = await ingestReport(file, controller.signal, progress => {
                 if (request.current === controller && !controller.signal.aborted) setStatus(`${INGESTION_STAGE_LABELS[progress.stage]}${progress.totalChunks ? ` · ${progress.completedChunks} of ${progress.totalChunks} sections complete` : ""}. Your current report remains available.`);
-            });
+            }, selection);
             if (request.current !== controller || controller.signal.aborted)
                 return;
             if (!next.events.length)
                 throw new Error("No drilling events found. Choose a daily drilling report with explicit time intervals.");
+            setDayReview(null);
             const id = crypto.randomUUID();
             setReports(previous => boundedReports(previous, { id, report: next, fileName: file.name }));
             setReportId(id);
@@ -110,6 +115,7 @@ export default function Home() {
         }
         catch (cause) {
             if (request.current === controller) {
+                if (cause instanceof ReportDayReviewError && /\.pdf$/i.test(file.name)) setDayReview({file, error: cause});
                 setStatus("");
                 setError(controller.signal.aborted ? "The report service did not respond within five minutes. Your previous report is unchanged." : `${cause instanceof Error ? cause.message : "Upload failed."} Current report preserved.`);
             }
@@ -213,6 +219,7 @@ export default function Home() {
       <input ref={fileInput} type="file" accept=".pdf,.csv,.xlsx,.txt" className="hidden" aria-label="Choose drilling report" onChange={event => { const file=event.target.files?.[0]; if(file) void upload(file); }}/><input ref={snapshotInput} type="file" accept=".json" className="hidden" aria-label="Import Mantle analysis snapshot" onChange={event => { const file=event.target.files?.[0]; if(file) void loadSnapshot(file); }}/>
       {view !== "Equipment vision" && <section className={`m-report-bar ${dragging ? "m-prompt-drag" : ""}`} aria-label="Selected report and upload drop area" onDragOver={event => {event.preventDefault(); if(!busy) setDragging(true);}} onDragLeave={() => setDragging(false)} onDrop={event => {event.preventDefault();setDragging(false);if(busy)return;if(event.dataTransfer.files.length !== 1){setError("Upload one drilling report at a time.");return;}const file=event.dataTransfer.files[0];if(file)void upload(file);}}><div className="min-w-0 flex-1"><label htmlFor="active-report" className="mb-2 block text-sm text-steam-4">Selected report</label><select className="w-full" id="active-report" disabled={busy} value={reportId} onChange={event=>selectReport(event.target.value)}>{reports.map(item=><option key={item.id} value={item.id}>{item.report.wellName||"Unnamed well"} · {item.report.reportDate||"Date unknown"} · {item.fileName}</option>)}</select></div><p className="text-sm text-steam-4">Drop PDF, CSV, XLSX or TXT · 8 MB max</p></section>}
       {status && <div className="m-status my-5"><p role="status">{status}</p>{busy && <button className="m-btn-ghost mt-3" onClick={stopWaiting}>Stop waiting</button>}</div>}{error && <div role="alert" className="m-status my-5"><strong>Report could not be imported</strong><p className="mt-2">{error}</p><button className="m-btn-ghost mt-3" disabled={busy} onClick={()=>fileInput.current?.click()}>Choose a drilling report to retry</button></div>}{storageError && <div role="alert" className="m-status my-5"><p>{storageError}</p><button className="m-btn-ghost mt-3" onClick={clearSummaries}>Clear browser summaries</button></div>}
+      {dayReview && <ReportDaySelection key={dayReview.error.requestId} review={dayReview.error.review} fileName={dayReview.file.name} requestId={dayReview.error.requestId} busy={busy} onAnalyze={selection => upload(dayReview.file, selection)} onDismiss={() => {setDayReview(null);setError("");}}/>}
       {view === "Overview" && <ConsoleOverview key={reportId} report={report} selectedId={selectedId} onSelect={inspectEvent} onScenario={()=>navigate("Benchmarks")}/>}
       {view === "Reports" && <ReportsPanel reports={reports} selectedId={reportId} summaries={summaries} onSelect={selectReport} onRemove={removeReport} onSave={saveSummary} onDeleteSummary={id=>store(summaries.filter(summary=>summary.id!==id))} onClearSummaries={clearSummaries} onImport={()=>snapshotInput.current?.click()} onExport={exportJson}/>}
       {view === "Compare" && <ComparePanel summaries={compareSummaries}/>}
