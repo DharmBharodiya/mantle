@@ -157,3 +157,10 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - 94 tests across 14 files pass. Typecheck/lint/isolated production build pass. Rebuilt-server smoke 8/8, canonical CSV/XLSX 2/2 and real-report analytics/error checks 4/4 pass. Detailed final command evidence is in docs/qa/automated-checks.json.
 - Desktop homepage/console inspected and navigation observed. Computer Use stopped with physical Escape; no further UI interaction attempted. Exactly 390 px, full keyboard/interaction, print-preview and live vision remain unverified.
 - DEMO-READY.md gives setup, exact three-minute sequence and fallbacks. FINAL-QA-REPORT.md records observed evidence, complete per-interval comparison and limits. No push, merge, deployment, credential/package/contract change, Photon or ElevenLabs work.
+
+## Backend correctness — structured input ambiguity
+
+- Reproduced ambiguous CSV/XLSX headers, conflicting aliases, ignored populated fallbacks and malformed comma/radix depths: 14 of 19 new regressions failed against the prior parser.
+- Structured input now rejects duplicate normalized names and conflicting populated aliases with AMBIGUOUS_STRUCTURED_COLUMNS (422). Equivalent clock/minute aliases and matching text aliases remain valid; blank aliases no longer hide a populated value.
+- Depths accept decimal/scientific notation and properly grouped thousands; malformed grouping/radix notation is rejected, never silently reinterpreted.
+- Focused verification: 19 new structured-column tests plus 12 existing pipeline tests pass (31 total); TypeScript and lint pass. No model calls, shared contract/package/UI changes, push, merge or deployment.
