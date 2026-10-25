@@ -223,3 +223,11 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Added 38 regressions; full 208 tests / 22 files, TypeScript, ESLint and isolated production build PASS. Normal generated-reference typecheck and new QA-script lint PASS. Existing single-day/date-boundary tests remain passing.
 - Final-built HTTP: 28 deterministic checks PASS, zero provider calls. One genuine selected-day call against the public two-day fixture: da58d6c5-22cb-4d79-b760-0c19bd4d8f23, 8,028 ms, PASS; 17 intervals/end depths/source pages and all 17 event excerpts match the original expectations. Only June 28 analyzed, source remains unverified; 4.0 h versus 3.5 h warning retained. No repeated live calls.
 - Interactive picker still requires manual browser review; target screenshot did not reliably match the accessibility window, so no unsafe input was attempted. Other pre-existing UI/preflight/reference-kit changes preserved. No push, merge, deploy, Photon or ElevenLabs.
+
+## Rig Supervisor Copilot - retrieval and API checkpoint
+
+- Added isolated copilot request/response schemas and a stateless POST /api/copilot route. Selected browser reports are validated and recalculated by the existing analytics engine; no server report cache, database or embeddings. Gemini ingestion unchanged.
+- Added scoped keyword/terminology retrieval, chronological neighbors with explicit validated prior focus, per-report calculations/assumptions/included events, original excerpts and review-warning citations. No numeric arithmetic is delegated to Groq.
+- Server-only official Groq REST API uses GROQ_MODEL (configured openai/gpt-oss-20b), strict JSON schema where supported, Zod validation, bounded context/output, 12-second attempts, at most two transient attempts, 40-second route budget, cancellation and safe provider errors. Deterministic fallback is explicitly labeled.
+- Groq narrative references must resolve to supplied citation/calculation IDs; uncited factual or numerical/external-link prose is withheld. Source text is untrusted data. No private report contents/keys logged or retained across requests.
+- 44 focused retrieval/provider/API tests PASS with mocked providers. TypeScript and scoped lint checked before checkpoint; no live Groq result claimed yet. No push, merge, deploy, Photon or ElevenLabs.
