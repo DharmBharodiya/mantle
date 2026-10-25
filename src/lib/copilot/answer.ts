@@ -13,7 +13,12 @@ export async function answerCopilot(input:CopilotRequest,requestId:string,signal
  const history=input.history.map(turn=>({question:turn.question,focus:turn.focus&&all.some(item=>item.id===turn.focus?.reportId&&item.report.events.some(event=>event.id===turn.focus?.eventId))?turn.focus:null}));
  try {
   const understood=await groqJson(INTENT_SYSTEM,{question:input.question,selectedReports:all.map(r=>({id:r.id,wellName:r.report.wellName,reportDate:r.report.reportDate,sourceKind:r.report.sourceKind})),history},'mantle_query',intentJson,IntentSchema,signal);
-  intent=validateIntent(understood,all);intentFromGroq=true;
+  intent=validateIntent(understood,all);
+  const explicitIntent=fallbackIntent(input.question,all);
+  if(explicitIntent.kind!=='LOOKUP'&&intent.kind!==explicitIntent.kind){
+   intent={...intent,kind:explicitIntent.kind,activities:explicitIntent.activities,classifications:explicitIntent.classifications,terms:explicitIntent.terms,relative:explicitIntent.relative,ranking:explicitIntent.ranking,reportIds:explicitIntent.reportIds.length?explicitIntent.reportIds:intent.reportIds};
+  }
+  intentFromGroq=true;
  }catch(error){cancelled(signal);providerNotice=error instanceof ServiceError?error.message:'Groq intent referenced unsupported scope or filters. Conservative deterministic retrieval was used.';}
  const data=retrieve(input.question,intent,all,history);
  let statements:CopilotResponse['statements']=[];let mode:CopilotResponse['mode']='DETERMINISTIC';
