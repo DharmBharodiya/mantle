@@ -20,21 +20,26 @@ export async function answerCopilot(input:CopilotRequest,requestId:string,signal
  if(data.glossary.length)data.summary=data.glossary.join(' ');
  if(intentFromGroq&&!['CLARIFY','UNSUPPORTED'].includes(data.intent.kind)){
   const narrativeSchema=z.object({statements:z.array(AnswerStatementSchema).min(1).max(4)}).strict();
-  const refs={citationIds:{type:'array',items:{type:'string',enum:data.citations.length?data.citations.map(c=>c.id):['NONE']}},calculationIds:{type:'array',items:{type:'string',enum:data.calculations.length?data.calculations.map(c=>c.id):['NONE']}}};
+  const explainedSources=[...data.citations.filter(c=>c.kind==='REVIEW_WARNING'),...data.citations.filter(c=>c.kind==='EVENT').slice(0,10)].slice(0,12);
+  const refs={citationIds:{type:'array',items:{type:'string',enum:explainedSources.length?explainedSources.map(c=>c.id):['NONE']}},calculationIds:{type:'array',items:{type:'string',enum:data.calculations.length?data.calculations.map(c=>c.id):['NONE']}}};
   const outputJson={type:'object',additionalProperties:false,required:['statements'],properties:{statements:{type:'array',items:{type:'object',additionalProperties:false,required:['kind','text','citationIds','calculationIds'],properties:{kind:{type:'string',enum:['EXPLANATION','INVESTIGATION','UNCERTAINTY']},text:{type:'string'},...refs}}}}};
-  const context={question:input.question,history,scope:data.scope.map(r=>({id:r.id,wellName:r.report.wellName,reportDate:r.report.reportDate})),intent:data.intent,summary:data.summary,glossary:data.glossary,
-   sources:data.citations.map(c=>({...c,snippet:c.snippet.slice(0,800),contextExcerptTruncated:c.snippet.length>800})),
-   calculations:data.calculations.map(({id,reportId,reportDate,metric,value,unit,basis,filters,eventIds,assumptions})=>({id,reportId,reportDate,metric,value,unit,basis,filters,eventIds,assumptions})),warnings:data.warnings.slice(0,12).map(w=>w.slice(0,350))};
+  const context={question:input.question,history,scope:data.scope.map(r=>({id:r.id,wellName:r.report.wellName,reportDate:r.report.reportDate,assumptions:r.report.scenario})),intent:data.intent,summary:data.summary,glossary:data.glossary,
+   sources:explainedSources.map(c=>({id:c.id,reportId:c.reportId,eventId:c.eventId,kind:c.kind,label:c.label,page:c.page,snippet:c.snippet.slice(0,800),contextExcerptTruncated:c.snippet.length>800})),
+   calculations:data.calculations.map(({id,reportId,metric,value,unit,basis,eventIds})=>({id,reportId,metric,value,unit,basis,includedRecordCount:eventIds.length})),warnings:data.warnings.slice(0,12).map(w=>w.slice(0,350))};
   try {
    const answer=await groqJson(ANSWER_SYSTEM,context,'mantle_answer',outputJson,narrativeSchema,signal);
-   const citations=new Set(data.citations.map(c=>c.id)),calculations=new Set(data.calculations.map(c=>c.id));
+   const citations=new Set(explainedSources.map(c=>c.id)),calculations=new Set(data.calculations.map(c=>c.id));
+   const supported:typeof answer.statements=[];const rejected:string[]=[];
    for(const statement of answer.statements){
-    if(statement.citationIds.some(id=>!citations.has(id))||statement.calculationIds.some(id=>!calculations.has(id)))throw new Error('Unrecognized citations');
-    if(statement.kind==='EXPLANATION'&&!statement.citationIds.length&&!statement.calculationIds.length)throw new Error('Uncited factual explanation');
+    if(statement.citationIds.some(id=>!citations.has(id))||statement.calculationIds.some(id=>!calculations.has(id))){rejected.push('unknown_reference');continue;}
+    if(statement.kind==='EXPLANATION'&&!statement.citationIds.length&&!statement.calculationIds.length){rejected.push('uncited_explanation');continue;}
     // Quantities belong to canonical calculation panels or exact source text, never model arithmetic.
-    if(/\d|https?:|\]\(/i.test(statement.text))throw new Error('Unsupported numerical or external citation prose');
+    if(/\d|https?:|\]\(/i.test(statement.text)||/\b(one|two|three|four|five|six|seven|eight|nine|ten|hundred|thousand|million)\s+(hours?|minutes?|feet|dollars?|events?|percent)\b/i.test(statement.text)){rejected.push('numerical_or_external_prose');continue;}
+    supported.push(statement);
    }
-   statements=answer.statements;mode='GROQ';
+   if(!supported.length)throw new ServiceError('Groq explanation failed grounding validation ('+[...new Set(rejected)].join(', ')+'). Deterministic results and exact evidence are shown instead.',502,'GROQ_GROUNDING');
+   statements=supported;mode='GROQ';
+   if(rejected.length)providerNotice='Some Groq statements were withheld by grounding validation ('+[...new Set(rejected)].join(', ')+'). Numeric results below are authoritative Mantle calculations.';
   }catch(error){cancelled(signal);providerNotice=error instanceof ServiceError?error.message:'Groq explanation failed grounding validation. Deterministic results and exact evidence are shown instead.';}
  }
  cancelled(signal);
