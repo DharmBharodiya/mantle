@@ -191,7 +191,7 @@ export function Landing({ consoleHref = '/console', onAnalyze, teamNames, repoHr
             <div className="min-w-0">
               <div className="m-preview-kpis grid grid-cols-2 sm:grid-cols-5 border-b border-m-line">
                 {[
-                  ['Scenario efficiency', `${fmtNum(demo.effectivePct)}%`, `${fmtNum(demo.effectiveHours)} of ${fmtNum(demo.observedHours)} h`],
+                  ['Benchmark-adjusted efficiency', demo.effectivePct===null?'Not available':`${fmtNum(demo.effectivePct)}%`, demo.effectivePct===null?`${fmtNum(demo.benchmarkCoveragePct)}% of productive time benchmark eligible`:`${fmtNum(demo.effectiveHours)} of ${fmtNum(demo.observedHours)} h`],
                   ['Downtime (NPT)', `${fmtNum(demo.nptHours)} h`, `${fmtMoney(demo.nptCost)} · ${demo.events.filter(event => event.cls === "npt").length} events`],
                   ['Invisible lost time', `${fmtNum(demo.iltHours)} h`, `${fmtMoney(demo.iltCost)} · vs ${DEFAULT_ASSUMPTIONS.ropBenchmark} ft/h`],
                   ['Hole depth', `${demo.endDepth.toLocaleString('en-US')} ft`, `+${demo.footage} ft today`],

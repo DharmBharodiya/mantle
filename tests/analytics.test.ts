@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { DEMO_EXTRACTION } from "@/data/demo-report";
 import { buildWellReport, computeILTMinutes } from "@/lib/analytics/compute";
-import { ScenarioSchema } from "@/types/telemetry";
+import { ScenarioSchema, type Extraction } from "@/types/telemetry";
+import { readFileSync } from "node:fs";
 const scenario = ScenarioSchema.parse({});
 describe("analytics invariants", () => {
     it("sorts without mutating input and produces repeatable metrics", () => {
@@ -24,6 +25,32 @@ describe("analytics invariants", () => {
         expect(report.depthCurve).toEqual([]);
         expect(report.insights[0].iltMinutes).toBeNull();
         expect(report.metrics.modeledExcessCo2Tons).toBeNull();
+    });
+    it("withholds whole-day efficiency when productive time is only partly benchmarked", () => {
+        const fixture = JSON.parse(readFileSync("demo-fixtures/public/forge-78b-32/2021-06-28-gemini.snapshot.json", "utf8")) as { report: Extraction };
+        const report = buildWellReport(fixture.report, { sourceKind: "PUBLIC_SOURCE_UNREVIEWED" });
+        expect(report.events).toHaveLength(17);
+        expect(report.metrics.observedMinutes).toBe(1440);
+        expect(report.metrics.nptMinutes).toBe(0);
+        expect(report.metrics.productiveMinutes).toBe(1440);
+        expect(report.metrics.iltEligibleMinutes).toBe(210);
+        expect(report.metrics.benchmarkCoveragePct).toBeCloseTo(14.5833, 3);
+        expect(report.metrics.efficiencyPct).toBeNull();
+        expect(report.warnings.join(" ")).toMatch(/efficiency is unavailable.*14.6% of productive time/i);
+    });
+    it("reports benchmark-adjusted efficiency only for a complete, fully benchmarked day", () => {
+        const event = {
+            ...DEMO_EXTRACTION.events[0],
+            startMinute: 0,
+            endMinute: 1440,
+            activity: "DRILLING" as const,
+            classification: "PRODUCTIVE" as const,
+            startHoleDepthFt: 1000,
+            endHoleDepthFt: 1840,
+        };
+        const report = buildWellReport({ ...DEMO_EXTRACTION, events: [event] });
+        expect(report.metrics.benchmarkCoveragePct).toBe(100);
+        expect(report.metrics.efficiencyPct).toBe(100);
     });
     it("never infers trip ILT or flat drilling ILT from hole depth", () => {
         for (const activity of ["TRIPPING_OUT", "TRIPPING_IN"] as const)

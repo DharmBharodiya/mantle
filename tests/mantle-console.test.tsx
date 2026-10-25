@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import type { Extraction } from "@/types/telemetry";
 import { renderToStaticMarkup } from "react-dom/server";
 import { buildWellReport } from "@/lib/analytics/compute";
 import { DEMO_REPORT } from "@/data/demo-report";
@@ -23,6 +25,12 @@ describe("Mantle console preserves canonical report truth", () => {
     expect(html).toContain("&lt;script&gt;not executable&lt;/script&gt;\nSecond line stays intact.");
     expect(sourceReference(source)).toBe("report.csv · Page unavailable · Sheet Daily log · Row 12");
     expect(html).not.toContain("Page 1");expect(html).not.toContain("Gemini ·");
+  });
+  it("shows efficiency as unavailable when most productive time has no benchmark", () => {
+    const fixture=JSON.parse(readFileSync("demo-fixtures/public/forge-78b-32/2021-06-28-gemini.snapshot.json","utf8")) as {report:Extraction};
+    const report=buildWellReport(fixture.report);
+    const html=renderToStaticMarkup(<KpiStrip report={report}/>);
+    expect(html).toContain("Benchmark-adjusted efficiency");expect(html).toContain("Not available");expect(html).toContain("14.6% of productive time benchmark eligible");expect(html).not.toContain("100.0%");
   });
   it("renders canonical values from the selected report rather than kit demo constants", () => {
     const report=buildWellReport(DEMO_REPORT,{scenario:{...DEMO_REPORT.scenario,rigDailyUsd:240000,excessFuelGallonsPerHour:null}});

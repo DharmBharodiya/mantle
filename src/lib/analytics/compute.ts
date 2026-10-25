@@ -59,12 +59,24 @@ export function buildWellReport(data: Extraction, opts?: {
     const iltEligibleMinutes = events.reduce((sum, e, index) => sum + (insights[index].iltMinutes === null ? 0 : e.endMinute - e.startMinute), 0);
     const classifiedMinutes = productiveMinutes + nptMinutes;
     const unknownMinutes = observedMinutes - classifiedMinutes;
+    const benchmarkCoveragePct = productiveMinutes ? iltEligibleMinutes / productiveMinutes * 100 : 0;
+    const efficiencyPct = observedMinutes === 1440 && unknownMinutes === 0 && productiveMinutes > 0 && iltEligibleMinutes === productiveMinutes
+        ? Math.max(0, (productiveMinutes - iltMinutes) / classifiedMinutes * 100)
+        : null;
     if (observedMinutes < 1440)
         warnings.add(`${1440 - observedMinutes} minutes of the local report day are unobserved; missing time is not productive time.`);
     if (unknownMinutes)
         warnings.add(`${unknownMinutes} observed minutes have UNKNOWN classification and are excluded from efficiency's denominator.`);
     if (iltEligibleMinutes < productiveMinutes)
         warnings.add("ILT cannot be evaluated for every productive interval. Trip speed requires separate bit/string movement; hole depth is insufficient.");
+    if (productiveMinutes > 0 && efficiencyPct === null) {
+        const reasons = [
+            ...(observedMinutes < 1440 ? ["the full report day is not observed"] : []),
+            ...(unknownMinutes > 0 ? ["some observed time is unclassified"] : []),
+            ...(iltEligibleMinutes < productiveMinutes ? ["the drilling benchmark covers only " + benchmarkCoveragePct.toFixed(1) + "% of productive time"] : []),
+        ];
+        warnings.add("Benchmark-adjusted efficiency is unavailable because " + reasons.join("; ") + ". Unobserved or unbenchmarked time is not assumed to meet target.");
+    }
     const depthCurve: DepthPoint[] = [];
     let previousDepth: number | null = null;
     for (const e of events) {
@@ -84,8 +96,8 @@ export function buildWellReport(data: Extraction, opts?: {
     return {
         ...extracted, events, warnings: boundedWarnings(warnings), sourceKind: opts?.sourceKind ?? "PUBLIC_SOURCE_UNREVIEWED", scenario, insights, depthCurve, generatedAt: new Date().toISOString(),
         metrics: { observedMinutes, classifiedMinutes, productiveMinutes, nptMinutes, iltMinutes, unknownMinutes, unobservedMinutes: 1440 - observedMinutes,
-            coveragePct: observedMinutes / 1440 * 100, iltEligibleMinutes, benchmarkCoveragePct: productiveMinutes ? iltEligibleMinutes / productiveMinutes * 100 : 0,
-            efficiencyPct: classifiedMinutes ? Math.max(0, (productiveMinutes - iltMinutes) / classifiedMinutes * 100) : null,
+            coveragePct: observedMinutes / 1440 * 100, iltEligibleMinutes, benchmarkCoveragePct,
+            efficiencyPct,
             estimatedLossUsd: excessHours * hourlyRate, estimatedNptCostUsd: nptMinutes / 60 * hourlyRate, estimatedIltOpportunityUsd: iltMinutes / 60 * hourlyRate,
             modeledExcessFuelGallons, modeledExcessCo2Tons: modeledExcessFuelGallons === null ? null : modeledExcessFuelGallons * scenario.kgCo2PerGallon / 1000 },
     };

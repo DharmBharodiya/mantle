@@ -25,7 +25,7 @@ export function PrintSummary({ report, fileName }: { report: WellTelemetryReport
         <div className="print-warning">{sourceStatus} Financial exposure, ILT, fuel and CO₂ are scenario estimates, not audited losses or measured emissions. Flat hole depth alone does not prove downtime. Hole measured depth is not drill-bit position. Human review is required; this report provides no equipment diagnosis or field instruction.</div>
         <h2>Operational overview</h2>
         <div className="print-stats">
-            <p><b>{m.efficiencyPct === null ? "Not available" : `${fmtNum(m.efficiencyPct)}%`}</b>Operating efficiency</p>
+            <p><b>{m.efficiencyPct === null ? "Not available" : `${fmtNum(m.efficiencyPct)}%`}</b>Benchmark-adjusted efficiency</p>
             <p><b>{hours(m.nptMinutes)}</b>Confirmed NPT</p>
             <p><b>{m.iltEligibleMinutes ? hours(m.iltMinutes) : "Not available"}</b>Drilling ILT opportunity</p>
             <p><b>{fmtMoney(m.estimatedLossUsd)}</b>Modeled time exposure</p>

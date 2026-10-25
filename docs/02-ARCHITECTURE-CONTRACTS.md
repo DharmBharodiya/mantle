@@ -48,7 +48,7 @@ Let `d = endMinute - startMinute` for each event. Events must be ordered, valid 
 - **Classified minutes:** productive + NPT. `UNKNOWN` duration not included in efficiency denominator.
 - **Drilling benchmark minutes:** `max(0, endHoleDepthFt-startHoleDepthFt) / drillBenchmarkFtPerHour * 60` for comparable `DRILLING` productive events only.
 - **ILT minute opportunity:** `max(0, actualMinutes - benchmarkMinutes)` capped at actual duration. No ILT inferred if depth is unavailable, classification unknown, NPT already recognized or activity is not comparable.
-- **Efficiency percentage (clearly labeled prototype definition):** `100*(productiveMinutes - ILTMinutes)/classifiedMinutes`. Null if classifiedMinutes=0.
+- **Benchmark-adjusted efficiency:** `100*(productiveMinutes - ILTMinutes)/classifiedMinutes`, but only reported when the full 1,440-minute day is observed, all observed time is classified, and every productive minute is eligible for the selected drilling benchmark. Otherwise it is null; unobserved, unknown, and unbenchmarked time is never assumed to meet target. This is a scenario metric, not a universal field-efficiency or OEE score.
 - **Scenario rig hourly rate:** `rigDailyUsd / 24`; default `$120,000/day` is **not an established day rate for any particular source well**.
 - **NPT cost scenario:** `NPT_min/60 * rigHourlyRate`.
 - **Potential ILT cost opportunity:** `ILT_min/60 * rigHourlyRate`.

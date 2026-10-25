@@ -6,8 +6,17 @@ import { IconInfo } from "../Icons";
 /** Kit's continuous instrument strip; values are already computed on the server. */
 export function KpiStrip({report}:{report:WellTelemetryReport}) {
   const m=report.metrics;
+  const efficiencyMeta = m.efficiencyPct !== null
+    ? fmtNum(m.benchmarkCoveragePct) + "% of productive time benchmark eligible"
+    : m.unknownMinutes > 0
+      ? fmtNum(m.unknownMinutes / 60) + " h of observed time is unclassified"
+      : m.coveragePct < 100
+        ? fmtNum(m.coveragePct) + "% day coverage; a complete day is required"
+        : m.productiveMinutes === 0
+          ? "No benchmarkable productive time"
+          : fmtNum(m.benchmarkCoveragePct) + "% of productive time benchmark eligible";
   const cells=[
-    {label:"Operating efficiency",value:fmtNum(m.efficiencyPct),unit:m.efficiencyPct===null?"":"%",meta:`${fmtNum(m.coveragePct)}% day coverage`,formula:"(Productive minutes − qualified drilling ILT) / classified minutes. Unknown time is excluded."},
+    {label:"Benchmark-adjusted efficiency",value:fmtNum(m.efficiencyPct),unit:m.efficiencyPct===null?"":"%",meta:efficiencyMeta,formula:"Shown only when the full day is observed, all time is classified, and the selected drilling benchmark covers every productive minute. This scenario metric is not a universal field-efficiency score."},
     {label:"Confirmed NPT",value:fmtNum(m.nptMinutes/60),unit:" h",meta:fmtMoney(m.estimatedNptCostUsd),formula:"Only time explicitly classified NPT in the report; multiplied by the rig-rate assumption for cost."},
     {label:"Drilling ILT",value:fmtNum(m.iltEligibleMinutes?m.iltMinutes/60:null),unit:m.iltEligibleMinutes?" h":"",meta:`Against ${report.scenario.drillBenchmarkFtPerHour} ft/h`,formula:"Eligible drilling duration less footage / selected benchmark. Trip ILT remains unknown."},
     {label:"Hole depth",value:fmtNum(latestHoleDepth(report),0),unit:latestHoleDepth(report)===null?"":" ft",meta:"Latest observed measured depth",formula:"Last available hole measured depth, not drill-bit position."},
