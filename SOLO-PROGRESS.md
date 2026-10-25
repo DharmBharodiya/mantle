@@ -198,3 +198,12 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Final checks PASS: 168 tests / 19 files, TypeScript, ESLint, isolated production build, normal post-build TypeScript and 21 final-build HTTP assertions with zero provider calls. Strict latest recorded evidence comparison remains FAIL.
 - docs/FINAL-BACKEND-VALIDATION.md records request IDs/timings, exact defects, evidence, mocked/live distinction and limits. Approval review prevented overwriting an existing HTTP evidence file; equivalent API assertions were completed with separate new evidence. Documentation resumed after the user requested continuation following a temporary approval-service limit.
 - Local checkpoints only; no push, merge, deploy, Photon, ElevenLabs or infrastructure changes. Pre-existing UI/preflight/reference-kit and reviewed-snapshot work preserved separately.
+
+## Final demo readiness and release verification
+
+- One fresh public three-page FORGE request attempted: 18a1c9bb-bcaa-49a6-a3c3-dd737492e835, 8,158 ms; terminal PROVIDER_BUSY / 503 with no report. Final corrected quote verification remains open. Preserved earlier observations; no extra provider request or deadline change.
+- Desktop homepage, production console and Reports navigation visually observed. Snapshot picker opened but could not be targeted. Computer Use subsequently stopped because it could not verify the current browser URL for policy enforcement; no further app input. Mobile, complete keyboard/interactions, downloads, reduced motion and print/PDF review remain unverified.
+- Added two actual-FORGE server-rendering checks: real console values/selected evidence and complete 17-event printable markup with explicit scenario/null-carbon behavior. These do not claim browser or pagination verification.
+- Final local checks PASS: 170 tests / 20 files, TypeScript, ESLint, isolated production build, normal post-build TypeScript; 21 deterministic HTTP assertions rerun against the final rebuilt server, no provider calls. New reproducible release scripts preserve older evidence.
+- Updated DEMO-READY.md; created timed JUDGE-PITCH.md, DEPLOYMENT-CHECKLIST.md and FINAL-RELEASE-REPORT.md with verified/unverified/deferred sections and actual browser/provider limitations. No full-release sign-off claimed.
+- No runtime/UI/contracts/dependency changes, push, merge, deploy, Photon or ElevenLabs. Pre-existing working changes are preserved outside the release checkpoint.

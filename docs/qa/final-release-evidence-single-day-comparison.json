@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-25T00:51:56.356Z",
+  "checks": [
+    {
+      "name": "Real three-page single report day",
+      "status": "FAIL",
+      "httpStatus": 200,
+      "requestId": "18a1c9bb-bcaa-49a6-a3c3-dd737492e835",
+      "elapsedMs": 8158,
+      "errorCode": "PROVIDER_BUSY",
+      "mismatches": [
+        "No completed real-day report: {\"type\":\"error\",\"requestId\":\"18a1c9bb-bcaa-49a6-a3c3-dd737492e835\",\"error\":\"Gemini is experiencing high demand. Please retry later; no report was imported.\",\"code\":\"PROVIDER_BUSY\",\"status\":503}"
+      ]
+    }
+  ]
+}

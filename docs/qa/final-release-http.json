@@ -1,0 +1,161 @@
+{
+  "checkedAt": "2026-10-25T00:57:03.274Z",
+  "base": "http://127.0.0.1:3100",
+  "providerCalls": 0,
+  "totalAssertions": 21,
+  "checks": [
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "dashboard HTML and source labels",
+      "status": "PASS",
+      "elapsedMs": 136,
+      "httpStatus": 200
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "Mantle-style homepage and console link",
+      "status": "PASS",
+      "elapsedMs": 34,
+      "httpStatus": 200
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "synthetic report API",
+      "status": "PASS",
+      "elapsedMs": 33,
+      "events": 9
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "deterministic scenario recalculation and provenance",
+      "status": "PASS",
+      "elapsedMs": 25,
+      "nptScenarioUsd": 50000
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "unknown fuel remains null and client verification cannot be promoted",
+      "status": "PASS",
+      "elapsedMs": 14,
+      "carbonScenario": null,
+      "sourceKind": "PUBLIC_SOURCE_UNREVIEWED"
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "invalid analytics JSON is an explicit non-success",
+      "status": "PASS",
+      "elapsedMs": 11,
+      "httpStatus": 422
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "invalid upload produces explicit error",
+      "status": "PASS",
+      "elapsedMs": 18,
+      "httpStatus": 415,
+      "code": "UNSUPPORTED_FILE"
+    },
+    {
+      "script": "scripts/smoke.mjs",
+      "check": "vision rejects invalid image before model call",
+      "status": "PASS",
+      "elapsedMs": 12,
+      "httpStatus": 415,
+      "code": "IMAGE_SIGNATURE"
+    },
+    {
+      "script": "scripts/verify-ingestion.mjs",
+      "check": "Canonical CSV without Gemini",
+      "status": "PASS",
+      "elapsedMs": 45,
+      "requestId": "13199075-1180-46a8-a678-2d5a31946148",
+      "events": 3,
+      "nptMinutes": 60,
+      "stages": [
+        "preparing",
+        "extracting",
+        "validating",
+        "computing",
+        "ready"
+      ]
+    },
+    {
+      "script": "scripts/verify-ingestion.mjs",
+      "check": "Canonical XLSX without Gemini",
+      "status": "PASS",
+      "elapsedMs": 38,
+      "requestId": "dd645aca-0459-4882-94dc-8ea0bffdb94f",
+      "events": 3,
+      "nptMinutes": 60,
+      "stages": [
+        "preparing",
+        "extracting",
+        "validating",
+        "computing",
+        "ready"
+      ]
+    },
+    {
+      "name": "FORGE scenario: 293 ft / 3.5 h, 34.2 min ILT / $5,700; null carbon",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Cannot promote source verification",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Overlaps reject without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Invalid scenario rejects without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Empty report rejects without metrics",
+      "status": "PASS",
+      "httpStatus": 422
+    },
+    {
+      "name": "Duplicate CSV headers reject",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "Conflicting aliases return terminal error only",
+      "status": "PASS",
+      "httpStatus": 200,
+      "terminalStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "Equivalent aliases preserve source and coverage",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "name": "Malformed depth grouping rejects",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "INVALID_STRUCTURED_ROW"
+    },
+    {
+      "name": "XLSX duplicate headers reject after decoding",
+      "status": "PASS",
+      "httpStatus": 422,
+      "code": "AMBIGUOUS_STRUCTURED_COLUMNS"
+    },
+    {
+      "name": "25-page PDF rejects before provider generation",
+      "status": "PASS",
+      "httpStatus": 200,
+      "terminalStatus": 413,
+      "code": "PDF_PAGE_LIMIT"
+    }
+  ]
+}
