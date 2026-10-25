@@ -2,6 +2,10 @@
 
 Date: 24 October 2026 (America/New_York). Branch: `feat/solo-overnight`.
 
+## Latest backend correctness follow-up
+
+The subsequent backend-only audit reproduced and fixed ambiguous structured source columns/depth parsing and empty analytics API success. **124 tests / 16 files, TypeScript, lint and production build pass; all 20 rebuilt-server HTTP assertions pass.** No new provider calls or UI verification were performed. Details and limits: `docs/BACKEND-CORRECTNESS.md`; actual evidence: `docs/qa/backend-checks.json` and `docs/qa/backend-http.json`. Earlier visual/preflight observations below remain historical. Existing uncommitted UI/preflight files were preserved separately.
+
 ## Outcome
 
 Core local demo workflow is validated with one genuine public Utah FORGE report day and labeled synthetic backups. Two import reliability defects were fixed. No rebuild/redesign, provider expansion, authentication, infrastructure, package, telemetry-contract or credential changes were made.

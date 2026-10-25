@@ -8,6 +8,8 @@ export async function GET() { return NextResponse.json(DEMO_REPORT); }
 export async function POST(req: Request) {
     try {
         const body = RequestSchema.parse(await req.json());
+        if (!body.extraction.events.length)
+            return NextResponse.json({ error: "An analysis requires at least one drilling event. Your previous report is unchanged." }, { status: 422, headers: { "Cache-Control": "no-store" } });
         // A client cannot promote AI output to human verified through this endpoint.
         return NextResponse.json(buildWellReport(body.extraction, { scenario: body.scenario, sourceKind: body.sourceKind === "SYNTHETIC_DEMO" ? "SYNTHETIC_DEMO" : "PUBLIC_SOURCE_UNREVIEWED" }), { headers: { "Cache-Control": "no-store" } });
     }

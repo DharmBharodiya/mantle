@@ -1,0 +1,46 @@
+> boresight-hackathon@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/dharm/Downloads/BoreSight-Starter-Kit
+
+ ✓ src/components/dashboard/upload-deadline.test.ts (4 tests) 15ms
+ ✓ tests/analytics.test.ts (7 tests) 16ms
+ ✓ tests/forge-validation.test.ts (5 tests) 30ms
+ ✓ tests/reports.test.ts (4 tests) 34ms
+ ✓ tests/gemini-client.test.ts (8 tests) 43ms
+ ✓ tests/analytics-route.test.ts (10 tests) 44ms
+ ✓ src/components/dashboard/report-view.test.ts (15 tests) 108ms
+ ✓ tests/print-report.test.tsx (4 tests) 134ms
+ ✓ tests/vision.test.ts (4 tests) 95ms
+ ✓ tests/mantle-console.test.tsx (5 tests) 130ms
+ ✓ tests/compute.test.ts (7 tests) 13ms
+ ✓ tests/mantle-home.test.tsx (6 tests) 97ms
+ ✓ tests/dashboard-render.test.tsx (3 tests) 75ms
+ ✓ tests/ingestion.test.ts (11 tests) 139ms
+stdout | tests/structured-columns.test.ts > unambiguous structured source columns > returns a streamed terminal error and no report for conflicting source columns
+[boresight.ingest] {"requestId":"b8240038-779e-4cae-b784-cd4e27178e38","elapsedMs":6,"phase":"receive_upload","durationMs":6,"outcome":"ok"}
+
+stdout | tests/structured-columns.test.ts > unambiguous structured source columns > returns a streamed terminal error and no report for conflicting source columns
+[boresight.ingest] {"requestId":"b8240038-779e-4cae-b784-cd4e27178e38","elapsedMs":8,"phase":"preparing"}
+
+stdout | tests/structured-columns.test.ts > unambiguous structured source columns > returns a streamed terminal error and no report for conflicting source columns
+[boresight.ingest] {"requestId":"b8240038-779e-4cae-b784-cd4e27178e38","elapsedMs":9,"phase":"prepare_upload","durationMs":1,"outcome":"ok"}
+
+stdout | tests/structured-columns.test.ts > unambiguous structured source columns > returns a streamed terminal error and no report for conflicting source columns
+[boresight.ingest] {"requestId":"b8240038-779e-4cae-b784-cd4e27178e38","elapsedMs":9,"phase":"extracting"}
+
+stdout | tests/structured-columns.test.ts > unambiguous structured source columns > returns a streamed terminal error and no report for conflicting source columns
+[boresight.ingest] {"requestId":"b8240038-779e-4cae-b784-cd4e27178e38","elapsedMs":10,"phase":"extract_activities","durationMs":1,"outcome":"error","code":"AMBIGUOUS_STRUCTURED_COLUMNS"}
+
+stdout | tests/structured-columns.test.ts > unambiguous structured source columns > returns a streamed terminal error and no report for conflicting source columns
+[boresight.ingest] {"requestId":"b8240038-779e-4cae-b784-cd4e27178e38","elapsedMs":10,"phase":"failed","outcome":"error","code":"AMBIGUOUS_STRUCTURED_COLUMNS"}
+
+ ✓ tests/structured-columns.test.ts (19 tests) 139ms
+ ✓ tests/ingestion-pipeline.test.ts (12 tests) 749ms
+   ✓ route deadline and provider failures > stops after bounded busy retries and emits no result envelope  510ms
+
+ Test Files  16 passed (16)
+      Tests  124 passed (124)
+   Start at  20:24:47
+   Duration  3.92s (transform 2.96s, setup 0ms, collect 13.61s, tests 1.86s, environment 4ms, prepare 6.15s)

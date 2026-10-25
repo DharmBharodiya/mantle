@@ -164,3 +164,11 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Structured input now rejects duplicate normalized names and conflicting populated aliases with AMBIGUOUS_STRUCTURED_COLUMNS (422). Equivalent clock/minute aliases and matching text aliases remain valid; blank aliases no longer hide a populated value.
 - Depths accept decimal/scientific notation and properly grouped thousands; malformed grouping/radix notation is rejected, never silently reinterpreted.
 - Focused verification: 19 new structured-column tests plus 12 existing pipeline tests pass (31 total); TypeScript and lint pass. No model calls, shared contract/package/UI changes, push, merge or deployment.
+
+## Backend correctness — nonempty analytics boundary and integration
+
+- Reproduced POST /api/analytics accepting zero events as HTTP 200. Added a scoped HTTP 422 guard without changing pure-engine empty-state support or shared contracts.
+- Added 10 route regressions for empty analyses, canonical event-derived calculations, scenario/null behavior, provenance downgrade, review warnings, invalid dates/durations/overlaps and demo compatibility.
+- Full final checks pass: TypeScript, 124 tests / 16 files, lint and isolated production build. Normal generated-reference typecheck also passes.
+- Rebuilt production HTTP verification passes: six new source/empty-boundary assertions plus eight existing smoke, two CSV/XLSX imports and four FORGE scenario/error assertions (20 total). No new Gemini calls. Offline recorded FORGE comparison still reports no mismatches.
+- Full evidence: docs/qa/backend-checks.json, backend-http.json and backend-*.txt; scope and limits: docs/BACKEND-CORRECTNESS.md. Existing UI, reference kit and earlier preflight changes remain outside these backend commits. No push, merge or deployment.
