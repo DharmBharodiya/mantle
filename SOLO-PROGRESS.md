@@ -231,3 +231,9 @@ User's existing mission/rule files and all previous dashboard work are preserved
 - Server-only official Groq REST API uses GROQ_MODEL (configured openai/gpt-oss-20b), strict JSON schema where supported, Zod validation, bounded context/output, 12-second attempts, at most two transient attempts, 40-second route budget, cancellation and safe provider errors. Deterministic fallback is explicitly labeled.
 - Groq narrative references must resolve to supplied citation/calculation IDs; uncited factual or numerical/external-link prose is withheld. Source text is untrusted data. No private report contents/keys logged or retained across requests.
 - 44 focused retrieval/provider/API tests PASS with mocked providers. TypeScript and scoped lint checked before checkpoint; no live Groq result claimed yet. No push, merge, deploy, Photon or ElevenLabs.
+
+## Rig Supervisor Copilot - console integration checkpoint
+
+- Added Rig Supervisor Copilot navigation and a minimal scoped conversation panel using existing Mantle controls/icons/tokens. Only explicitly checked in-memory reports are posted; well/report controls, contextual suggestions, follow-ups, loading/errors/cancel/clear and bounded session history are connected to the real API.
+- Answers include expandable exact original snippets, distinction for review annotations, event/report inspection navigation and deterministic calculation details with filters/period/assumptions/included records/quality warnings. Numeric values are rendered from canonical output. Conversation resets on report-data/scenario changes and scope changes, and stale/cancelled results are withheld.
+- Added six client/UI transaction/rendering tests and an eight-question offline FORGE evaluation fixture; these cover markup and data behavior, not a completed browser interaction audit. Existing 44 retrieval/provider/API cases also pass. Groq configuration names documented in .env.example only; .env.local unchanged.

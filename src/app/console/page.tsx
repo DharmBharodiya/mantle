@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { RigSupervisorCopilot } from "@/components/mantle/copilot/RigSupervisorCopilot";
 import { ConsoleSidebar } from "@/components/mantle/console/ConsoleSidebar";
 import { ConsoleOverview } from "@/components/mantle/console/ConsoleOverview";
 import { KpiStrip } from "@/components/mantle/console/KpiStrip";
@@ -63,6 +64,12 @@ export default function Home() {
         }
         return () => { request.current?.abort(); saveConsoleSession(sessionRef.current); };
     }, []);
+    function inspectCopilotEvent(ownerId: string, id: string) {
+        const owner = reports.find(entry => entry.id === ownerId);
+        if (!owner?.report.events.some(event => event.id === id)) return;
+        setReportId(ownerId); setView("Overview"); setEventId(id);
+        requestAnimationFrame(() => { document.getElementById("selected-evidence")?.scrollIntoView({block:"nearest",behavior:"instant"}); document.getElementById("selected-evidence")?.focus({preventScroll:true}); });
+    }
     function inspectEvent(id: string) {
         setEventId(id);
         requestAnimationFrame(() => {
@@ -211,7 +218,7 @@ export default function Home() {
     } }
     const memorySummaries = reports.map(item => summarizeReport(item.report, item.id));
     const compareSummaries = [...memorySummaries, ...summaries.filter(summary => !reports.some(item => item.id === summary.id))];
-    const titles: Record<string, string> = {Overview: report.wellName || "Report overview", Reports: "Reports", Compare: "Compare reports", Benchmarks: "Scenario assumptions", "Equipment vision": "Equipment vision"};
+    const titles: Record<string, string> = {Overview: report.wellName || "Report overview", Reports: "Reports", Compare: "Compare reports", Benchmarks: "Scenario assumptions", "Equipment vision": "Equipment vision", "Rig Supervisor Copilot": "Rig Supervisor Copilot"};
     const selectedId = report.events.some(event => event.id === eventId) ? eventId : report.events.find(event => event.classification === "NPT")?.id ?? report.events[0]?.id;
     return <div className="mantle-page mantle-console min-h-screen bg-m-ink font-sans text-steam antialiased"><a href="#workspace-title" className="m-skip">Skip to workspace</a><div className="m-console-layout"><ConsoleSidebar active={view} onNavigate={navigate} onUpload={() => fileInput.current?.click()} wellName={report.wellName} depthLabel={latestHoleDepth(report) === null ? "Not available" : `${latestHoleDepth(report)?.toLocaleString("en-US")} ft`} dateLabel={report.reportDate}/><main className="m-console-main">
       <div className="m-console-topbar"><div className="flex flex-wrap items-center gap-2 text-sm text-steam-4"><Link href="/">Mantle home</Link><span aria-hidden="true">/</span><span>{view}</span></div><div className="flex flex-wrap gap-2"><button className="m-btn-ghost" onClick={resetDemo}>Reset demo</button><button className="m-btn-ghost" onClick={exportCsv}>Export CSV</button><button className="m-btn-ghost" onClick={exportJson}>Export JSON</button><button className="m-btn-ghost" onClick={() => window.print()}>Print</button><button className="m-btn-primary" disabled={busy} onClick={() => fileInput.current?.click()}>{uploading ? "Analyzing…" : "Upload report"}</button></div></div>
@@ -224,6 +231,7 @@ export default function Home() {
       {view === "Reports" && <ReportsPanel reports={reports} selectedId={reportId} summaries={summaries} onSelect={selectReport} onRemove={removeReport} onSave={saveSummary} onDeleteSummary={id=>store(summaries.filter(summary=>summary.id!==id))} onClearSummaries={clearSummaries} onImport={()=>snapshotInput.current?.click()} onExport={exportJson}/>}
       {view === "Compare" && <ComparePanel summaries={compareSummaries}/>}
       {view === "Benchmarks" && <div className="stack"><ScenarioPanel key={reportId} report={report} busy={busy} onApply={applyScenario}/><section className="m-panel"><h2>Compare assumptions on the same source</h2><p className="mt-3 text-sm text-steam-3">Create a copy, adjust its scenario, then compare the analyses.</p><button className="m-btn-ghost mt-4" onClick={copyScenario} disabled={busy}>Copy for scenario</button></section><KpiStrip report={report}/></div>}
+      <div hidden={view !== "Rig Supervisor Copilot"}><RigSupervisorCopilot key={reports.map(entry=>entry.id+entry.report.generatedAt+JSON.stringify(entry.report.scenario)).join("|")} reports={reports} activeReportId={reportId} visible={view === "Rig Supervisor Copilot"} onInspect={inspectCopilotEvent}/></div>
       {view === "Equipment vision" && <VisionPanel/>}
       <footer className="m-trust-note"><p>Mantle · {report.sourceKind === "SYNTHETIC_DEMO" ? "SYNTHETIC DEMO — illustrative events, not actual field records." : report.sourceKind === "HUMAN_VERIFIED" ? "Human-reviewed source." : "Uploaded source · UNVERIFIED until checked against the original."} Classifications come from the report. Flat hole depth alone does not prove downtime. ILT, financial exposure and CO₂ are scenario estimates, not audited losses or measured emissions. Human review required.</p>{report.warnings.length>0&&<details className="mt-3"><summary>Source warnings ({report.warnings.length})</summary><ul className="mt-3 list-disc pl-5">{report.warnings.map((warning,index)=><li key={index}>{warning}</li>)}</ul></details>}</footer>
     </main></div><PrintSummary report={report} fileName={saved.fileName}/></div>;

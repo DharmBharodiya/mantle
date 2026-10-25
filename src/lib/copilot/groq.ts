@@ -16,7 +16,7 @@ export async function groqJson<T>(system:string,data:unknown,name:string,jsonSch
  const model=(process.env.GROQ_MODEL||'openai/gpt-oss-20b').trim();
  if(!/^[a-zA-Z0-9][a-zA-Z0-9._/-]{0,99}$/.test(model))throw groqFailure(400);
  const context=JSON.stringify(data);if(context.length>65000)throw new ServiceError('Copilot context exceeds the bounded explanation size. Narrow the report scope.',413,'COPILOT_CONTEXT_LIMIT');
- const body=JSON.stringify({model,messages:[{role:'system',content:system},{role:'user',content:context}],temperature:0,max_completion_tokens:2400,response_format:{type:'json_schema',json_schema:{name,strict:/^openai\/gpt-oss-(20|120)b$/.test(model),schema:jsonSchema}}});
+ const body=JSON.stringify({model,messages:[{role:'system',content:system},{role:'user',content:context}],temperature:0,...(/^openai\/gpt-oss-(20|120)b$/.test(model)?{reasoning_effort:'low'}:{}),max_completion_tokens:2400,response_format:{type:'json_schema',json_schema:{name,strict:/^openai\/gpt-oss-(20|120)b$/.test(model),schema:jsonSchema}}});
  for(let attempt=1;attempt<=GROQ_ATTEMPTS;attempt++){
   cancelled(signal);const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),GROQ_ATTEMPT_MS);
   const combined=signal?AbortSignal.any([signal,controller.signal]):controller.signal;
