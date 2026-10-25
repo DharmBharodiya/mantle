@@ -7,6 +7,7 @@ import { extractFromGemini } from "@/lib/ingestion/gemini";
 import { extractStructuredTable, mergeExtractions } from "@/lib/ingestion/structured";
 import { POST } from "@/app/api/ingest/route";
 import { DEMO_EXTRACTION } from "@/data/demo-report";
+function modelResponse(value: { reportDate: string; [key: string]: unknown }) { return JSON.stringify({ ...value, reportDates: value.reportDate ? [value.reportDate] : [], reportedDrillingHours: [] }); }
 const { generate } = vi.hoisted(() => ({ generate: vi.fn() }));
 vi.mock("@google/genai", () => ({ ThinkingLevel: { LOW: "LOW" }, GoogleGenAI: class {
         models = { generateContent: generate, get: vi.fn().mockResolvedValue({ supportedActions: ["generateContent"], outputTokenLimit: 8192 }) };
@@ -78,7 +79,7 @@ describe("PDF boundaries and chunk references", () => {
         vi.stubEnv("GEMINI_API_KEY", "test-only");
         const first = { ...DEMO_EXTRACTION, events: [{ ...DEMO_EXTRACTION.events[0], evidence: { fileName: "invented", page: 2, snippet: "source phrase" } }] };
         const second = { ...first, events: [{ ...first.events[0], startMinute: 180, endMinute: 240, note: "second source block", evidence: { fileName: "invented", page: 1, snippet: "other phrase" } }] };
-        generate.mockResolvedValueOnce({ text: JSON.stringify(first) }).mockResolvedValueOnce({ text: JSON.stringify(second) });
+        generate.mockResolvedValueOnce({ text: modelResponse(first) }).mockResolvedValueOnce({ text: modelResponse(second) });
         const r = await extractFromGemini(await prepareUpload(await pdf(3)));
         expect(r.events.map(e => e.evidence.page)).toEqual([2, 3]);
         expect(r.events.every(e => e.evidence.fileName === "test.pdf")).toBe(true);

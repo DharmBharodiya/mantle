@@ -177,3 +177,9 @@ User's existing mission/rule files and all previous dashboard work are preserved
 
 - Reproduced multi-worker error masking: when a later-index section fails first, mapBounded returned an earlier-index sibling cancellation instead of the original failure. It now retains the first failure and stops queued sections even for falsy thrown values.
 - Focused checks: 2 chunk-failure regressions and 12 existing ingestion-pipeline cases pass; TypeScript and scoped ESLint pass. No deadline, dependency, contract or UI change.
+
+## Final backend validation — report-day and aggregate checks
+
+- The private Gemini extraction envelope now requires actual report-day labels and explicitly quoted daily drilling-hour summaries. Public telemetry/API contracts are unchanged. Multiple reported days or inconsistent primary/report labels reject the section before merge; date-less sections remain warned rather than assigned invented dates.
+- Drilling summaries are compared after all sections are merged/deduplicated. The FORGE 4.0-hour header versus 3.5-hour explicit timeline produces a source-quoted review warning and never changes timestamps/depths. Unverifiable text summary excerpts are excluded. PDF excerpts remain model-extracted/unverified.
+- Eight focused multi-page/source-total tests pass using actual generated PDF documents and mocked Gemini responses; existing provider fixtures now explicitly include the private metadata. TypeScript/lint and full unit suite pass. Live original multi-page checks follow separately; no live success is inferred from these tests.

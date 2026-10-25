@@ -5,6 +5,7 @@ import { prepareUpload, csvRecords, MAX_UPLOAD_BYTES } from "@/lib/ingestion/pre
 import { POST } from "@/app/api/ingest/route";
 import { DEMO_EXTRACTION } from "@/data/demo-report";
 import { providerError } from "@/lib/server/errors";
+function modelResponse(value: { reportDate: string; [key: string]: unknown }) { return JSON.stringify({ ...value, reportDates: value.reportDate ? [value.reportDate] : [], reportedDrillingHours: [] }); }
 const { generate } = vi.hoisted(() => ({ generate: vi.fn() }));
 vi.mock("@google/genai", () => ({ ThinkingLevel: { LOW: "LOW" }, GoogleGenAI: class {
         models = { generateContent: generate, get: vi.fn().mockResolvedValue({ supportedActions: ["generateContent"], outputTokenLimit: 8192 }) };
@@ -70,7 +71,7 @@ describe("ingestion endpoint", () => {
         const extraction = structuredClone(DEMO_EXTRACTION);
         extraction.events = [extraction.events[0]];
         extraction.events[0].evidence = { fileName: "invented", page: 17, snippet: "invented unsupported quote", row: 2 };
-        generate.mockResolvedValue({ text: JSON.stringify(extraction) });
+        generate.mockResolvedValue({ text: modelResponse(extraction) });
         const response = await POST(request(text));
         expect(response.status).toBe(200);
         const report = await response.json();
@@ -84,7 +85,7 @@ describe("ingestion endpoint", () => {
         const extraction = structuredClone(DEMO_EXTRACTION);
         extraction.events = [extraction.events[0]];
         extraction.events[0].evidence = { fileName: "model-name", page: null, row: 2, snippet: "DRILL 6100-6210'" };
-        generate.mockResolvedValue({ text: JSON.stringify(extraction) });
+        generate.mockResolvedValue({ text: modelResponse(extraction) });
         const response = await POST(request(text));
         expect(response.status).toBe(200);
         const body = await response.json();
@@ -93,19 +94,19 @@ describe("ingestion endpoint", () => {
     });
     it("rejects empty extraction, corrupt JSON and overlapping events", async () => {
         vi.stubEnv("GEMINI_API_KEY", "test-only");
-        generate.mockResolvedValueOnce({ text: JSON.stringify({ ...DEMO_EXTRACTION, events: [] }) }).mockResolvedValueOnce({ text: "{broken" });
+        generate.mockResolvedValueOnce({ text: modelResponse({ ...DEMO_EXTRACTION, events: [] }) }).mockResolvedValueOnce({ text: "{broken" });
         expect((await POST(request(text))).status).toBe(422);
         expect((await POST(request(text))).status).toBe(502);
         const extraction = structuredClone(DEMO_EXTRACTION);
         extraction.events[1].startMinute = 1;
-        generate.mockResolvedValue({ text: JSON.stringify(extraction) });
+        generate.mockResolvedValue({ text: modelResponse(extraction) });
         const response = await POST(request(text));
         expect(response.status).toBe(422);
         expect(await response.json()).toMatchObject({ code: "INVALID_TIMELINE" });
     });
     it("marks explicitly synthetic uploads as synthetic and warns on unverified PDF pages", async () => {
         vi.stubEnv("GEMINI_API_KEY", "test-only");
-        generate.mockResolvedValue({ text: JSON.stringify(DEMO_EXTRACTION) });
+        generate.mockResolvedValue({ text: modelResponse(DEMO_EXTRACTION) });
         const pdf = await PDFDocument.create();
         pdf.addPage();
         const bytes = await pdf.save();
