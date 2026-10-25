@@ -11,7 +11,7 @@ beforeEach(()=>{vi.stubEnv('GROQ_API_KEY','test-only');vi.stubEnv('GROQ_MODEL','
 afterEach(()=>{vi.unstubAllGlobals();vi.unstubAllEnvs();});
 describe('stateless copilot API',()=>{
  it('interprets the question, computes metrics and returns cited Groq prose',async()=>{
-  const provider=vi.fn().mockResolvedValueOnce(wire({...baseIntent(),kind:'NPT',ranking:'LONGEST'})).mockResolvedValueOnce(wire({statements:[{kind:'EXPLANATION',text:'The selected record describes a pump repair delay.',citationIds:['E1'],calculationIds:['C2']}]}));vi.stubGlobal('fetch',provider);
+  const provider=vi.fn().mockResolvedValueOnce(wire({...baseIntent(),kind:'NPT',ranking:'LONGEST'})).mockResolvedValueOnce(wire({statements:[{kind:'EXPLANATION',text:'The selected record describes a pump repair delay.',citationIds:['E1'],calculationIds:['C3']}]}));vi.stubGlobal('fetch',provider);
   const response=await POST(request(body()));const result=CopilotResponseSchema.parse(await response.json());expect(response.status).toBe(200);expect(result.mode).toBe('GROQ');expect(result.calculations.find(c=>c.metric==='Classified NPT')?.value).toBe(300);expect(result.focus).toEqual({reportId:'demo',eventId:'ev-04'});expect(result.citations[0].snippet).toContain('SEAL FAILED');expect(provider).toHaveBeenCalledTimes(2);expect(response.headers.get('Cache-Control')).toBe('no-store');
  });
  it('keeps deterministic queries usable with missing keys and explicitly labels the fallback',async()=>{

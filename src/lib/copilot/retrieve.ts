@@ -58,11 +58,20 @@ export function retrieve(question:string,intent:QueryIntent,all:ScopedReport[],h
  let anchor:Focus|null=null;
  if(intent.relative!=='NONE'||(/\b(it|that event|its|that answer)\b/i.test(question)&&intent.kind==='EVIDENCE')){
   anchor=history.at(-1)?.focus??null;
-  const owner=scope.find(r=>r.id===anchor?.reportId);const index=owner?.report.events.findIndex(e=>e.id===anchor?.eventId)??-1;
+  let owner=scope.find(r=>r.id===anchor?.reportId);let index=owner?.report.events.findIndex(e=>e.id===anchor?.eventId)??-1;
+  if((!owner||index<0)&&/\blongest\b/i.test(question)&&/\b(delay|stoppage|stop|downtime)\b/i.test(question)){
+   const delays=scope.flatMap(item=>item.report.events.filter(event=>event.classification==='NPT').map(event=>({item,event}))).sort((a,b)=>(b.event.endMinute-b.event.startMinute)-(a.event.endMinute-a.event.startMinute));
+   if(delays.length&&(!delays[1]||(delays[0].event.endMinute-delays[0].event.startMinute)>(delays[1].event.endMinute-delays[1].event.startMinute))){owner=delays[0].item;index=owner.report.events.findIndex(event=>event.id===delays[0].event.id);anchor={reportId:owner.id,eventId:delays[0].event.id};}
+  }
   if(!owner||index<0){intent={...intent,kind:'CLARIFY'};summary='I cannot resolve that event reference in the current report scope. Ask about a specific event first.';}
   else {
    const target=owner.report.events[index+(intent.relative==='PREVIOUS'?-1:intent.relative==='NEXT'?1:0)];scope=[owner];
-   if(target){candidates.push({item:owner,event:target,score:100});focus={reportId:owner.id,eventId:target.id};summary='Retrieved the adjacent event from the same report timeline; adjacency is not proof of cause.';}
+   if(target){
+    const around=/\bbefore\b/i.test(question)&&/\bafter\b/i.test(question);
+    const contextEvents=around?owner.report.events.slice(Math.max(0,index-1),index+2):[target];
+    for(const event of contextEvents)candidates.push({item:owner,event,score:100});
+    focus={reportId:owner.id,eventId:around?owner.report.events[index].id:target.id};intent={...intent,ranking:'CHRONOLOGICAL'};summary='Retrieved the adjacent event context from the same report timeline; adjacency is not proof of cause.';
+   }
    else summary='There is no observed adjacent event in that direction in this report. Missing time has not been filled.';
   }
  }
@@ -100,13 +109,18 @@ export function retrieve(question:string,intent:QueryIntent,all:ScopedReport[],h
  if(eligible&&intent.kind!=='TERM')for(const item of scope){
   const events=candidates.filter(c=>c.item.id===item.id).map(c=>c.event);const filtered=buildWellReport({...item.report,events},{scenario:item.report.scenario,sourceKind:item.report.sourceKind});
   const drilling=buildWellReport({...item.report,events:events.filter(e=>e.activity==='DRILLING')},{scenario:item.report.scenario});
+  const longestEvent=[...events].sort((a,b)=>(b.endMinute-b.startMinute)-(a.endMinute-a.startMinute))[0];
   const values:[string,number|null,string,string][]=[['Observed interval time',filtered.metrics.observedMinutes,'min','Sum of validated, nonoverlapping matched intervals.'],['Classified NPT',filtered.metrics.nptMinutes,'min','NPT classifications from matched source records.'],['Drilling interval time',drilling.metrics.observedMinutes,'min','Validated matched DRILLING intervals, without reconciling source header totals.'],['Drilling ILT scenario',filtered.metrics.iltEligibleMinutes?filtered.metrics.iltMinutes:null,'min','computeILTMinutes via buildWellReport; unsupported benchmark time remains unavailable.'],['Modeled time exposure',filtered.metrics.estimatedLossUsd,'USD','Matched NPT plus eligible drilling ILT, multiplied by scenario daily rig rate / 1440. Not realized savings.'],['Modeled excess carbon',filtered.metrics.modeledExcessCo2Tons,'t CO2','Explicit incremental fuel and emissions assumptions; null means unknown.']];
+  if(intent.ranking==='LONGEST'&&longestEvent){
+   const longest=buildWellReport({...item.report,events:[longestEvent]},{scenario:item.report.scenario});
+   values.unshift(['Longest matched interval',longest.metrics.observedMinutes,'min','Maximum duration among matched intervals; value recalculated from the listed source record. This is separate from total classified NPT.']);
+  }
   if(intent.kind==='AGGREGATE')for(const activity of [...new Set(events.map(event=>event.activity))]){
    const grouped=buildWellReport({...item.report,events:events.filter(event=>event.activity===activity)},{scenario:item.report.scenario});
    values.push(['Activity duration: '+activity,grouped.metrics.observedMinutes,'min','Sum of matched validated intervals for this activity, via buildWellReport.']);
   }
   values.sort((a,b)=>a[0].startsWith('Activity')&&b[0].startsWith('Activity')?(b[1]??0)-(a[1]??0):0);
-  for(const[metric,value,unit,basis]of values)calculations.push({id:'C'+(calculations.length+1),reportId:item.id,wellName:item.report.wellName,reportDate:item.report.reportDate,metric,value,unit,basis,filters:JSON.stringify({activities:intent.activities,classifications:intent.classifications,kind:intent.kind,terms:intent.terms,startMinute:intent.startMinute,endMinute:intent.endMinute,relative:intent.relative}),eventIds:events.filter(e=>!metric.startsWith('Activity duration: ')||e.activity===metric.slice('Activity duration: '.length)).map(e=>e.id),citationIds:citations.filter(c=>c.reportId===item.id&&(!metric.startsWith('Activity duration: ')||events.some(e=>e.id===c.eventId&&e.activity===metric.slice('Activity duration: '.length)))).map(c=>c.id),assumptions:item.report.scenario,warnings:filtered.warnings.length>12?[...filtered.warnings.slice(0,11),'Additional quality warnings remain in the selected report; inspect the original analysis.']:filtered.warnings});
+  for(const[metric,value,unit,basis]of values)calculations.push({id:'C'+(calculations.length+1),reportId:item.id,wellName:item.report.wellName,reportDate:item.report.reportDate,metric,value,unit,basis,filters:['Analysis: '+intent.kind.toLowerCase(),'Activities: '+(intent.activities.length?intent.activities.map(a=>a.toLowerCase().replaceAll('_',' ')).join(', '):'all'),'Classifications: '+(intent.classifications.length?intent.classifications.map(c=>c.toLowerCase()).join(', '):intent.kind==='NPT'?'NPT only':intent.kind==='ILT'?'positive supported drilling ILT':'all'),'Source terms: '+(intent.terms.join(', ')||'none'),'Whole-interval window: '+(intent.startMinute??0)+'-'+(intent.endMinute??1440)+' minutes','Timeline relation: '+intent.relative.toLowerCase()].join('; '),eventIds:events.filter(e=>metric==='Longest matched interval'?e.id===longestEvent?.id:!metric.startsWith('Activity duration: ')||e.activity===metric.slice('Activity duration: '.length)).map(e=>e.id),citationIds:citations.filter(c=>c.reportId===item.id&&(metric==='Longest matched interval'?c.eventId===longestEvent?.id:!metric.startsWith('Activity duration: ')||events.some(e=>e.id===c.eventId&&e.activity===metric.slice('Activity duration: '.length)))).map(c=>c.id),assumptions:item.report.scenario,warnings:filtered.warnings.length>12?[...filtered.warnings.slice(0,11),'Additional quality warnings remain in the selected report; inspect the original analysis.']:filtered.warnings});
  }
  return {intent,scope,citations,calculations,warnings:[...new Set(warnings)].slice(0,80),focus,matchedEventCount,retrievalTruncated:candidates.length>20,summary,glossary};
 }
