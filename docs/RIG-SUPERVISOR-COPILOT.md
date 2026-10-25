@@ -4,7 +4,7 @@ Implemented inside the existing Mantle console on 24 October 2026 (America/New_Y
 
 ## What works and what is not yet verified
 
-The copilot uses Gemini for question intent and grounded explanations, with deterministic fallback. Activity-duration rankings are stated directly from Mantle calculations so the model cannot relabel categories or add unrelated report warnings. The UI supports selected reports, question suggestions, follow-up event references, expandable citations/calculations and original-event navigation.
+The copilot uses Gemini for question intent and grounded explanations, with deterministic fallback. Activity-duration rankings and NPT totals are stated directly from Mantle calculations so the model cannot relabel categories, repeat metrics, or add unrelated report warnings. A zero classified-NPT result describes the extracted labels; an unverified source is not proof that downtime was absent. The UI supports selected reports, question suggestions, follow-up event references, expandable citations/calculations and original-event navigation.
 
 **Live limitation:** the first public-data request successfully used Groq to interpret the question, but its explanation failed grounding validation and was withheld. The next request hit Groq's rate limit and used the deterministic fallback. The live smoke stopped. No successful accepted live Groq narrative or full live four-question evaluation is claimed; those observations predate the Gemini provider switch. The subsequent conservative statement-level validation/context reduction is offline-tested, not live-rerun. This is a remaining release gate, not a fabricated provider success.
 

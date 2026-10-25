@@ -29,7 +29,18 @@ export async function answerCopilot(input:CopilotRequest,requestId:string,signal
  }
  let statements:CopilotResponse['statements']=[];let mode:CopilotResponse['mode']='DETERMINISTIC';
  if(data.glossary.length)data.summary=data.glossary.join(' ');
- if(data.intent.kind==='AGGREGATE'){
+ if(data.intent.kind==='NPT'){
+  const nptCalculations=data.calculations.filter(item=>item.metric==='Classified NPT');
+  const noClassifiedNpt=nptCalculations.length>0&&nptCalculations.every(item=>item.value===0);
+  const unverified=data.scope.some(item=>item.report.sourceKind==='PUBLIC_SOURCE_UNREVIEWED');
+  if(noClassifiedNpt){
+   data.summary=unverified?'No selected interval is explicitly classified as NPT, and Mantle calculates zero classified NPT. This import is unverified; the result describes extracted labels and does not confirm that downtime was absent.':'No selected interval is explicitly classified as NPT, and Mantle calculates zero classified NPT.';
+  }else if(nptCalculations.length>1){
+   data.summary='Mantle calculates classified NPT separately for each selected report below; report days are not combined.';
+  }else if(nptCalculations.length===1){
+   data.summary='Mantle calculates NPT for the selected report from intervals explicitly labeled NPT. Expand the calculation below to inspect its value, filters and supporting records.';
+  }
+ }else if(data.intent.kind==='AGGREGATE'){
   const rankedActivities=data.calculations.filter(item=>item.metric.startsWith('Activity duration: ')&&item.value!==null).sort((a,b)=>(b.value??0)-(a.value??0));
   const label=(metric:string)=>{const code=metric.slice('Activity duration: '.length);if(code==='OTHER')return 'Other (source activity code OTHER)';if(code==='CASING_CEMENTING')return 'casing and cementing';return code.toLowerCase().replaceAll('_',' ');};
   if(rankedActivities.length){
@@ -37,7 +48,7 @@ export async function answerCopilot(input:CopilotRequest,requestId:string,signal
    statements=rankedActivities.slice(0,3).map((item,index)=>({kind:'EXPLANATION',text:(index===0?'Largest recorded activity category: ':'Next ranked activity category: ')+label(item.metric)+'.',citationIds:item.citationIds.slice(0,6),calculationIds:[item.id]}));
   }
  }
- if(data.intent.kind!=='AGGREGATE'&&intentFromGemini&&!['CLARIFY','UNSUPPORTED'].includes(data.intent.kind)){
+ if(!['AGGREGATE','NPT'].includes(data.intent.kind)&&intentFromGemini&&!['CLARIFY','UNSUPPORTED'].includes(data.intent.kind)){
   const narrativeSchema=z.object({statements:z.array(AnswerStatementSchema).min(1).max(4)}).strict();
   const explainedSources=[...data.citations.filter(c=>c.kind==='REVIEW_WARNING'),...data.citations.filter(c=>c.kind==='EVENT').slice(0,10)].slice(0,12);
   const refs={citationIds:{type:'array',items:{type:'string',enum:explainedSources.length?explainedSources.map(c=>c.id):['NONE']}},calculationIds:{type:'array',items:{type:'string',enum:data.calculations.length?data.calculations.map(c=>c.id):['NONE']}}};
